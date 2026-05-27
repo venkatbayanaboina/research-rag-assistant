@@ -193,7 +193,7 @@ This phase demonstrated the importance of provider abstraction, configuration is
 
 ## Pipeline Workflow
 
-
+```
 ┌──────────────────────────────┐
 │         User Prompt          │
 └──────────────┬───────────────┘
@@ -236,7 +236,7 @@ This phase demonstrated the importance of provider abstraction, configuration is
 ┌──────────────────────────────┐
 │        Terminal Output       │
 └──────────────────────────────┘
-
+ ```
 
 ---
 
