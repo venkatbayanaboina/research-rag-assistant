@@ -1,24 +1,25 @@
-import os
 
-from google import genai
-from dotenv import load_dotenv
 from sentence_transformers import SentenceTransformer
+from sklearn.metrics.pairwise import cosine_similarity
 
 
-load_dotenv()
+ai= "Artificial Inteligence"
+nn= "neural Network "        
+cw="cricket worldcup"
 
-api_key =os.getenv("GEMINI_API_KEY")
-
-client=genai.Client(api_key=api_key)
-
-text ="Gradient descent is an optimisation algorithm"
 
 model=SentenceTransformer(
-    "sentence-transformers/all-MiniLM-L6-v2"
+    "BAAI/bge-large-en-v1.5"
 )
 
-embedding=model.encode(text)
-print("Embedding dimensions :", len(embedding))
-print()
-print("First 10 valuse")
-print(embedding[:10])
+aien=model.encode(ai)
+nnen=model.encode(nn)
+cwen=model.encode(cw)
+
+sim_ai_nn= cosine_similarity([aien],[nnen])[0][0]
+sim_ai_cw=cosine_similarity([aien],[cwen])[0][0]
+
+
+print("AI ↔ Neural Network:", sim_ai_nn)
+
+print("AI ↔ Cricket:", sim_ai_cw)
