@@ -4,21 +4,19 @@ This phase is responsible for document ingestion, parsing, chunking, embedding g
 
 ## Architecture & Flow
 
-The ingestion pipeline converts unstructured PDF documents into vector embeddings. Below is the workflow diagram illustrating the architecture:
+The ingestion pipeline converts unstructured PDF documents into vector embeddings. Below is the workflow diagram illustrating the conceptual architecture:
 
 ```mermaid
 graph TD
-    A[docs/attention-is-all-you-need-Paper.pdf] -->|1. Partition PDF| B(unstructured.partition.pdf)
-    B -->|Extracts layout, tables, images| C[Raw Elements]
-    C -->|2. Title Chunking| D(unstructured.chunking.title)
-    D -->|Group elements into chunks| E[Text Chunks]
-    E -->|3. Dictionary Formatting| F[storage/chunks.json]
-    F -->|4. Load Chunks| G[ingestion.py]
-    G -->|5. Text Extraction| H[Build Embedding Text]
-    H -->|6. Sentence Embedding| I(BAAI/bge-large-en-v1.5)
-    I -->|7. Generate Normalized Vectors| J[Embeddings 1024-dim]
-    J -->|8. Index Population| K[faiss.IndexFlatIP]
-    K -->|9. Write to Disk| L[storage/embedding_db.faiss]
+    A[PDF Document] -->|1. partition_pdf| B[Raw Elements]
+    B -->|2. chunk_by_title| C[Chunks]
+    C -->|3. chunk_to_dict| D[Chunk Dictionaries]
+    D -->|4a. Save| E[storage/chunks.json]
+    D -->|4b. extract text| F[build_embedding_text]
+    F -->|5. encode| G(BAAI/bge-large-en-v1.5)
+    G -->|6. output normalized vectors| H[1024-d Embeddings]
+    H -->|7. add| I[faiss.IndexFlatIP]
+    I -->|8. Save Index| J[storage/embedding_db.faiss]
 ```
 
 ### 1. Document Extraction & Structure (Commented Section)
@@ -34,7 +32,7 @@ The commented-out code block (Lines 18-76) represents the initial pipeline inges
 *   The final output is saved to [chunks.json](../storage/chunks.json).
 
 ### 2. Vector Indexing (Active Section)
-The active code block loads the structured chunks and creates the vector database:
+During active run cycles where document parsing is skipped, the active code block loads the pre-processed chunks to create/rebuild the vector database:
 *   **Loading Chunks:** Reads the pre-processed chunks from `../storage/chunks.json`.
 *   **Dense Embeddings:** Uses the `BAAI/bge-large-en-v1.5` model via `sentence_transformers` to encode chunk text. The embeddings are normalized, which allows Inner Product (`faiss.IndexFlatIP`) similarity searches to function as Cosine Similarity searches.
 *   **FAISS Indexing:** Adds the normalized 1024-dimensional embeddings to a `faiss.IndexFlatIP` index.
