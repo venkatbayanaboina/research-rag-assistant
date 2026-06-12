@@ -4,19 +4,18 @@ This phase is responsible for taking a user's natural language query, processing
 
 ## Architecture & Flow
 
-The retrieval pipeline processes a user query and returns matching documents. Below is the workflow diagram illustrating the architecture:
+The retrieval pipeline processes a user query and returns matching documents. Below is the updated workflow diagram illustrating the V1 architecture:
 
 ```mermaid
 graph TD
-    A[User Query] -->|1. Submit Query| B(retrieve.py)
-    B -->|2. Load Index| C[storage/embedding_db.faiss]
-    B -->|3. Load Chunk Metadatas| D[storage/chunks.json]
-    A -->|4. Generate Vector| E(BAAI/bge-large-en-v1.5)
-    E -->|5. Normalize query embedding| F[Query Embedding 1x1024]
-    F -->|6. K-Nearest Neighbors Search| C
-    C -->|7. Top-K Index Hits| G[indices, scores]
-    G -->|8. Map Indices to Chunks| D
-    D -->|9. Render Results| H[Console Print: Chunk ID, Page, Text]
+    A[User Query] -->|1. Submit Query| B[retrieve.py]
+    B -->|2. Encode & Normalize| C(BAAI/bge-large-en-v1.5)
+    C -->|3. Output Vector| D[Query Embedding 1x1024]
+    D -->|4. K-NN Search| E[storage/embedding_db.faiss]
+    E -->|5. Output Hits| F[Top-K Indices & Scores]
+    F -->|6. ID Lookup| G[storage/chunks.json]
+    G -->|7. Extract Data| H[Retrieved Chunks]
+    H -->|8. Present| I[Console Print]
 ```
 
 ### Retrieval Mechanics
@@ -42,3 +41,45 @@ graph TD
 *   **Lines 17 & 23 (Debug Prints):** Used to verify the integrity of the loaded FAISS index and the JSON chunks file during debugging. They print the count of loaded vectors and JSON blocks.
 *   **Lines 47-50:** Leftover print statements from previous phases where small mock text lists were searched instead of the actual PDF index.
 *   **Line 51:** A simple execution completion check message.
+
+---
+
+## Architecture Evolution & Roadmap
+
+Here is how the retrieval architecture is planned to evolve in the upcoming phases:
+
+### 1. Retrieval V1 (Current)
+We extract contextually relevant text chunks based on the similarity of the query embedding to the document embeddings, and print the results to the console.
+```mermaid
+graph TD
+    A[User Query] --> B[retrieve.py]
+    B --> C[Embedding Model]
+    C --> D[FAISS Search]
+    D --> E[chunks.json Lookup]
+    E --> F[Retrieved Chunks]
+    F --> G[Console Print]
+```
+
+### 2. LLM Integration (Next Step)
+We will feed the retrieved context chunks along with the user query into the Gemini LLM to generate a synthesized, natural language answer.
+```mermaid
+graph TD
+    A[User Query] --> B[retrieve.py]
+    B --> C[Embedding Model]
+    C --> D[FAISS Search]
+    D --> E[chunks.json Lookup]
+    E --> F[Retrieved Context]
+    F --> G[Gemini LLM]
+    G --> H[Synthesized Final Answer]
+```
+
+### 3. Long-Term: Multimodal RAG
+Eventually, the ingestion and retrieval processes will handle multiple modalities (Text + Images + Tables). The relevant rich chunks will be passed to a multimodal Gemini model to produce grounded, multi-format answers.
+```mermaid
+graph TD
+    A[User Query] --> B[Embedding Model]
+    B --> C[FAISS Search]
+    C --> D[Relevant Chunks: Text, Images, Tables]
+    D --> E[Gemini Multimodal LLM]
+    E --> F[Grounded Answer]
+```
