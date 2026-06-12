@@ -1,9 +1,9 @@
 import faiss
 
-index= faiss.read_index(
+db= faiss.read_index(
     "research_index.faiss"
 )
 
 print("index loaded")
-print("vectors:",index.ntotal)
-print("dimension :", index.d )
+print("vectors:",db.ntotal)
+print("dimension :", db.d )
