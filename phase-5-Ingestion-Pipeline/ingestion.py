@@ -23,7 +23,11 @@ print("Starting partition")
 #                         extract_image_block_to_payload=True
 #                     )
 # print("Partition finished")
-# chunks = chunk_by_title(elements) 
+# chunks = chunk_by_title(elements,
+#                          max_characters=2000,
+#                          new_after_n_chars=1500,
+#                          combine_text_under_n_chars=100
+#                          ) 
 
 # def chunk_to_dict(chunk, chunk_id):
 
@@ -74,6 +78,8 @@ print("Starting partition")
 #         f,
 #         indent=2
 #     )
+
+
 with open ("../storage/chunks.json","r") as f:
   all_chunks=json.load(f)
 
@@ -109,4 +115,3 @@ print(index.ntotal)
 #    index,
 #     "embedding_db.faiss"             
 #                  )
-
