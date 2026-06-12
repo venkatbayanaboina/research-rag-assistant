@@ -19,10 +19,6 @@ graph TD
     I -->|7. Generate Normalized Vectors| J[Embeddings 1024-dim]
     J -->|8. Index Population| K[faiss.IndexFlatIP]
     K -->|9. Write to Disk| L[storage/embedding_db.faiss]
-
-    style A fill:#f9f,stroke:#333,stroke-width:2px
-    style F fill:#bbf,stroke:#333,stroke-width:2px
-    style L fill:#bfb,stroke:#333,stroke-width:2px
 ```
 
 ### 1. Document Extraction & Structure (Commented Section)

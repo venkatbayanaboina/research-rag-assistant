@@ -17,11 +17,6 @@ graph TD
     C -->|7. Top-K Index Hits| G[indices, scores]
     G -->|8. Map Indices to Chunks| D
     D -->|9. Render Results| H[Console Print: Chunk ID, Page, Text]
-
-    style A fill:#f9f,stroke:#333,stroke-width:2px
-    style C fill:#bfb,stroke:#333,stroke-width:2px
-    style D fill:#bbf,stroke:#333,stroke-width:2px
-    style H fill:#fbb,stroke:#333,stroke-width:2px
 ```
 
 ### Retrieval Mechanics
