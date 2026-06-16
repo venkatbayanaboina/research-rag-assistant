@@ -1,57 +1,48 @@
-
-import os 
-import faiss
+import os
 import json
+import faiss
 from sentence_transformers import SentenceTransformer
-from google.genai import types
 from google import genai
-
+from google.genai import types
 from dotenv import load_dotenv
 
+# Load environment variables
 load_dotenv()
+api_key = os.getenv("GEMINI_API_KEY")
 
-api_key=os.getenv("GEMINI_API_KEY")
+# Resolve paths relative to this script's directory for robust execution
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+INDEX_PATH = os.path.join(SCRIPT_DIR, "../storage/embedding_db.faiss")
+CHUNKS_PATH = os.path.join(SCRIPT_DIR, "../storage/chunks.json")
 
-
-embedding_model= SentenceTransformer(
+# Initialize embedding model
+embedding_model = SentenceTransformer(
     "BAAI/bge-large-en-v1.5"
 )
 
+# Load index and chunks
+index = faiss.read_index(INDEX_PATH)
+with open(CHUNKS_PATH, "r") as f:
+    all_chunks = json.load(f)
 
-index= faiss.read_index(
-    "../storage/embedding_db.faiss"
-)
+# Get query from user
+user_query = input("whats the query?: ")
 
-#print("vectors in faiss:",index.ntotal)
-
-
-with open("../storage/chunks.json","r") as f:
-    all_chunks=json.load(f)
-
-#print("chunks loaded :" ,(len(all_chunks)))
-
-
-
-
-user_query =input("whats the query?:")
-
-query_embedding=embedding_model.encode(
-    user_query,
+# Prepend the query instruction prefix required by BGE Large models for asymmetric search
+instruction = "Represent this sentence for searching relevant passages: "
+query_embedding = embedding_model.encode(
+    instruction + user_query,
     convert_to_numpy=True,
     normalize_embeddings=True   
-                              )
+)
 
-query_embedding=query_embedding.reshape(1,-1)
+query_embedding = query_embedding.reshape(1, -1)
 
-print(query_embedding.shape)
+# Retrieve top 5 closest chunks
+scores, indices = index.search(query_embedding, k=5)
 
-scores,indices=index.search(query_embedding,k=5)
-
-print(indices)
-
-print()
-
-print(scores)
+print("\nRetrieved Indices:", indices[0])
+print("Retrieval Scores:", scores[0])
 
 system_prompt = """ 
 You are a research assistant.
@@ -59,86 +50,55 @@ You are a research assistant.
 Answer questions using ONLY the provided context.
 
 If the answer is not present in the context, say:
-
 'I could not find the answer in the input documents.'
 
 Be concise and factual.
 """
 
 context = ""
-
 for idx in indices[0]:
-
-      context += f"""
-=== source Page {all_chunks[idx]["page"]}========= 
-{all_chunks[idx]["text"]}
------------------------------
-"""
-
-
-      for table in all_chunks[idx]["tables"]:
-        context += f"""
-TABLE CONTENT :
-{table["text"]}
-----------------------------
-TABLE :
-{table["html"]}       
-
-"""
-      context+= """
-------------------------
-"""
-
-
-
+    context += f"\n=== source Page {all_chunks[idx]['page']}=========\n"
+    context += all_chunks[idx]["text"]
+    context += "\n-----------------------------\n"
+    
+    # Safely handle tables/images if present
+    for table in all_chunks[idx].get("tables", []):
+        context += f"\nTABLE CONTENT:\n{table.get('text', '')}\n"
+        context += f"TABLE HTML:\n{table.get('html', '')}\n----------------------------\n"
 
 prompt = f"""
-
-  {system_prompt}
+{system_prompt}
 
 =============================
   QUESTION
 =============================
-
- {user_query}
+{user_query}
 
 =============================  
   RETRIEVED CONTEXT 
 =============================
-
- {context}
+{context}
 
 =============================
   TASK 
 =============================     
-
-
-Answer the question using only  retreived context.
+Answer the question using only the retrieved context.
 If the answer cannot be found in the retrieved context, say:
-
 "I could not find the answer in the input documents."
 """
 
-
-
-
-
-print(prompt[:2000])
-
-
+print("\n--- Sending Prompt to Gemini ---")
 client = genai.Client(api_key=api_key)
 
 response = client.models.generate_content(
     model="gemini-3.5-flash",
-    contents= prompt,
+    contents=prompt,
     config=types.GenerateContentConfig(
         temperature=0.5
     )
 )
 
+print("\n============================= GEMINI ANSWER =============================")
 print(response.text)
-
-print()
-
+print("=========================================================================\n")
 print("phase successfully completed")
-
