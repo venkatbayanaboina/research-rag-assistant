@@ -5,18 +5,26 @@ from sentence_transformers import SentenceTransformer
 from unstructured.partition.pdf      import partition_pdf
 from unstructured.chunking.title     import chunk_by_title
 
+# Resolve paths relative to this script's directory for robust execution
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PDF_PATH = os.path.abspath(os.path.join(SCRIPT_DIR, "../docs/attention-is-all-you-need-Paper.pdf"))
+CHUNKS_PATH = os.path.abspath(os.path.join(SCRIPT_DIR, "../storage/chunks.json"))
+INDEX_PATH = os.path.abspath(os.path.join(SCRIPT_DIR, "../storage/embedding_db.faiss"))
+
 embedding_model = SentenceTransformer(
     "BAAI/bge-large-en-v1.5"
 )
 
-print("Starting partition")
+print(f"Starting partition for: {PDF_PATH}")
+if not os.path.exists(PDF_PATH):
+    raise FileNotFoundError(f"PDF not found at: {PDF_PATH}")
 
-# Use "fast" strategy on local macOS to avoid ONNX/Multiprocessing segmentation faults
+# Use "fast" strategy on local macOS / Colab to avoid ONNX/Multiprocessing segmentation faults
 elements = partition_pdf(
-    filename = "../docs/attention-is-all-you-need-Paper.pdf",
+    filename = PDF_PATH,
     strategy="fast"
 )
-print("Partition finished")
+print(f"Partition finished. Extracted {len(elements)} elements.")
 
 # Chunk with overlap and limits
 chunks = chunk_by_title(
@@ -61,18 +69,22 @@ for i, chunk in enumerate(chunks):
     )
 
 print(f"Ingestion generated {len(all_chunks)} chunks.")
-print("First chunk text preview:")
-print(all_chunks[0]["text"][:300])
-print("="*80)
+if len(all_chunks) > 0:
+    print("First chunk text preview:")
+    print(all_chunks[0]["text"][:300])
+    print("="*80)
+else:
+    print("Warning: No chunks generated. Skipping file save.")
+    exit(1)
 
 # Save the structured chunks directly to storage directory
-with open("../storage/chunks.json", "w") as f:
+with open(CHUNKS_PATH, "w") as f:
     json.dump(
         all_chunks,
         f,
         indent=2
     )
-print("Saved chunks to ../storage/chunks.json")
+print(f"Saved chunks to {CHUNKS_PATH}")
 
 def build_embedding_text(chunk):
     return chunk["text"]
@@ -95,7 +107,7 @@ print(f"Total vectors in FAISS index: {index.ntotal}")
 # Save the index directly to storage directory
 faiss.write_index(
     index,
-    "../storage/embedding_db.faiss"
+    INDEX_PATH
 )
-print("Saved FAISS index to ../storage/embedding_db.faiss")
+print(f"Saved FAISS index to {INDEX_PATH}")
 print("Ingestion completed successfully!")
