@@ -130,12 +130,18 @@ def search_store(query, k=None, rerank=None):
     scores, indices = index.search(query_vector, k=min(initial_k, index.ntotal))
     
     results = []
+    seen_texts = set()
     for score, idx in zip(scores[0], indices[0]):
         if idx != -1 and idx < len(registry):
-            results.append({
-                "score": float(score),
-                "chunk": registry[idx]
-            })
+            chunk = registry[idx]
+            # Clean and normalize the text for comparison
+            normalized_text = " ".join(chunk["text"].lower().strip().split())
+            if normalized_text not in seen_texts:
+                seen_texts.add(normalized_text)
+                results.append({
+                    "score": float(score),
+                    "chunk": chunk
+                })
             
     if is_rerank:
         from src.core.reranker import rerank_chunks
