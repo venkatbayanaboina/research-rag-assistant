@@ -3,7 +3,7 @@ import argparse
 import subprocess
 
 def run_ingest(file_path, strategy):
-    from src.core.ingestion import parse_pdf_progressive
+    from src.core.ingestion import parse_pdf
     from src.core.chunker import process_text_chunks, process_image_chunks
     from src.core.vector_store import add_document_to_store
     
@@ -12,7 +12,7 @@ def run_ingest(file_path, strategy):
         return
         
     try:
-        elements = parse_pdf_progressive(file_path, strategy)
+        elements = parse_pdf(file_path, strategy)
         text_chunks = process_text_chunks(elements, file_path)
         image_chunks = process_image_chunks(elements, file_path) if strategy == "hi_res" else []
         

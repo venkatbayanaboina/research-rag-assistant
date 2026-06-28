@@ -5,7 +5,7 @@ import streamlit as st
 # Include root directory for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import config
-from src.core.ingestion import parse_pdf_progressive
+from src.core.ingestion import parse_pdf
 from src.core.chunker import process_text_chunks, process_image_chunks
 from src.core.vector_store import (
     get_indexed_documents,
@@ -58,32 +58,21 @@ with st.sidebar:
                 st.info(f"Processing '{uploaded_file.name}' using '{strategy}' strategy...")
                 
                 try:
-                    # Create progress UI elements
-                    progress_bar = st.progress(0.0)
                     progress_status = st.empty()
                     
-                    def update_progress(current, total):
-                        pct = current / total
-                        progress_bar.progress(pct)
-                        progress_status.caption(f"Parsing page {current} of {total} ({int(pct*100)}%)...")
-                        
-                    # Ingest page-by-page
-                    elements = parse_pdf_progressive(file_path, strategy=strategy, progress_callback=update_progress)
+                    progress_status.info(f"Parsing PDF layout using '{strategy}' strategy (usually takes 30-40s)...")
+                    elements = parse_pdf(file_path, strategy=strategy)
                     
-                    progress_status.caption("Chunking document elements...")
+                    progress_status.info("Chunking document elements...")
                     text_chunks = process_text_chunks(elements, file_path)
                     image_chunks = process_image_chunks(elements, file_path) if strategy == "hi_res" else []
                     
-                    progress_status.caption("Generating embeddings and indexing in FAISS...")
+                    progress_status.info("Generating embeddings and indexing in FAISS...")
                     add_document_to_store(text_chunks, image_chunks)
                     
-                    # Clean progress UI elements
-                    progress_bar.empty()
                     progress_status.empty()
                     st.success(f"Successfully indexed '{uploaded_file.name}'!")
                 except Exception as e:
-                    if 'progress_bar' in locals():
-                        progress_bar.empty()
                     if 'progress_status' in locals():
                         progress_status.empty()
                     st.error(f"Error indexing '{uploaded_file.name}': {e}")
