@@ -59,22 +59,29 @@ def get_gemini_client():
                 
     return _client
 
-def generate_content_with_retry(prompt, is_image_list=False, temperature=0.3):
+def generate_content_with_retry(prompt, is_image_list=False, temperature=0.3, system_instruction=None, response_mime_type=None):
     """
-    Executes a generate_content call to Gemini with an automatic 503 retry loop.
+    Executes a generate_content call to Gemini with an automatic 503/429 retry loop.
     Supports either a pure text prompt or a list (containing text and PIL Images).
     """
     client = get_gemini_client()
     max_retries = 3
     
+    # Configure generation parameters
+    gen_config = types.GenerateContentConfig(
+        temperature=temperature
+    )
+    if system_instruction:
+        gen_config.system_instruction = system_instruction
+    if response_mime_type:
+        gen_config.response_mime_type = response_mime_type
+        
     for attempt in range(1, max_retries + 1):
         try:
             response = client.models.generate_content(
                 model=config.GEMINI_MODEL_NAME,
                 contents=prompt,
-                config=types.GenerateContentConfig(
-                    temperature=temperature
-                )
+                config=gen_config
             )
             return response.text
         except Exception as e:
@@ -104,8 +111,15 @@ def generate_content_with_retry(prompt, is_image_list=False, temperature=0.3):
                     from src.core.generator.openrouter import generate_content_via_openrouter
                     # Map config.GEMINI_MODEL_NAME to OpenRouter model equivalents (use openrouter/free auto-router)
                     or_model = "openrouter/free"
+                    json_mode = (response_mime_type == "application/json")
                         
-                    return generate_content_via_openrouter(prompt, model_name=or_model, temperature=temperature)
+                    return generate_content_via_openrouter(
+                        prompt, 
+                        model_name=or_model, 
+                        temperature=temperature,
+                        system_instruction=system_instruction,
+                        json_mode=json_mode
+                    )
                 except Exception as or_err:
                     print(f"OpenRouter fallback also failed: {or_err}")
                     raise RuntimeError(

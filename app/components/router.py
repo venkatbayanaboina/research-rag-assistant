@@ -19,8 +19,6 @@ def route_user_intent(prompt, indexed_files):
     if not indexed_files:
         return default_response
         
-    client = get_gemini_client()
-    
     files_list_str = "\n".join([f"- {filename}" for filename in indexed_files])
     
     system_instruction = f"""
@@ -49,28 +47,22 @@ Return your decision strictly in JSON format matching this schema:
 }}
 """
 
-    max_retries = 3
-    for attempt in range(1, max_retries + 1):
-        try:
-            response = client.models.generate_content(
-                model=config.GEMINI_MODEL_NAME,
-                contents=prompt,
-                config=types.GenerateContentConfig(
-                    system_instruction=system_instruction,
-                    temperature=0.1,
-                    response_mime_type="application/json"
-                )
-            )
-            result = json.loads(response.text)
+    try:
+        from src.core.generator.client import generate_content_with_retry
+        response_text = generate_content_with_retry(
+            prompt=prompt,
+            temperature=0.1,
+            system_instruction=system_instruction,
+            response_mime_type="application/json"
+        )
+        result = json.loads(response_text)
+        
+        # Validate structure
+        if "intent" in result and "target_docs" in result:
+            # Clean resolved targets (ensure they actually exist in indexed_files)
+            result["target_docs"] = [f for f in result["target_docs"] if f in indexed_files]
+            return result
+    except Exception as e:
+        print(f"LLM Intent routing failed: {e}")
             
-            # Validate structure
-            if "intent" in result and "target_docs" in result:
-                # Clean resolved targets (ensure they actually exist in indexed_files)
-                result["target_docs"] = [f for f in result["target_docs"] if f in indexed_files]
-                return result
-        except Exception as e:
-            print(f"Intent routing attempt {attempt} failed: {e}")
-            if attempt == max_retries:
-                break
-                
     return default_response

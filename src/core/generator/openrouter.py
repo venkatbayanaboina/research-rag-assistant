@@ -17,10 +17,10 @@ def encode_pil_image_to_base64(pil_image):
     pil_image.save(buffered, format="JPEG")
     return base64.b64encode(buffered.getvalue()).decode("utf-8")
 
-def generate_content_via_openrouter(contents, model_name="google/gemini-2.5-flash", temperature=0.3):
+def generate_content_via_openrouter(contents, model_name="google/gemini-2.5-flash", temperature=0.3, system_instruction=None, json_mode=False):
     """
     Sends a request to the OpenRouter chat completions endpoint.
-    Supports text prompts and PIL Image elements for multimodal inputs.
+    Supports text prompts, system instructions, JSON mode, and PIL Image elements.
     """
     # Dynamic reload to pick up key updates without restarting the server
     from dotenv import load_dotenv
@@ -60,17 +60,23 @@ def generate_content_via_openrouter(contents, model_name="google/gemini-2.5-flas
     else:
         text_prompt = str(contents)
         
-    # Construct content block for the API payload
-    message_content = []
+    # Construct messages list
+    messages = []
     
-    # 1. Append text prompt
+    # 1. Add system instruction if provided
+    if system_instruction:
+        messages.append({
+            "role": "system",
+            "content": system_instruction
+        })
+        
+    # 2. Add user contents
+    message_content = []
     if text_prompt.strip():
         message_content.append({
             "type": "text",
             "text": text_prompt
         })
-        
-    # 2. Append base64 encoded images (OpenRouter supports standard OpenAI format)
     for img in images:
         base64_str = encode_pil_image_to_base64(img)
         message_content.append({
@@ -80,16 +86,19 @@ def generate_content_via_openrouter(contents, model_name="google/gemini-2.5-flas
             }
         })
         
+    messages.append({
+        "role": "user",
+        "content": message_content
+    })
+        
     payload = {
         "model": model_name,
-        "messages": [
-            {
-                "role": "user",
-                "content": message_content
-            }
-        ],
+        "messages": messages,
         "temperature": temperature
     }
+    
+    if json_mode:
+        payload["response_format"] = {"type": "json_object"}
     
     print(f"Sending request to OpenRouter (Model: {model_name})...")
     response = requests.post(url, headers=headers, json=payload)
