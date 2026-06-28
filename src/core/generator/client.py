@@ -72,9 +72,14 @@ def generate_content_with_retry(prompt, is_image_list=False, temperature=0.3):
             )
             return response.text
         except Exception as e:
-            if "503" in str(e) or "UNAVAILABLE" in str(e).upper():
-                if attempt < max_retries:
-                    print(f"Gemini API is busy (503). Retrying in 2 seconds (Attempt {attempt}/{max_retries})...")
-                    time.sleep(2)
-                    continue
+            err_msg = str(e).upper()
+            is_503 = "503" in err_msg or "UNAVAILABLE" in err_msg
+            is_429 = "429" in err_msg or "RESOURCE_EXHAUSTED" in err_msg or "RATE" in err_msg
+            
+            if (is_503 or is_429) and attempt < max_retries:
+                sleep_time = 5 if is_429 else 2
+                reason = "Rate limit (429)" if is_429 else "Server busy (503)"
+                print(f"Gemini API: {reason}. Retrying in {sleep_time} seconds (Attempt {attempt}/{max_retries})...")
+                time.sleep(sleep_time)
+                continue
             raise e
