@@ -31,7 +31,26 @@ def get_gemini_client():
             raise ValueError("GEMINI_API_KEY environment variable not found. Please check your .env file or Colab Secrets.")
         
         print("Initializing Gemini API Client...")
-        _client = genai.Client(api_key=api_key)
+        
+        # Monkey-patch sys.modules to bypass google-genai's buggy environment checks in Streamlit/Colab
+        import sys
+        ipython_module = sys.modules.get("IPython")
+        colab_module = sys.modules.get("google.colab")
+        
+        if "IPython" in sys.modules:
+            del sys.modules["IPython"]
+        if "google.colab" in sys.modules:
+            del sys.modules["google.colab"]
+            
+        try:
+            _client = genai.Client(api_key=api_key)
+        finally:
+            # Restore modules to avoid disrupting interactive features
+            if ipython_module:
+                sys.modules["IPython"] = ipython_module
+            if colab_module:
+                sys.modules["google.colab"] = colab_module
+                
     return _client
 
 def generate_answer(query, search_results, image_results=None, chat_history=None):
