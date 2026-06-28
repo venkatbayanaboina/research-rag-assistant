@@ -1,3 +1,6 @@
 .DS_Store
 *.faiss
 storage/
+.env
+__pycache__/
+*.pyc
