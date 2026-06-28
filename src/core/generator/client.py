@@ -102,13 +102,16 @@ def generate_content_with_retry(prompt, is_image_list=False, temperature=0.3):
                 print("Gemini API failed or exhausted quota. Triggering OpenRouter fallback...")
                 try:
                     from src.core.generator.openrouter import generate_content_via_openrouter
-                    # Map config.GEMINI_MODEL_NAME to OpenRouter model equivalents
-                    or_model = "google/gemini-2.5-flash"
+                    # Map config.GEMINI_MODEL_NAME to OpenRouter model equivalents (use free models to bypass empty balance limits)
+                    or_model = "google/gemini-2.5-flash-lite:free"
                     if "pro" in config.GEMINI_MODEL_NAME.lower():
                         or_model = "google/gemini-2.5-pro"
                         
                     return generate_content_via_openrouter(prompt, model_name=or_model, temperature=temperature)
                 except Exception as or_err:
                     print(f"OpenRouter fallback also failed: {or_err}")
+                    raise RuntimeError(
+                        f"Gemini API quota exhausted (429). OpenRouter fallback also failed: {or_err}"
+                    ) from e
                     
             raise e
