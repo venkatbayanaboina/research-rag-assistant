@@ -5,7 +5,7 @@ import streamlit as st
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from src.core.vector_store import search_store, search_image_store, get_registry
 from src.core.generator import generate_answer, generate_summary, generate_section_summaries, generate_comparison
-from app.components.router import detect_summary_request, detect_comparison_request
+from app.components.router import route_user_intent
 
 def render_chat_interface(use_rerank, indexed_docs):
     """
@@ -31,13 +31,14 @@ def render_chat_interface(use_rerank, indexed_docs):
             st.markdown(prompt)
         st.session_state.chat_history.append({"role": "user", "content": prompt})
         
-        # Route based on detected NLP intent
-        comparison_targets = detect_comparison_request(prompt, indexed_docs)
-        target_doc, is_section_wise = detect_summary_request(prompt, indexed_docs)
+        # Route based on detected LLM intent
+        routing = route_user_intent(prompt, indexed_docs)
+        intent = routing.get("intent", "STANDARD_CHAT")
+        targets = routing.get("target_docs", [])
         
-        if len(comparison_targets) >= 2:
+        if intent == "COMPARISON" and len(targets) >= 2:
             # Multi-Paper Comparison
-            doc_a, doc_b = comparison_targets[0], comparison_targets[1]
+            doc_a, doc_b = targets[0], targets[1]
             with st.spinner(f"Retrieving chunks & generating comparison matrix between '{doc_a}' and '{doc_b}'..."):
                 try:
                     registry = get_registry()
@@ -53,19 +54,15 @@ def render_chat_interface(use_rerank, indexed_docs):
             image_results = None
             is_special_intent = True
             
-        elif target_doc:
-            # Document Summary Request
-            summary_type_name = "section-wise summary" if is_section_wise else "executive summary"
-            with st.spinner(f"Extracting chunks & compiling {summary_type_name} for '{target_doc}'..."):
+        elif intent == "SECTION_SUMMARY" and len(targets) >= 1:
+            target_doc = targets[0]
+            with st.spinner(f"Extracting chunks & compiling section-wise summary for '{target_doc}'..."):
                 try:
                     registry = get_registry()
                     doc_chunks = [chunk for chunk in registry if chunk["source_file"] == target_doc]
                     
                     if doc_chunks:
-                        if is_section_wise:
-                            answer = generate_section_summaries(doc_chunks)
-                        else:
-                            answer = generate_summary(doc_chunks)
+                        answer = generate_section_summaries(doc_chunks)
                     else:
                         answer = f"Error: No text chunks found in registry for document '{target_doc}'."
                 except Exception as e:
@@ -73,14 +70,40 @@ def render_chat_interface(use_rerank, indexed_docs):
             image_results = None
             is_special_intent = True
             
+        elif intent == "SUMMARY" and len(targets) >= 1:
+            # Executive Summaries (supports sequential summaries for multiple files)
+            summaries = []
+            for target_doc in targets:
+                with st.spinner(f"Extracting chunks & compiling executive summary for '{target_doc}'..."):
+                    try:
+                        registry = get_registry()
+                        doc_chunks = [chunk for chunk in registry if chunk["source_file"] == target_doc]
+                        
+                        if doc_chunks:
+                            sum_txt = generate_summary(doc_chunks)
+                            summaries.append(f"### Summary of {target_doc}\n{sum_txt}")
+                        else:
+                            summaries.append(f"Error: No text chunks found in registry for document '{target_doc}'.")
+                    except Exception as e:
+                        summaries.append(f"Error generating summary for '{target_doc}': {e}")
+            answer = "\n\n---\n\n".join(summaries)
+            image_results = None
+            is_special_intent = True
+            
         else:
-            # Standard RAG Q&A
+            # Standard RAG Q&A (optionally filters search results to specific documents if resolved)
             is_special_intent = False
             with st.spinner("Searching text database..."):
                 search_results = search_store(prompt, rerank=use_rerank)
+                if targets:
+                    # Filter RAG contexts to target documents if specified
+                    search_results = [res for res in search_results if res["chunk"]["source_file"] in targets]
                 
             with st.spinner("Searching visual database with CLIP..."):
                 image_results = search_image_store(prompt)
+                if targets:
+                    # Filter visual contexts to target documents if specified
+                    image_results = [res for res in image_results if res["chunk"]["source_file"] in targets]
                 
             with st.spinner("Gemini is thinking..."):
                 try:
