@@ -58,21 +58,33 @@ with st.sidebar:
                 st.info(f"Processing '{uploaded_file.name}' using '{strategy}' strategy...")
                 
                 try:
+                    progress_bar = st.progress(0.0)
                     progress_status = st.empty()
                     
-                    progress_status.info(f"Parsing PDF layout using '{strategy}' strategy (usually takes 30-40s)...")
+                    # Stage 1: Parsing
+                    progress_status.info(f"Stage 1/3: Parsing PDF layout & structures (strategy: {strategy})...")
+                    progress_bar.progress(0.15)
                     elements = parse_pdf(file_path, strategy=strategy)
                     
-                    progress_status.info("Chunking document elements...")
+                    # Stage 2: Chunking
+                    progress_status.info("Stage 2/3: Chunking document elements...")
+                    progress_bar.progress(0.50)
                     text_chunks = process_text_chunks(elements, file_path)
                     image_chunks = process_image_chunks(elements, file_path) if strategy == "hi_res" else []
                     
-                    progress_status.info("Generating embeddings and indexing in FAISS...")
+                    # Stage 3: Embedding & Indexing
+                    progress_status.info("Stage 3/3: Generating embeddings and indexing in FAISS...")
+                    progress_bar.progress(0.80)
                     add_document_to_store(text_chunks, image_chunks)
                     
+                    # Complete
+                    progress_bar.progress(1.00)
                     progress_status.empty()
+                    progress_bar.empty()
                     st.success(f"Successfully indexed '{uploaded_file.name}'!")
                 except Exception as e:
+                    if 'progress_bar' in locals():
+                        progress_bar.empty()
                     if 'progress_status' in locals():
                         progress_status.empty()
                     st.error(f"Error indexing '{uploaded_file.name}': {e}")
