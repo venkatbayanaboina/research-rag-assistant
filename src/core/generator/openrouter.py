@@ -22,6 +22,11 @@ def generate_content_via_openrouter(contents, model_name="google/gemini-2.5-flas
     Sends a request to the OpenRouter chat completions endpoint.
     Supports text prompts and PIL Image elements for multimodal inputs.
     """
+    # Dynamic reload to pick up key updates without restarting the server
+    from dotenv import load_dotenv
+    import config
+    load_dotenv(os.path.join(config.BASE_DIR, ".env"), override=True)
+    
     api_key = os.getenv("OPENROUTER_API_KEY")
     if not api_key:
         # Check colab fallback

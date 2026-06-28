@@ -13,23 +13,28 @@ import config
 load_dotenv(os.path.join(config.BASE_DIR, ".env"))
 
 _client = None
+_last_api_key = None
 
 def get_gemini_client():
     """Initializes and caches the Gemini API client."""
-    global _client
-    if _client is None:
-        api_key = os.getenv("GEMINI_API_KEY")
-        if not api_key:
-            # Check for colab secret fallback
-            try:
-                from google.colab import userdata
-                api_key = userdata.get("GEMINI_API_KEY")
-            except ImportError:
-                pass
+    global _client, _last_api_key
+    # Dynamic reload to pick up key updates without restarting the server
+    from dotenv import load_dotenv
+    load_dotenv(os.path.join(config.BASE_DIR, ".env"), override=True)
+    
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        # Check for colab secret fallback
+        try:
+            from google.colab import userdata
+            api_key = userdata.get("GEMINI_API_KEY")
+        except ImportError:
+            pass
+    
+    if not api_key:
+        raise ValueError("GEMINI_API_KEY environment variable not found. Please check your .env file or Colab Secrets.")
         
-        if not api_key:
-            raise ValueError("GEMINI_API_KEY environment variable not found. Please check your .env file or Colab Secrets.")
-        
+    if _client is None or api_key != _last_api_key:
         print("Initializing Gemini API Client...")
         
         # Monkey-patch sys.modules to bypass google-genai's buggy environment checks in Streamlit/Colab
@@ -44,6 +49,7 @@ def get_gemini_client():
             
         try:
             _client = genai.Client(api_key=api_key)
+            _last_api_key = api_key
         finally:
             # Restore modules to avoid disrupting interactive features
             if ipython_module:
