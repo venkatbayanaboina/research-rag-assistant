@@ -1,20 +1,30 @@
 import os
 import sys
 from sentence_transformers import SentenceTransformer
+from PIL import Image
 
 # Include root directory for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import config
 
 _model = None
+_clip_model = None
 
 def get_model():
-    """Lazy-loads and caches the SentenceTransformer model."""
+    """Lazy-loads and caches the SentenceTransformer model for text embeddings (BGE)."""
     global _model
     if _model is None:
-        print(f"Loading embedding model: {config.EMBEDDING_MODEL_NAME}...")
+        print(f"Loading text embedding model: {config.EMBEDDING_MODEL_NAME}...")
         _model = SentenceTransformer(config.EMBEDDING_MODEL_NAME)
     return _model
+
+def get_clip_model():
+    """Lazy-loads and caches the CLIP model for multimodal embeddings."""
+    global _clip_model
+    if _clip_model is None:
+        print(f"Loading multimodal model: {config.CLIP_MODEL_NAME}...")
+        _clip_model = SentenceTransformer(config.CLIP_MODEL_NAME)
+    return _clip_model
 
 def embed_text(text, is_query=False):
     """
@@ -34,7 +44,6 @@ def embed_text(text, is_query=False):
 def embed_batch(texts):
     """
     Generates normalized embeddings for a batch of text snippets.
-    Used during chunk ingestion.
     """
     model = get_model()
     embeddings = model.encode(
@@ -43,3 +52,52 @@ def embed_batch(texts):
         normalize_embeddings=True
     )
     return embeddings
+
+def embed_image_file(image_path):
+    """
+    Generates a single normalized float32 vector embedding for an image file using CLIP.
+    """
+    clip = get_clip_model()
+    if not os.path.exists(image_path):
+        raise FileNotFoundError(f"Image file not found: {image_path}")
+        
+    img = Image.open(image_path)
+    embedding = clip.encode(
+        img,
+        convert_to_numpy=True,
+        normalize_embeddings=True
+    )
+    return embedding.reshape(1, -1)
+
+def embed_image_batch(image_paths):
+    """
+    Generates normalized embeddings for a list of image files using CLIP.
+    """
+    clip = get_clip_model()
+    imgs = []
+    for path in image_paths:
+        if os.path.exists(path):
+            imgs.append(Image.open(path))
+            
+    if not imgs:
+        return []
+        
+    embeddings = clip.encode(
+        imgs,
+        convert_to_numpy=True,
+        normalize_embeddings=True
+    )
+    return embeddings
+
+def embed_clip_text(query):
+    """
+    Generates a normalized float32 vector embedding for a text query using CLIP.
+    Matches image vectors in CLIP space.
+    """
+    clip = get_clip_model()
+    embedding = clip.encode(
+        query,
+        convert_to_numpy=True,
+        normalize_embeddings=True
+    )
+    return embedding.reshape(1, -1)

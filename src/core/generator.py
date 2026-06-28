@@ -3,6 +3,7 @@ import sys
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv
+from PIL import Image
 
 # Include root directory for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
@@ -33,9 +34,10 @@ def get_gemini_client():
         _client = genai.Client(api_key=api_key)
     return _client
 
-def generate_answer(query, search_results, chat_history=None):
+def generate_answer(query, search_results, image_results=None, chat_history=None):
     """
-    Synthesizes a response using Gemini based on retrieved context chunks and chat history.
+    Synthesizes a response using Gemini based on retrieved context chunks,
+    optional retrieved visual diagrams, and chat history.
     """
     client = get_gemini_client()
     
@@ -63,8 +65,8 @@ def generate_answer(query, search_results, chat_history=None):
 
     # 3. Build Prompt
     system_prompt = """You are a helpful research assistant. 
-Answer questions using ONLY the provided retrieved context.
-If the answer cannot be found in the retrieved context, say:
+Answer questions using ONLY the provided retrieved text context and any attached diagrams/images.
+If the answer cannot be found in the provided context, say:
 'I could not find the answer in the input documents.'
 Be concise and factual. Do not hallucinate or use external knowledge."""
 
@@ -86,15 +88,28 @@ Be concise and factual. Do not hallucinate or use external knowledge."""
 =============================
   TASK 
 =============================     
-Answer the question using only the retrieved context.
+Answer the question using the retrieved text context and any attached images/diagrams.
 If the answer cannot be found in the retrieved context, say:
 "I could not find the answer in the input documents."
 """
 
+    # 4. Construct content payload list (Text Prompt + PIL Images)
+    contents = [prompt]
+    if image_results:
+        print(f"Attaching {len(image_results)} visual diagrams/tables to Gemini payload...")
+        for res in image_results:
+            img_chunk = res["chunk"]
+            path = img_chunk["image_path"]
+            if os.path.exists(path):
+                try:
+                    contents.append(Image.open(path))
+                except Exception as e:
+                    print(f"Failed to open image file at {path}: {e}")
+
     print("Synthesizing answer with Gemini...")
     response = client.models.generate_content(
         model=config.GEMINI_MODEL_NAME,
-        contents=prompt,
+        contents=contents,
         config=types.GenerateContentConfig(
             temperature=0.3
         )

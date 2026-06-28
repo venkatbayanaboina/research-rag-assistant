@@ -4,7 +4,7 @@ import subprocess
 
 def run_ingest(file_path, strategy):
     from src.core.ingestion import parse_pdf
-    from src.core.chunker import process_chunks
+    from src.core.chunker import process_text_chunks, process_image_chunks
     from src.core.vector_store import add_document_to_store
     
     if not os.path.exists(file_path):
@@ -13,25 +13,35 @@ def run_ingest(file_path, strategy):
         
     try:
         elements = parse_pdf(file_path, strategy)
-        processed_chunks = process_chunks(elements, file_path)
-        add_document_to_store(processed_chunks)
+        text_chunks = process_text_chunks(elements, file_path)
+        image_chunks = process_image_chunks(elements, file_path) if strategy == "hi_res" else []
+        
+        add_document_to_store(text_chunks, image_chunks)
         print("Ingestion completed successfully!")
     except Exception as e:
         print(f"Ingestion failed: {e}")
 
 def run_query(query):
-    from src.core.vector_store import search_store
+    from src.core.vector_store import search_store, search_image_store
     from src.core.generator import generate_answer
     
     try:
         results = search_store(query)
-        if not results:
+        image_results = search_image_store(query)
+        
+        if not results and not image_results:
             print("No matching context found. Vector database might be empty.")
             return
             
-        answer = generate_answer(query, results)
+        answer = generate_answer(query, results, image_results)
         print("\n=== GEMINI ANSWER ===")
         print(answer)
+        
+        if image_results:
+            print("\n=== RETRIEVED DIAGRAMS ===")
+            for img in image_results:
+                chunk = img["chunk"]
+                print(f"- Page {chunk['page']}: {chunk['image_path']} (CLIP Score: {img['score']:.4f})")
         print("=====================\n")
     except Exception as e:
         print(f"Query execution failed: {e}")
@@ -56,7 +66,7 @@ def run_summarize(doc_name):
         print(f"Summary generation failed: {e}")
 
 def run_chat():
-    from src.core.vector_store import search_store
+    from src.core.vector_store import search_store, search_image_store
     from src.core.generator import generate_answer
     
     print("====================================================")
@@ -75,9 +85,17 @@ def run_chat():
                 continue
                 
             results = search_store(query)
-            answer = generate_answer(query, results, chat_history)
+            image_results = search_image_store(query)
+            
+            answer = generate_answer(query, results, image_results, chat_history)
             
             print(f"\nAssistant: {answer}")
+            
+            if image_results:
+                print("\n[Attached Figures]")
+                for img in image_results:
+                    chunk = img["chunk"]
+                    print(f"  * Page {chunk['page']}: {chunk['image_path']}")
             
             # Maintain chat history
             chat_history.append({"role": "user", "content": query})

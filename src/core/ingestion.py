@@ -1,10 +1,18 @@
 import os
+# Prevent Loky multiprocessing segmentation faults on Apple Silicon macOS
+os.environ["UNSTRUCTURED_PARALLEL"] = "False"
+
+import sys
 from unstructured.partition.pdf import partition_pdf
+
+# Include root directory for imports
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+import config
 
 def parse_pdf(file_path, strategy="fast"):
     """
     Parses a PDF document using the unstructured library.
-    Supports 'fast' (text extraction) and 'hi_res' (layout parsing models).
+    Supports 'fast' (text-only) and 'hi_res' (layout parsing & image extraction).
     """
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"PDF file not found at: {file_path}")
@@ -15,10 +23,12 @@ def parse_pdf(file_path, strategy="fast"):
     }
     
     if strategy == "hi_res":
+        # Extract visual structures as standalone PNG files
         kwargs.update({
-            "infer_table_structure": True,
-            "extract_image_block_types": ["Image"],
-            "extract_image_block_to_payload": True
+            "extract_image_block_types": ["Image", "Table"],
+            "extract_image_block_output_dir": config.EXTRACTED_IMAGE_DIR,
+            "extract_image_block_to_payload": False,
+            "hi_res_model_name": "yolox"
         })
         
     print(f"Parsing PDF with unstructured (strategy: {strategy}): {os.path.basename(file_path)}...")
