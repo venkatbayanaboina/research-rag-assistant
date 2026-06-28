@@ -57,6 +57,7 @@ graph TD
 ## ✨ Features
 
 *   **Multimodal RAG Retrieval:** Fetches both high-relevance paragraphs and visual diagrams/charts, attaching figures natively to the Gemini generation payload.
+*   **High-Availability OpenRouter Fallback:** Automatically switches to OpenRouter API (converting visual diagrams to base64 JPEG data URIs) if the primary Google Gemini keys hit rate limits or quota boundaries.
 *   **Non-Blocking Indexing:** Runs PDF layout parsing and indexing inside background worker threads, keeping the Streamlit UI completely responsive.
 *   **Section-Wise Summaries:** Group chunks by section header metadata to provide detailed section summaries.
 *   **Multi-Paper Comparisons:** Side-by-side comparison tables analyzing methodology, contributions, and limits across multiple documents.
