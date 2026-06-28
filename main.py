@@ -107,9 +107,10 @@ def run_chat():
             print(f"\nError: {e}")
 
 def run_ui():
+    import sys
     print("Starting Streamlit Dashboard...")
     ui_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "app", "ui.py")
-    subprocess.run(["streamlit", "run", ui_path])
+    subprocess.run([sys.executable, "-m", "streamlit", "run", ui_path])
 
 def main():
     parser = argparse.ArgumentParser(description="📚 Production Modular Multi-PDF RAG Assistant CLI")
