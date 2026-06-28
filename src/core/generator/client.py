@@ -82,4 +82,27 @@ def generate_content_with_retry(prompt, is_image_list=False, temperature=0.3):
                 print(f"Gemini API: {reason}. Retrying in {sleep_time} seconds (Attempt {attempt}/{max_retries})...")
                 time.sleep(sleep_time)
                 continue
+                
+            # If all Gemini retries fail, check for OpenRouter fallback keys
+            or_key = os.getenv("OPENROUTER_API_KEY")
+            if not or_key:
+                try:
+                    from google.colab import userdata
+                    or_key = userdata.get("OPENROUTER_API_KEY")
+                except ImportError:
+                    pass
+                    
+            if or_key:
+                print("Gemini API failed or exhausted quota. Triggering OpenRouter fallback...")
+                try:
+                    from src.core.generator.openrouter import generate_content_via_openrouter
+                    # Map config.GEMINI_MODEL_NAME to OpenRouter model equivalents
+                    or_model = "google/gemini-2.5-flash"
+                    if "pro" in config.GEMINI_MODEL_NAME.lower():
+                        or_model = "google/gemini-2.5-pro"
+                        
+                    return generate_content_via_openrouter(prompt, model_name=or_model, temperature=temperature)
+                except Exception as or_err:
+                    print(f"OpenRouter fallback also failed: {or_err}")
+                    
             raise e
