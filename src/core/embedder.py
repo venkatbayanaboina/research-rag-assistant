@@ -7,23 +7,31 @@ from PIL import Image
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import config
 
+import torch
+
 _model = None
 _clip_model = None
+
+def get_device():
+    """Detects if GPU is available to accelerate embedding generation."""
+    return "cuda" if torch.cuda.is_available() else "cpu"
 
 def get_model():
     """Lazy-loads and caches the SentenceTransformer model for text embeddings (BGE)."""
     global _model
     if _model is None:
-        print(f"Loading text embedding model: {config.EMBEDDING_MODEL_NAME}...")
-        _model = SentenceTransformer(config.EMBEDDING_MODEL_NAME)
+        device = get_device()
+        print(f"Loading text embedding model: {config.EMBEDDING_MODEL_NAME} on device: {device}...")
+        _model = SentenceTransformer(config.EMBEDDING_MODEL_NAME, device=device)
     return _model
 
 def get_clip_model():
     """Lazy-loads and caches the CLIP model for multimodal embeddings."""
     global _clip_model
     if _clip_model is None:
-        print(f"Loading multimodal model: {config.CLIP_MODEL_NAME}...")
-        _clip_model = SentenceTransformer(config.CLIP_MODEL_NAME)
+        device = get_device()
+        print(f"Loading multimodal model: {config.CLIP_MODEL_NAME} on device: {device}...")
+        _clip_model = SentenceTransformer(config.CLIP_MODEL_NAME, device=device)
     return _clip_model
 
 def embed_text(text, is_query=False):

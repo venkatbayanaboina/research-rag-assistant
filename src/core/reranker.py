@@ -6,14 +6,17 @@ from sentence_transformers import CrossEncoder
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import config
 
+import torch
+
 _reranker = None
 
 def get_reranker():
     """Lazy-loads and caches the CrossEncoder model."""
     global _reranker
     if _reranker is None:
-        print(f"Loading reranker model: {config.RERANKER_MODEL_NAME}...")
-        _reranker = CrossEncoder(config.RERANKER_MODEL_NAME)
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        print(f"Loading reranker model: {config.RERANKER_MODEL_NAME} on device: {device}...")
+        _reranker = CrossEncoder(config.RERANKER_MODEL_NAME, device=device)
     return _reranker
 
 def rerank_chunks(query, search_results, enabled=None):
