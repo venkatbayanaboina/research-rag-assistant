@@ -3,6 +3,9 @@ import sys
 import json
 import faiss
 import numpy as np
+import threading
+
+db_lock = threading.Lock()
 
 # Include root directory for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
@@ -48,14 +51,15 @@ def add_document_to_store(text_chunks, image_chunks):
     """
     Appends text chunks to the BGE text index and visual images to the CLIP index.
     """
-    filename = None
-    if text_chunks:
-        filename = text_chunks[0]["source_file"]
-    elif image_chunks:
-        filename = image_chunks[0]["source_file"]
-        
-    if not filename:
-        return
+    with db_lock:
+        filename = None
+        if text_chunks:
+            filename = text_chunks[0]["source_file"]
+        elif image_chunks:
+            filename = image_chunks[0]["source_file"]
+            
+        if not filename:
+            return
         
     # 1. Index Text Chunks
     if text_chunks:
@@ -111,12 +115,13 @@ def search_store(query, k=None, rerank=None):
     """
     Searches the Text index and applies Cross-Encoder reranking.
     """
-    index = load_text_db()
-    registry = get_registry()
-    
-    if index.ntotal == 0 or not registry:
-        print("Text database is empty.")
-        return []
+    with db_lock:
+        index = load_text_db()
+        registry = get_registry()
+        
+        if index.ntotal == 0 or not registry:
+            print("Text database is empty.")
+            return []
         
     is_rerank = config.RERANK_ENABLED if rerank is None else rerank
     initial_k = config.K_INITIAL_RETRIEVAL if is_rerank else (config.K_FINAL_CONTEXT if k is None else k)
@@ -144,12 +149,13 @@ def search_image_store(query, k=None):
     """
     Searches the Image index using CLIP text query embedding.
     """
-    index = load_image_db()
-    registry = get_image_registry()
-    
-    if index.ntotal == 0 or not registry:
-        print("Image database is empty.")
-        return []
+    with db_lock:
+        index = load_image_db()
+        registry = get_image_registry()
+        
+        if index.ntotal == 0 or not registry:
+            print("Image database is empty.")
+            return []
         
     search_k = config.K_IMAGE_RETRIEVAL if k is None else k
     

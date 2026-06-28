@@ -1,6 +1,16 @@
 import os
 import sys
 import streamlit as st
+import threading
+
+# Global progress state dictionary to avoid Streamlit thread context errors
+PROGRESS_STATE = {
+    "in_progress": False,
+    "progress_val": 0.0,
+    "status_msg": "",
+    "error_msg": "",
+    "success_msg": ""
+}
 
 # Include root directory for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -15,6 +25,36 @@ from src.core.vector_store import (
     get_registry
 )
 from src.core.generator import generate_answer, generate_summary
+
+def bg_index_worker(file_path, strategy, uploaded_name):
+    try:
+        PROGRESS_STATE["in_progress"] = True
+        PROGRESS_STATE["error_msg"] = ""
+        PROGRESS_STATE["success_msg"] = ""
+        
+        # Stage 1: Parsing
+        PROGRESS_STATE["status_msg"] = f"Stage 1/3: Parsing PDF layout & structures (strategy: {strategy})..."
+        PROGRESS_STATE["progress_val"] = 0.15
+        elements = parse_pdf(file_path, strategy=strategy)
+        
+        # Stage 2: Chunking
+        PROGRESS_STATE["status_msg"] = "Stage 2/3: Chunking document elements..."
+        PROGRESS_STATE["progress_val"] = 0.50
+        text_chunks = process_text_chunks(elements, file_path)
+        image_chunks = process_image_chunks(elements, file_path) if strategy == "hi_res" else []
+        
+        # Stage 3: Embedding & Indexing
+        PROGRESS_STATE["status_msg"] = "Stage 3/3: Generating embeddings and indexing in FAISS..."
+        PROGRESS_STATE["progress_val"] = 0.80
+        add_document_to_store(text_chunks, image_chunks)
+        
+        # Complete
+        PROGRESS_STATE["progress_val"] = 1.00
+        PROGRESS_STATE["success_msg"] = f"Successfully indexed '{uploaded_name}'!"
+        PROGRESS_STATE["in_progress"] = False
+    except Exception as e:
+        PROGRESS_STATE["error_msg"] = f"Error indexing '{uploaded_name}': {e}"
+        PROGRESS_STATE["in_progress"] = False
 
 # Configure page settings
 st.set_page_config(page_title="Multi-PDF RAG Assistant", layout="wide", page_icon="📚")
@@ -47,49 +87,45 @@ with st.sidebar:
     )
     
     if uploaded_files:
-        if st.button("🚀 Process & Index Files", use_container_width=True):
+        button_disabled = PROGRESS_STATE["in_progress"]
+        if st.button("🚀 Process & Index Files", use_container_width=True, disabled=button_disabled):
+            PROGRESS_STATE["in_progress"] = True
+            
+            # Save files first
             for uploaded_file in uploaded_files:
                 file_path = os.path.join(config.RAW_PDF_DIR, uploaded_file.name)
-                
-                # Save the file locally
                 with open(file_path, "wb") as f:
                     f.write(uploaded_file.getbuffer())
+            
+            def run_indexing_pipeline():
+                for uploaded_file in uploaded_files:
+                    file_path = os.path.join(config.RAW_PDF_DIR, uploaded_file.name)
+                    bg_index_worker(file_path, strategy, uploaded_file.name)
                     
-                st.info(f"Processing '{uploaded_file.name}' using '{strategy}' strategy...")
-                
-                try:
-                    progress_bar = st.progress(0.0)
-                    progress_status = st.empty()
-                    
-                    # Stage 1: Parsing
-                    progress_status.info(f"Stage 1/3: Parsing PDF layout & structures (strategy: {strategy})...")
-                    progress_bar.progress(0.15)
-                    elements = parse_pdf(file_path, strategy=strategy)
-                    
-                    # Stage 2: Chunking
-                    progress_status.info("Stage 2/3: Chunking document elements...")
-                    progress_bar.progress(0.50)
-                    text_chunks = process_text_chunks(elements, file_path)
-                    image_chunks = process_image_chunks(elements, file_path) if strategy == "hi_res" else []
-                    
-                    # Stage 3: Embedding & Indexing
-                    progress_status.info("Stage 3/3: Generating embeddings and indexing in FAISS...")
-                    progress_bar.progress(0.80)
-                    add_document_to_store(text_chunks, image_chunks)
-                    
-                    # Complete
-                    progress_bar.progress(1.00)
-                    progress_status.empty()
-                    progress_bar.empty()
-                    st.success(f"Successfully indexed '{uploaded_file.name}'!")
-                except Exception as e:
-                    if 'progress_bar' in locals():
-                        progress_bar.empty()
-                    if 'progress_status' in locals():
-                        progress_status.empty()
-                    st.error(f"Error indexing '{uploaded_file.name}': {e}")
-                    
+            thread = threading.Thread(target=run_indexing_pipeline)
+            thread.start()
             st.rerun()
+
+    # Render persistent indexing status
+    if PROGRESS_STATE["in_progress"]:
+        st.markdown("---")
+        st.markdown("⏳ **Background Indexing Active**")
+        st.progress(PROGRESS_STATE["progress_val"])
+        st.caption(PROGRESS_STATE["status_msg"])
+        
+        import time
+        time.sleep(0.5)
+        st.rerun()
+        
+    if PROGRESS_STATE["success_msg"]:
+        st.success(PROGRESS_STATE["success_msg"])
+        PROGRESS_STATE["success_msg"] = ""
+        st.rerun()
+        
+    if PROGRESS_STATE["error_msg"]:
+        st.error(PROGRESS_STATE["error_msg"])
+        PROGRESS_STATE["error_msg"] = ""
+        st.rerun()
             
     # 3. List of Indexed Files
     st.markdown("---")
