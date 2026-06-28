@@ -77,7 +77,7 @@ def generate_content_with_retry(prompt, is_image_list=False, temperature=0.3):
             is_429 = "429" in err_msg or "RESOURCE_EXHAUSTED" in err_msg or "RATE" in err_msg
             
             if (is_503 or is_429) and attempt < max_retries:
-                sleep_time = 5 if is_429 else 2
+                sleep_time = 10 if is_429 else 2
                 reason = "Rate limit (429)" if is_429 else "Server busy (503)"
                 print(f"Gemini API: {reason}. Retrying in {sleep_time} seconds (Attempt {attempt}/{max_retries})...")
                 time.sleep(sleep_time)
