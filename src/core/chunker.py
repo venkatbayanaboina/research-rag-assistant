@@ -21,12 +21,25 @@ def process_text_chunks(elements, source_filename):
     )
     
     processed_chunks = []
+    current_section = "Introduction"
+    
     for chunk in chunks:
+        # Scan constituent elements to identify if a new section starts in this chunk
+        if hasattr(chunk.metadata, "orig_elements"):
+            for element in chunk.metadata.orig_elements:
+                if element.category in ["Title", "SectionHeader"] or (element.category == "Header" and len(element.text.strip()) < 100):
+                    # Clean section header name (remove redundant spaces/newlines)
+                    header_text = " ".join(element.text.strip().split())
+                    if header_text:
+                        current_section = header_text
+                        break
+                        
         chunk_dict = {
             "chunk_id": None,  # Dynamically set when added to main store
             "source_file": os.path.basename(source_filename),
             "text": chunk.text,
             "page": getattr(chunk.metadata, "page_number", 1),
+            "section_title": current_section,
             "images": [],
             "tables": []
         }
@@ -48,7 +61,7 @@ def process_text_chunks(elements, source_filename):
                     
         processed_chunks.append(chunk_dict)
         
-    print(f"Generated {len(processed_chunks)} text chunks for {os.path.basename(source_filename)}.")
+    print(f"Generated {len(processed_chunks)} text chunks for {os.path.basename(source_filename)} (grouped into sections).")
     return processed_chunks
 
 def process_image_chunks(elements, source_filename):

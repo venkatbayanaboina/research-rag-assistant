@@ -24,7 +24,7 @@ from src.core.vector_store import (
     search_image_store,
     get_registry
 )
-from src.core.generator import generate_answer, generate_summary
+from src.core.generator import generate_answer, generate_summary, generate_section_summaries, generate_comparison
 
 def bg_index_worker(file_path, strategy, uploaded_name):
     try:
@@ -59,7 +59,7 @@ def bg_index_worker(file_path, strategy, uploaded_name):
 def detect_summary_request(prompt, indexed_files):
     """
     Parses the prompt to see if it's a request to summarize a document.
-    Returns the target filename if matched, otherwise None.
+    Returns (target_filename, is_section_wise) if matched, otherwise (None, False).
     """
     p_lower = prompt.lower()
     keywords = ["summarize", "summary", "summarization", "executive summary", "summarise"]
@@ -67,19 +67,48 @@ def detect_summary_request(prompt, indexed_files):
     # Check if any summary keywords are present
     has_keyword = any(kw in p_lower for kw in keywords)
     if not has_keyword:
-        return None
+        return None, False
         
     if not indexed_files:
-        return None
+        return None, False
+        
+    # Check if section-wise is requested
+    section_keywords = ["section summary", "section-wise", "section wise", "detailed summary"]
+    is_section_wise = any(kw in p_lower for kw in section_keywords)
         
     # Attempt 1: Look for exact or partial matches of indexed filenames in the prompt
     for filename in indexed_files:
         name_only = os.path.splitext(filename)[0].lower()
         if filename.lower() in p_lower or name_only in p_lower:
-            return filename
+            return filename, is_section_wise
             
     # Attempt 2: Default to the most recently indexed file if keywords exist but no name matches
-    return indexed_files[-1]
+    return indexed_files[-1], is_section_wise
+
+def detect_comparison_request(prompt, indexed_files):
+    """
+    Parses the prompt to see if it's a comparison request between multiple documents.
+    Returns a list of matched filenames, otherwise an empty list.
+    """
+    p_lower = prompt.lower()
+    keywords = ["compare", "contrast", "difference between", "comparison"]
+    has_keyword = any(kw in p_lower for kw in keywords)
+    if not has_keyword:
+        return []
+        
+    matched_files = []
+    for filename in indexed_files:
+        name_only = os.path.splitext(filename)[0].lower()
+        if filename.lower() in p_lower or name_only in p_lower:
+            matched_files.append(filename)
+            
+    # Remove duplicates preserving order
+    unique_matches = []
+    for f in matched_files:
+        if f not in unique_matches:
+            unique_matches.append(f)
+            
+    return unique_matches
 
 # Configure page settings
 st.set_page_config(page_title="Multi-PDF RAG Assistant", layout="wide", page_icon="📚")
@@ -191,25 +220,51 @@ if prompt := st.chat_input("Ask a question or request a summary (e.g., 'summariz
         st.markdown(prompt)
     st.session_state.chat_history.append({"role": "user", "content": prompt})
     
-    # 2. Check if this is a summary request
-    target_doc = detect_summary_request(prompt, indexed_docs)
+    # 2. Route the request based on detected intent
+    comparison_targets = detect_comparison_request(prompt, indexed_docs)
+    target_doc, is_section_wise = detect_summary_request(prompt, indexed_docs)
     
-    if target_doc:
-        # Generate Document Summary
-        with st.spinner(f"Extracting chunks & compiling summary with Gemini for '{target_doc}'..."):
+    if len(comparison_targets) >= 2:
+        # Multi-Paper Comparison Request
+        doc_a, doc_b = comparison_targets[0], comparison_targets[1]
+        with st.spinner(f"Retrieving chunks & generating comparison matrix between '{doc_a}' and '{doc_b}'..."):
+            try:
+                registry = get_registry()
+                doc_a_chunks = [chunk for chunk in registry if chunk["source_file"] == doc_a]
+                doc_b_chunks = [chunk for chunk in registry if chunk["source_file"] == doc_b]
+                
+                if doc_a_chunks and doc_b_chunks:
+                    answer = generate_comparison(doc_a, doc_a_chunks, doc_b, doc_b_chunks)
+                else:
+                    answer = f"Error: Could not retrieve chunks for both '{doc_a}' and '{doc_b}'."
+            except Exception as e:
+                answer = f"Error generating comparison: {e}"
+        image_results = None
+        is_special_intent = True
+        
+    elif target_doc:
+        # Document Summary Request
+        summary_type_name = "section-wise summary" if is_section_wise else "executive summary"
+        with st.spinner(f"Extracting chunks & compiling {summary_type_name} for '{target_doc}'..."):
             try:
                 registry = get_registry()
                 doc_chunks = [chunk for chunk in registry if chunk["source_file"] == target_doc]
                 
                 if doc_chunks:
-                    answer = generate_summary(doc_chunks)
+                    if is_section_wise:
+                        answer = generate_section_summaries(doc_chunks)
+                    else:
+                        answer = generate_summary(doc_chunks)
                 else:
                     answer = f"Error: No text chunks found in registry for document '{target_doc}'."
             except Exception as e:
                 answer = f"Error generating summary: {e}"
         image_results = None
+        is_special_intent = True
+        
     else:
-        # Run Standard RAG retrieval, reranking, and generation pipeline
+        # Standard RAG Query Flow
+        is_special_intent = False
         with st.spinner("Searching text database..."):
             search_results = search_store(prompt, rerank=use_rerank)
             
@@ -242,7 +297,7 @@ if prompt := st.chat_input("Ask a question or request a summary (e.g., 'summariz
     })
     
     # 4. Show text sources in expander if standard RAG search results were retrieved
-    if not target_doc and 'search_results' in locals() and search_results:
+    if not is_special_intent and 'search_results' in locals() and search_results:
         with st.expander("🔍 View Retrieved Text Sources"):
             for idx, result in enumerate(search_results):
                 chunk = result["chunk"]
