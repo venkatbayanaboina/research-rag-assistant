@@ -56,6 +56,31 @@ def bg_index_worker(file_path, strategy, uploaded_name):
         PROGRESS_STATE["error_msg"] = f"Error indexing '{uploaded_name}': {e}"
         PROGRESS_STATE["in_progress"] = False
 
+def detect_summary_request(prompt, indexed_files):
+    """
+    Parses the prompt to see if it's a request to summarize a document.
+    Returns the target filename if matched, otherwise None.
+    """
+    p_lower = prompt.lower()
+    keywords = ["summarize", "summary", "summarization", "executive summary", "summarise"]
+    
+    # Check if any summary keywords are present
+    has_keyword = any(kw in p_lower for kw in keywords)
+    if not has_keyword:
+        return None
+        
+    if not indexed_files:
+        return None
+        
+    # Attempt 1: Look for exact or partial matches of indexed filenames in the prompt
+    for filename in indexed_files:
+        name_only = os.path.splitext(filename)[0].lower()
+        if filename.lower() in p_lower or name_only in p_lower:
+            return filename
+            
+    # Attempt 2: Default to the most recently indexed file if keywords exist but no name matches
+    return indexed_files[-1]
+
 # Configure page settings
 st.set_page_config(page_title="Multi-PDF RAG Assistant", layout="wide", page_icon="📚")
 
@@ -146,94 +171,81 @@ with st.sidebar:
         st.success("Chat history cleared!")
         st.rerun()
 
-# Main Interface Tabs
-tab1, tab2 = st.tabs(["💬 Contextual Chat", "📝 Document Summaries"])
+# Main Interface Chat
+st.subheader("Chat with your Knowledge Base")
 
-# Tab 1: Chat with Documents
-with tab1:
-    st.subheader("Chat with your Knowledge Base")
-    
-    # Show chat messages (including persisted images)
-    for msg in st.session_state.chat_history:
-        with st.chat_message(msg["role"]):
-            st.markdown(msg["content"])
-            if msg.get("images"):
-                st.markdown("#### 🖼️ Retrieved Diagrams / Charts:")
-                for img_path in msg["images"]:
-                    if os.path.exists(img_path):
-                        st.image(img_path)
-            
-    # Handle user message input
-    if prompt := st.chat_input("Ask a question about your documents..."):
-        # 1. Show user message
-        with st.chat_message("user"):
-            st.markdown(prompt)
-        st.session_state.chat_history.append({"role": "user", "content": prompt})
+# Show chat messages (including persisted images)
+for msg in st.session_state.chat_history:
+    with st.chat_message(msg["role"]):
+        st.markdown(msg["content"])
+        if msg.get("images"):
+            st.markdown("#### 🖼️ Retrieved Diagrams / Charts:")
+            for img_path in msg["images"]:
+                if os.path.exists(img_path):
+                    st.image(img_path)
         
-        # 2. Search FAISS stores
+# Handle user message input
+if prompt := st.chat_input("Ask a question or request a summary (e.g., 'summarize attention-is-all-you-need-Paper.pdf')..."):
+    # 1. Show user message
+    with st.chat_message("user"):
+        st.markdown(prompt)
+    st.session_state.chat_history.append({"role": "user", "content": prompt})
+    
+    # 2. Check if this is a summary request
+    target_doc = detect_summary_request(prompt, indexed_docs)
+    
+    if target_doc:
+        # Generate Document Summary
+        with st.spinner(f"Extracting chunks & compiling summary with Gemini for '{target_doc}'..."):
+            try:
+                registry = get_registry()
+                doc_chunks = [chunk for chunk in registry if chunk["source_file"] == target_doc]
+                
+                if doc_chunks:
+                    answer = generate_summary(doc_chunks)
+                else:
+                    answer = f"Error: No text chunks found in registry for document '{target_doc}'."
+            except Exception as e:
+                answer = f"Error generating summary: {e}"
+        image_results = None
+    else:
+        # Run Standard RAG retrieval, reranking, and generation pipeline
         with st.spinner("Searching text database..."):
             search_results = search_store(prompt, rerank=use_rerank)
             
         with st.spinner("Searching visual database with CLIP..."):
             image_results = search_image_store(prompt)
             
-        # 3. Generate Answer
         with st.spinner("Gemini is thinking..."):
             try:
                 answer = generate_answer(prompt, search_results, image_results, st.session_state.chat_history[:-1])
             except Exception as e:
                 answer = f"Error generating answer: {e}"
                 
-        # 4. Show model response and display image files
-        with st.chat_message("assistant"):
-            st.markdown(answer)
-            saved_image_paths = []
-            if image_results:
-                st.markdown("#### 🖼️ Retrieved Diagrams / Charts:")
-                for img_res in image_results:
-                    img_chunk = img_res["chunk"]
-                    path = img_chunk["image_path"]
-                    if os.path.exists(path):
-                        st.image(path, caption=f"Source: {img_chunk['source_file']} (Page {img_chunk['page']}) - CLIP Score: {img_res['score']:.4f}")
-                        saved_image_paths.append(path)
-                        
-        st.session_state.chat_history.append({
-            "role": "assistant",
-            "content": answer,
-            "images": saved_image_paths
-        })
-        
-        # 5. Show text sources in expander if results were retrieved
-        if search_results:
-            with st.expander("🔍 View Retrieved Text Sources"):
-                for idx, result in enumerate(search_results):
-                    chunk = result["chunk"]
-                    st.markdown(f"**Source {idx+1}: {chunk['source_file']} (Page {chunk['page']})**")
-                    st.text(chunk["text"])
-                    st.markdown("---")
-
-# Tab 2: Document Summaries
-with tab2:
-    st.subheader("Generate Executive Summaries")
-    
-    if indexed_docs:
-        selected_doc = st.selectbox("Select document to summarize", indexed_docs)
-        
-        if st.button("📖 Generate Summary", type="primary"):
-            with st.spinner("Extracting chunks & compiling summary with Gemini..."):
-                try:
-                    registry = get_registry()
-                    # Filter chunks belonging to this document
-                    doc_chunks = [chunk for chunk in registry if chunk["source_file"] == selected_doc]
+    # 3. Show model response and display image files
+    with st.chat_message("assistant"):
+        st.markdown(answer)
+        saved_image_paths = []
+        if image_results:
+            st.markdown("#### 🖼️ Retrieved Diagrams / Charts:")
+            for img_res in image_results:
+                img_chunk = img_res["chunk"]
+                path = img_chunk["image_path"]
+                if os.path.exists(path):
+                    st.image(path, caption=f"Source: {img_chunk['source_file']} (Page {img_chunk['page']}) - CLIP Score: {img_res['score']:.4f}")
+                    saved_image_paths.append(path)
                     
-                    if doc_chunks:
-                        summary = generate_summary(doc_chunks)
-                        st.markdown("### Summary Results")
-                        st.info(f"Summary for: **{selected_doc}**")
-                        st.markdown(summary)
-                    else:
-                        st.error("No chunks found for the selected document.")
-                except Exception as e:
-                    st.error(f"Error generating summary: {e}")
-    else:
-        st.caption("No documents available. Please upload and index documents in the sidebar first.")
+    st.session_state.chat_history.append({
+        "role": "assistant",
+        "content": answer,
+        "images": saved_image_paths
+    })
+    
+    # 4. Show text sources in expander if standard RAG search results were retrieved
+    if not target_doc and 'search_results' in locals() and search_results:
+        with st.expander("🔍 View Retrieved Text Sources"):
+            for idx, result in enumerate(search_results):
+                chunk = result["chunk"]
+                st.markdown(f"**Source {idx+1}: {chunk['source_file']} (Page {chunk['page']})**")
+                st.text(chunk["text"])
+                st.markdown("---")
