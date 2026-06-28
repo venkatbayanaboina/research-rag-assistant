@@ -24,7 +24,7 @@ def run_query(query):
     from src.core.generator import generate_answer
     
     try:
-        results = search_store(query, k=5)
+        results = search_store(query)
         if not results:
             print("No matching context found. Vector database might be empty.")
             return
@@ -74,7 +74,7 @@ def run_chat():
             if not query.strip():
                 continue
                 
-            results = search_store(query, k=5)
+            results = search_store(query)
             answer = generate_answer(query, results, chat_history)
             
             print(f"\nAssistant: {answer}")

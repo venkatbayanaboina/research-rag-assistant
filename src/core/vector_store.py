@@ -71,9 +71,9 @@ def add_document_to_store(processed_chunks):
     faiss.write_index(index, config.INDEX_PATH)
     print(f"Saved updated FAISS index to {config.INDEX_PATH}")
 
-def search_store(query, k=5):
+def search_store(query, k=None, rerank=None):
     """
-    Searches the FAISS index for the top k matches.
+    Searches the FAISS index for matching chunks, applying reranking if enabled.
     Returns a list of dicts: {"score": float, "chunk": dict}
     """
     index = load_vector_db()
@@ -83,11 +83,17 @@ def search_store(query, k=5):
         print("Vector database is empty. No search can be performed.")
         return []
         
+    # Check configurations
+    is_rerank = config.RERANK_ENABLED if rerank is None else rerank
+    
+    # Define retrieval depth
+    initial_k = config.K_INITIAL_RETRIEVAL if is_rerank else (config.K_FINAL_CONTEXT if k is None else k)
+    
     # Embed user query
     query_vector = embed_text(query, is_query=True)
     
     # Search FAISS
-    scores, indices = index.search(query_vector, k=min(k, index.ntotal))
+    scores, indices = index.search(query_vector, k=min(initial_k, index.ntotal))
     
     results = []
     for score, idx in zip(scores[0], indices[0]):
@@ -98,4 +104,11 @@ def search_store(query, k=5):
                 "chunk": registry[idx]
             })
             
+    # Apply Cross-Encoder reranking
+    if is_rerank:
+        from src.core.reranker import rerank_chunks
+        results = rerank_chunks(query, results, enabled=True)
+    else:
+        results = results[:k if k is not None else config.K_FINAL_CONTEXT]
+        
     return results

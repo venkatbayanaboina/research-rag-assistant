@@ -66,6 +66,8 @@ with st.sidebar:
         
     # 3. Actions
     st.markdown("---")
+    use_rerank = st.toggle("Enable Reranking (Cross-Encoder)", value=config.RERANK_ENABLED)
+    
     if st.button("🗑️ Clear Chat History", use_container_width=True):
         st.session_state.chat_history = []
         st.success("Chat history cleared!")
@@ -92,7 +94,7 @@ with tab1:
         
         # 2. Search FAISS store
         with st.spinner("Searching vector database..."):
-            search_results = search_store(prompt, k=5)
+            search_results = search_store(prompt, rerank=use_rerank)
             
         # 3. Generate Answer
         with st.spinner("Gemini is thinking..."):
