@@ -1,0 +1,8 @@
+unstructured[pdf]
+sentence-transformers
+faiss-cpu
+google-genai
+streamlit
+pdf2image
+pillow
+python-dotenv
