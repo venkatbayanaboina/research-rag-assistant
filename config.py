@@ -23,7 +23,7 @@ os.makedirs(EXTRACTED_IMAGE_DIR, exist_ok=True)
 # Model Settings
 EMBEDDING_MODEL_NAME = "BAAI/bge-large-en-v1.5"
 BGE_QUERY_PREFIX = "Represent this sentence for searching relevant passages: "
-GEMINI_MODEL_NAME = "gemini-1.5-flash"
+GEMINI_MODEL_NAME = "gemini-2.0-flash"
 
 # CLIP Multimodal Settings
 CLIP_MODEL_NAME = "clip-ViT-B-32"
