@@ -54,6 +54,35 @@ graph TD
 
 ---
 
+## 🛡️ High-Availability LLM Gate Architecture
+
+To ensure zero downtime when running under restricted free-tier API quotas, all LLM requests are managed by a **Unified LLM Gate Handler**. If the primary gate fails (due to 429 quota exhaustion or rate limits), the handler dynamically redirects subsequent queries to the secondary gate without user intervention.
+
+```mermaid
+graph TD
+    subgraph Client Application Layer
+        AppCore["Router / Answering / Summarizer / Comparison"]
+    end
+
+    subgraph LLM Gate Layer
+        AppCore -->|Unified generate call| GateHandler["LLM Gate Handler"]
+        
+        GateHandler -->|Gate 1| GeminiGate["Gemini Provider"]
+        GeminiGate -->|429 / Quota Failure| GateHandler
+        
+        GateHandler -->|Gate 2: Auto Failover| ORGate["OpenRouter Provider"]
+    end
+    
+    style AppCore fill:#1e1e2e,stroke:#cba6f7,stroke-width:2px,color:#cdd6f4
+    style GateHandler fill:#181825,stroke:#89b4fa,stroke-width:2px,color:#cdd6f4
+    style GeminiGate fill:#11111b,stroke:#f38ba8,stroke-width:1px,color:#a6adc8
+    style ORGate fill:#11111b,stroke:#a6e3a1,stroke-width:1px,color:#a6adc8
+```
+
+You can view the full design diagram at [docs/llm_gate_architecture_diagram.png](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/docs/llm_gate_architecture_diagram.png).
+
+---
+
 ## ✨ Features
 
 *   **Multimodal RAG Retrieval:** Fetches both high-relevance paragraphs and visual diagrams/charts, attaching figures natively to the Gemini generation payload.

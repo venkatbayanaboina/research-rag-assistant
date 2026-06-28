@@ -1,129 +1,28 @@
 import os
 import sys
-import time
-from google import genai
-from google.genai import types
-from dotenv import load_dotenv
 
-# Include root directory for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
-import config
-
-# Load env file
-load_dotenv(os.path.join(config.BASE_DIR, ".env"))
-
-_client = None
-_last_api_key = None
 
 def get_gemini_client():
-    """Initializes and caches the Gemini API client."""
-    global _client, _last_api_key
-    # Dynamic reload to pick up key updates without restarting the server
-    from dotenv import load_dotenv
-    load_dotenv(os.path.join(config.BASE_DIR, ".env"), override=True)
-    
-    api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key:
-        # Check for colab secret fallback
-        try:
-            from google.colab import userdata
-            api_key = userdata.get("GEMINI_API_KEY")
-        except ImportError:
-            pass
-    
-    if not api_key:
-        raise ValueError("GEMINI_API_KEY environment variable not found. Please check your .env file or Colab Secrets.")
-        
-    if _client is None or api_key != _last_api_key:
-        print("Initializing Gemini API Client...")
-        
-        # Monkey-patch sys.modules to bypass google-genai's buggy environment checks in Streamlit/Colab
-        import sys
-        ipython_module = sys.modules.get("IPython")
-        colab_module = sys.modules.get("google.colab")
-        
-        if "IPython" in sys.modules:
-            del sys.modules["IPython"]
-        if "google.colab" in sys.modules:
-            del sys.modules["google.colab"]
-            
-        try:
-            _client = genai.Client(api_key=api_key)
-            _last_api_key = api_key
-        finally:
-            # Restore modules to avoid disrupting interactive features
-            if ipython_module:
-                sys.modules["IPython"] = ipython_module
-            if colab_module:
-                sys.modules["google.colab"] = colab_module
-                
-    return _client
+    """Backward compatibility hook to fetch the active Google GenAI client."""
+    from src.core.generator.gate import get_llm_gate, GeminiGate
+    gate = get_llm_gate()
+    if isinstance(gate, GeminiGate):
+        return gate._get_client()
+    # Fallback to creating a direct client
+    g_gate = GeminiGate()
+    return g_gate._get_client()
 
 def generate_content_with_retry(prompt, is_image_list=False, temperature=0.3, system_instruction=None, response_mime_type=None):
     """
-    Executes a generate_content call to Gemini with an automatic 503/429 retry loop.
-    Supports either a pure text prompt or a list (containing text and PIL Images).
+    Unified gatekeeper wrapper. Redirects directly to generate_via_gate
+    for clean backward compatibility across the codebase.
     """
-    client = get_gemini_client()
-    max_retries = 3
-    
-    # Configure generation parameters
-    gen_config = types.GenerateContentConfig(
-        temperature=temperature
+    from src.core.generator.gate import generate_via_gate
+    return generate_via_gate(
+        prompt=prompt,
+        is_image_list=is_image_list,
+        temperature=temperature,
+        system_instruction=system_instruction,
+        response_mime_type=response_mime_type
     )
-    if system_instruction:
-        gen_config.system_instruction = system_instruction
-    if response_mime_type:
-        gen_config.response_mime_type = response_mime_type
-        
-    for attempt in range(1, max_retries + 1):
-        try:
-            response = client.models.generate_content(
-                model=config.GEMINI_MODEL_NAME,
-                contents=prompt,
-                config=gen_config
-            )
-            return response.text
-        except Exception as e:
-            err_msg = str(e).upper()
-            is_503 = "503" in err_msg or "UNAVAILABLE" in err_msg
-            is_429 = "429" in err_msg or "RESOURCE_EXHAUSTED" in err_msg or "RATE" in err_msg
-            
-            if (is_503 or is_429) and attempt < max_retries:
-                sleep_time = 10 if is_429 else 2
-                reason = "Rate limit (429)" if is_429 else "Server busy (503)"
-                print(f"Gemini API: {reason}. Retrying in {sleep_time} seconds (Attempt {attempt}/{max_retries})...")
-                time.sleep(sleep_time)
-                continue
-                
-            # If all Gemini retries fail, check for OpenRouter fallback keys
-            or_key = os.getenv("OPENROUTER_API_KEY")
-            if not or_key:
-                try:
-                    from google.colab import userdata
-                    or_key = userdata.get("OPENROUTER_API_KEY")
-                except ImportError:
-                    pass
-                    
-            if or_key:
-                print("Gemini API failed or exhausted quota. Triggering OpenRouter fallback...")
-                try:
-                    from src.core.generator.openrouter import generate_content_via_openrouter
-                    # Map config.GEMINI_MODEL_NAME to OpenRouter model equivalents (use openrouter/free auto-router)
-                    or_model = "openrouter/free"
-                    json_mode = (response_mime_type == "application/json")
-                        
-                    return generate_content_via_openrouter(
-                        prompt, 
-                        model_name=or_model, 
-                        temperature=temperature,
-                        system_instruction=system_instruction,
-                        json_mode=json_mode
-                    )
-                except Exception as or_err:
-                    print(f"OpenRouter fallback also failed: {or_err}")
-                    raise RuntimeError(
-                        f"Gemini API quota exhausted (429). OpenRouter fallback also failed: {or_err}"
-                    ) from e
-                    
-            raise e
