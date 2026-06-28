@@ -106,15 +106,26 @@ If the answer cannot be found in the retrieved context, say:
                 except Exception as e:
                     print(f"Failed to open image file at {path}: {e}")
 
-    print("Synthesizing answer with Gemini...")
-    response = client.models.generate_content(
-        model=config.GEMINI_MODEL_NAME,
-        contents=contents,
-        config=types.GenerateContentConfig(
-            temperature=0.3
-        )
-    )
-    return response.text
+    import time
+    max_retries = 3
+    for attempt in range(1, max_retries + 1):
+        try:
+            print("Synthesizing answer with Gemini...")
+            response = client.models.generate_content(
+                model=config.GEMINI_MODEL_NAME,
+                contents=contents,
+                config=types.GenerateContentConfig(
+                    temperature=0.3
+                )
+            )
+            return response.text
+        except Exception as e:
+            if "503" in str(e) or "UNAVAILABLE" in str(e).upper():
+                if attempt < max_retries:
+                    print(f"Gemini API is busy (503). Retrying in 2 seconds (Attempt {attempt}/{max_retries})...")
+                    time.sleep(2)
+                    continue
+            raise e
 
 def generate_summary(chunks):
     """
@@ -145,12 +156,23 @@ Be highly factual, precise, and professional.
 {full_text}
 """
 
-    print(f"Generating summary for {filename} with Gemini...")
-    response = client.models.generate_content(
-        model=config.GEMINI_MODEL_NAME,
-        contents=prompt,
-        config=types.GenerateContentConfig(
-            temperature=0.2
-        )
-    )
-    return response.text
+    import time
+    max_retries = 3
+    for attempt in range(1, max_retries + 1):
+        try:
+            print(f"Generating summary for {filename} with Gemini...")
+            response = client.models.generate_content(
+                model=config.GEMINI_MODEL_NAME,
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    temperature=0.2
+                )
+            )
+            return response.text
+        except Exception as e:
+            if "503" in str(e) or "UNAVAILABLE" in str(e).upper():
+                if attempt < max_retries:
+                    print(f"Gemini API is busy (503). Retrying in 2 seconds (Attempt {attempt}/{max_retries})...")
+                    time.sleep(2)
+                    continue
+            raise e
