@@ -167,9 +167,12 @@ def search_image_store(query, k=None):
     results = []
     for score, idx in zip(scores[0], indices[0]):
         if idx != -1 and idx < len(registry):
-            results.append({
-                "score": float(score),
-                "chunk": registry[idx]
-            })
+            score_val = float(score)
+            # Only include visual diagrams if they meet the semantic similarity threshold (>= 0.28)
+            if score_val >= 0.28:
+                results.append({
+                    "score": score_val,
+                    "chunk": registry[idx]
+                })
             
     return results
