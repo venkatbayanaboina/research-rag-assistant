@@ -5,7 +5,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
 
 def get_gemini_client():
     """Backward compatibility hook to fetch the active Google GenAI client."""
-    from src.core.generator.gate import get_llm_gate, GeminiGate
+    from src.core.generator.gates import get_llm_gate
+    from src.core.generator.gates.gemini import GeminiGate
     gate = get_llm_gate()
     if isinstance(gate, GeminiGate):
         return gate._get_client()
@@ -18,7 +19,7 @@ def generate_content_with_retry(prompt, is_image_list=False, temperature=0.3, sy
     Unified gatekeeper wrapper. Redirects directly to generate_via_gate
     for clean backward compatibility across the codebase.
     """
-    from src.core.generator.gate import generate_via_gate
+    from src.core.generator.gates import generate_via_gate
     return generate_via_gate(
         prompt=prompt,
         is_image_list=is_image_list,
