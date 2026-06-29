@@ -1,6 +1,7 @@
 .DS_Store
-*.faiss
-storage/
 .env
 __pycache__/
 *.pyc
+
+# Ignore raw PDFs inside storage, but keep indexes and registry tracked
+storage/raw_pdfs/

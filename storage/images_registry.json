@@ -1,0 +1,50 @@
+[
+  {
+    "image_id": 0,
+    "source_file": "attention-is-all-you-need-Paper.pdf",
+    "page": 3,
+    "category": "Image",
+    "image_path": "/Users/nanibayanaboina2750/Desktop/research-rag-assistant/storage/extracted_images/figure-3-1.jpg",
+    "caption": "Output Probabilities Add & Norm Feed Forward Add & Norm Multi-Head Attention a, Add & Norm Add & Norm Feed Forward Nx | (Gada Nom) Add & Norm Masked Multi-Head Multi-Head Attention Attention Positional Encoding O\u00b0 Positional @ OY Encoding Input Output Embedding Embedding Inputs Outputs (shifted right)"
+  },
+  {
+    "image_id": 1,
+    "source_file": "attention-is-all-you-need-Paper.pdf",
+    "page": 4,
+    "category": "Image",
+    "image_path": "/Users/nanibayanaboina2750/Desktop/research-rag-assistant/storage/extracted_images/figure-4-2.jpg",
+    "caption": ""
+  },
+  {
+    "image_id": 2,
+    "source_file": "attention-is-all-you-need-Paper.pdf",
+    "page": 4,
+    "category": "Image",
+    "image_path": "/Users/nanibayanaboina2750/Desktop/research-rag-assistant/storage/extracted_images/figure-4-3.jpg",
+    "caption": "Linear"
+  },
+  {
+    "image_id": 3,
+    "source_file": "attention-is-all-you-need-Paper.pdf",
+    "page": 6,
+    "category": "Table",
+    "image_path": "/Users/nanibayanaboina2750/Desktop/research-rag-assistant/storage/extracted_images/table-6-1.jpg",
+    "caption": "Layer Type Complexity per Layer Sequential Maximum Path Length Operations Self-Attention O(n2 \u00b7 d) O(1) O(1) Recurrent O(n \u00b7 d2) O(n) O(n) Convolutional O(k \u00b7 n \u00b7 d2) O(1) O(logk(n)) Self-Attention (restricted) O(r \u00b7 n \u00b7 d) O(1) O(n/r)"
+  },
+  {
+    "image_id": 4,
+    "source_file": "attention-is-all-you-need-Paper.pdf",
+    "page": 8,
+    "category": "Table",
+    "image_path": "/Users/nanibayanaboina2750/Desktop/research-rag-assistant/storage/extracted_images/table-8-2.jpg",
+    "caption": "Model BLEU EN-DE EN-FR Training Cost (FLOPs) EN-DE EN-FR ByteNet [15] 23.75 Deep-Att + PosUnk [32] 39.2 1.0 \u00b7 1020 GNMT + RL [31] 24.6 39.92 2.3 \u00b7 1019 1.4 \u00b7 1020 ConvS2S [8] 25.16 40.46 9.6 \u00b7 1018 1.5 \u00b7 1020 MoE [26] 26.03 40.56 2.0 \u00b7 1019 1.2 \u00b7 1020 Deep-Att + PosUnk Ensemble [32] 40.4 8.0 \u00b7 1020 GNMT + RL Ensemble [31] 26.30 41.16 1.8 \u00b7 1020 1.1 \u00b7 1021 ConvS2S Ensemble [8] 26.36 41.29 7.7 \u00b7 1019 1.2 \u00b7 1021 Transformer (base model) 27.3 38.1 3.3 \u00b7 1018 Transformer (big) 28.4 41.0 2.3 \u00b7 1019"
+  },
+  {
+    "image_id": 5,
+    "source_file": "attention-is-all-you-need-Paper.pdf",
+    "page": 9,
+    "category": "Table",
+    "image_path": "/Users/nanibayanaboina2750/Desktop/research-rag-assistant/storage/extracted_images/table-9-3.jpg",
+    "caption": "N dyois dh dy dy Parop is amy dev) (de) ml base | 6 512 2048 8 64 64 O1 O01 100K] 492 258 65 1 512 512 5.29 24.9 A) 4 128 128 5.00 25.5 16 32 32 491 25.8 32 16 \u00ab16 5.01 25.4 16 316. 251 58 \u00ae) 32 501 254 60 2 611 237 36 4 519 253 50 8 488 25.5 80 \u00a9) 256 32.32 575 245 28 1024 128 128 466 26.0 168 1024 512 254 53 4096 475 26.2 90 0.0 3.77 246 0.2 495 25.5 ) 0.0 467 253 02 547 25.7 (E) positional embedding instead of sinusoids 4.92 25.7 big | 6 1024 4096 16 03 300K | 433. 264 213"
+  }
+]
