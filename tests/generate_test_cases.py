@@ -83,7 +83,7 @@ def generate_dataset(num_questions_per_doc=3):
                         "format": "json",
                         "options": {"temperature": 0.3}
                     }
-                    response = requests.post("http://localhost:11434/api/generate", json=payload, timeout=45)
+                    response = requests.post("http://localhost:11434/api/generate", json=payload, timeout=120)
                     if response.status_code == 200:
                         response_text = response.json()["response"]
                     else:

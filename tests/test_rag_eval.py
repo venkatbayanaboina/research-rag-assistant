@@ -47,7 +47,7 @@ class LLMGateJudge(DeepEvalBaseLLM):
                     "stream": False,
                     "options": {"temperature": 0.1}
                 }
-                response = requests.post("http://localhost:11434/api/generate", json=payload, timeout=30)
+                response = requests.post("http://localhost:11434/api/generate", json=payload, timeout=120)
                 if response.status_code == 200:
                     return response.json()["response"]
             except Exception as e:
