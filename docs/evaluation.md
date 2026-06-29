@@ -68,3 +68,35 @@ DeepEval provides a local web dashboard to trace historical quality scores acros
 ```bash
 deepeval login
 ```
+
+---
+
+## ⚡ Scaling up with Local LLM Evaluation in Colab (Ollama)
+
+For large golden datasets (e.g. 50+ test cases), running LLM-as-a-judge evaluations via Cloud APIs is highly restricted by free-tier rate limits (15 Requests Per Minute on Gemini, and 100 Requests Per Day on OpenRouter).
+
+To evaluate 50+ test cases **completely for free and with zero rate limits**, you can spin up **Ollama** with **Llama-3** directly inside your Google Colab notebook. The test suite automatically detects the local Ollama server and routes all judge calls to it.
+
+### Setup Instructions for Google Colab
+
+1. **Install Ollama in Colab:**
+   ```bash
+   !curl -fsSL https://ollama.com/install.sh | sh
+   ```
+
+2. **Start the Ollama Server in the background:**
+   ```python
+   import subprocess
+   import time
+
+   # Launch the Ollama background daemon
+   subprocess.Popen(["ollama", "serve"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+   time.sleep(5) # Allow 5 seconds to initialize
+   ```
+
+3. **Download Llama-3 (8B):**
+   ```bash
+   !ollama pull llama3
+   ```
+
+Once Llama-3 is pulled, run `!pytest tests/test_rag_eval.py`. The test suite will log `SYSTEM LOG: Local Ollama server detected. Using local Llama3 as the evaluation judge.` and execute the evaluations locally using Colab's GPU.

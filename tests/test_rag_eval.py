@@ -13,20 +13,47 @@ from src.core.vector_store import get_indexed_documents
 
 GOLDEN_DATASET_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "tests", "golden_dataset.json")
 
+# Dynamic Judge wrapper
 class LLMGateJudge(DeepEvalBaseLLM):
     """
-    Custom DeepEval Judge Model wrapper. 
-    Routes all judge inquiries through our high-availability LLMGate.
-    Enables evaluation runs to automatically fallback to OpenRouter when Gemini is exhausted.
+    Custom DeepEval Judge Model wrapper.
+    Auto-detects if a local Ollama server is active (e.g. running Llama3 on Colab GPU).
+    If present, routes evaluations locally for free. Otherwise, falls back to the cloud LLMGate.
     """
-    def __init__(self, model_name="gemini-2.0-flash"):
+    def __init__(self, model_name="llama3"):
         self.model_name = model_name
+        self.use_ollama = False
+        
+        # Check if Ollama local server is active
+        import requests
+        try:
+            res = requests.get("http://localhost:11434", timeout=1)
+            if res.status_code == 200:
+                self.use_ollama = True
+                print("SYSTEM LOG: Local Ollama server detected. Using local Llama3 as the evaluation judge.")
+        except Exception:
+            pass
 
     def load_model(self):
         return self
 
     def generate(self, prompt: str) -> str:
-        # Route query through our HA gateway
+        if self.use_ollama:
+            import requests
+            try:
+                payload = {
+                    "model": "llama3",
+                    "prompt": prompt,
+                    "stream": False,
+                    "options": {"temperature": 0.1}
+                }
+                response = requests.post("http://localhost:11434/api/generate", json=payload, timeout=30)
+                if response.status_code == 200:
+                    return response.json()["response"]
+            except Exception as e:
+                print(f"⚠️ Local Ollama query failed: {e}. Falling back to cloud LLMGate...")
+                
+        # Fallback to cloud gateways (Gemini/OpenRouter)
         return generate_via_gate(prompt, temperature=0.1)
 
     async def a_generate(self, prompt: str) -> str:
