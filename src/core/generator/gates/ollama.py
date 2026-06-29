@@ -49,7 +49,11 @@ class OllamaGate(BaseModelGate):
             "model": self.model_name,
             "prompt": combined_prompt,
             "stream": False,
-            "options": {"temperature": temperature}
+            "options": {
+                "temperature": temperature,
+                "num_ctx": 16384,
+                "num_predict": 2048
+            }
         }
         
         if response_mime_type == "application/json":

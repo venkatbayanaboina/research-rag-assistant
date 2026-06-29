@@ -55,7 +55,11 @@ class LLMGateJudge(DeepEvalBaseLLM):
                     "model": self.model_name,
                     "prompt": prompt,
                     "stream": False,
-                    "options": {"temperature": 0.1}
+                    "options": {
+                        "temperature": 0.1,
+                        "num_ctx": 16384,
+                        "num_predict": 2048
+                    }
                 }
                 
                 # Check if prompt requests JSON
@@ -91,7 +95,11 @@ class LLMGateJudge(DeepEvalBaseLLM):
                     "prompt": schema_instructions,
                     "stream": False,
                     "format": "json",
-                    "options": {"temperature": 0.1}
+                    "options": {
+                        "temperature": 0.1,
+                        "num_ctx": 16384,
+                        "num_predict": 2048
+                    }
                 }
                 
                 response = requests.post("http://localhost:11434/api/generate", json=payload, timeout=120)
