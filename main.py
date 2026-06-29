@@ -22,27 +22,22 @@ def run_ingest(file_path, strategy):
         print(f"Ingestion failed: {e}")
 
 def run_query(query):
-    from src.core.vector_store import search_store, search_image_store
-    from src.core.generator import generate_answer
+    from src.core.generator import execute_rag_pipeline
+    from src.core.vector_store import get_indexed_documents
     
     try:
-        results = search_store(query)
-        image_results = search_image_store(query)
+        indexed_docs = get_indexed_documents()
+        result = execute_rag_pipeline(query, indexed_docs)
         
-        if not results and not image_results:
-            print("No matching context found. Vector database might be empty.")
-            return
-            
-        answer = generate_answer(query, results, image_results)
-        print("\n=== GEMINI ANSWER ===")
-        print(answer)
+        print("\n=== RESPONSE ===")
+        print(result["answer"])
         
-        if image_results:
+        if result["image_results"]:
             print("\n=== RETRIEVED DIAGRAMS ===")
-            for img in image_results:
+            for img in result["image_results"]:
                 chunk = img["chunk"]
                 print(f"- Page {chunk['page']}: {chunk['image_path']} (CLIP Score: {img['score']:.4f})")
-        print("=====================\n")
+        print("================\n")
     except Exception as e:
         print(f"Query execution failed: {e}")
 
@@ -66,8 +61,8 @@ def run_summarize(doc_name):
         print(f"Summary generation failed: {e}")
 
 def run_chat():
-    from src.core.vector_store import search_store, search_image_store
-    from src.core.generator import generate_answer
+    from src.core.generator import execute_rag_pipeline
+    from src.core.vector_store import get_indexed_documents
     
     print("====================================================")
     print("💬 RAG Assistant CLI Chat Mode (type 'exit' to quit)")
@@ -84,22 +79,20 @@ def run_chat():
             if not query.strip():
                 continue
                 
-            results = search_store(query)
-            image_results = search_image_store(query)
+            indexed_docs = get_indexed_documents()
+            result = execute_rag_pipeline(query, indexed_docs, chat_history=chat_history)
             
-            answer = generate_answer(query, results, image_results, chat_history)
+            print(f"\nAssistant: {result['answer']}")
             
-            print(f"\nAssistant: {answer}")
-            
-            if image_results:
+            if result["image_results"]:
                 print("\n[Attached Figures]")
-                for img in image_results:
+                for img in result["image_results"]:
                     chunk = img["chunk"]
                     print(f"  * Page {chunk['page']}: {chunk['image_path']}")
             
             # Maintain chat history
             chat_history.append({"role": "user", "content": query})
-            chat_history.append({"role": "assistant", "content": answer})
+            chat_history.append({"role": "assistant", "content": result["answer"]})
         except KeyboardInterrupt:
             print("\nChat ended.")
             break
