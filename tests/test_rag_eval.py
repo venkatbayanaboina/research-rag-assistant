@@ -58,7 +58,7 @@ class LLMGateJudge(DeepEvalBaseLLM):
                     "options": {"temperature": 0.1}
                 }
                 
-                # Enforce strict JSON mode if prompt requests JSON or lists a schema
+                # Check if prompt requests JSON
                 if "json" in prompt.lower() or "schema" in prompt.lower() or "{" in prompt:
                     payload["format"] = "json"
                     
@@ -73,6 +73,38 @@ class LLMGateJudge(DeepEvalBaseLLM):
 
     async def a_generate(self, prompt: str) -> str:
         return self.generate(prompt)
+
+    def generate_with_schema(self, prompt: str, schema) -> str:
+        """
+        Specialized structured JSON generator for DeepEval.
+        Instructs the local Ollama instance to strictly output schema-conforming JSON keys.
+        """
+        if self.use_ollama:
+            import requests
+            import json
+            try:
+                # Compile a prompt instruction mentioning the expected JSON schema structure
+                schema_instructions = f"Your output MUST strictly conform to this JSON schema:\n{json.dumps(schema.schema(), indent=2)}\n\nPrompt:\n{prompt}"
+                
+                payload = {
+                    "model": self.model_name,
+                    "prompt": schema_instructions,
+                    "stream": False,
+                    "format": "json",
+                    "options": {"temperature": 0.1}
+                }
+                
+                response = requests.post("http://localhost:11434/api/generate", json=payload, timeout=120)
+                if response.status_code == 200:
+                    return response.json()["response"]
+            except Exception as e:
+                print(f"⚠️ Local Ollama structured query failed: {e}. Falling back to cloud LLMGate...")
+                
+        # Fallback to cloud Gatekeeper routing
+        return generate_via_gate(prompt, temperature=0.1, response_mime_type="application/json")
+
+    async def a_generate_with_schema(self, prompt: str, schema) -> str:
+        return self.generate_with_schema(prompt, schema)
 
     def get_model_name(self):
         return self.model_name
