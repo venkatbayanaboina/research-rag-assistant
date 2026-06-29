@@ -92,8 +92,7 @@ class OpenRouterGate(BaseModelGate):
             
         # Rotate through highly capable, permanently free models on OpenRouter
         models = [
-            "meta-llama/llama-3-8b-instruct:free",
-            "qwen/qwen-2-7b-instruct:free",
+            "meta-llama/llama-3.2-3b-instruct:free",
             "openrouter/free"
         ]
         
