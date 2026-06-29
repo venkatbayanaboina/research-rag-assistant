@@ -21,12 +21,23 @@ def generate_dataset(num_questions_per_doc=3):
         return
 
     # Group chunks by source file
-    doc_chunks = defaultdict = {}
+    doc_chunks = {}
     for chunk in registry:
         src = chunk["source_file"]
         if src not in doc_chunks:
             doc_chunks[src] = []
         doc_chunks[src].append(chunk)
+
+    # Auto-detect local Ollama server
+    use_ollama = False
+    import requests
+    try:
+        res = requests.get("http://localhost:11434", timeout=1)
+        if res.status_code == 200:
+            use_ollama = True
+            print("SYSTEM LOG: Local Ollama server detected. Using local Llama3 to generate test cases.")
+    except Exception:
+        pass
 
     golden_cases = []
 
@@ -61,15 +72,42 @@ def generate_dataset(num_questions_per_doc=3):
             prompt = f"DOCUMENT SECTION:\n{chunk_text}"
             
             try:
-                # Call HA gatekeeper
-                response_text = generate_via_gate(
-                    prompt=prompt,
-                    temperature=0.3,
-                    system_instruction=system_instruction,
-                    response_mime_type="application/json"
-                )
+                if use_ollama:
+                    # Query local Ollama
+                    import requests
+                    combined_prompt = f"{system_instruction}\n\nDOCUMENT SECTION:\n{chunk_text}"
+                    payload = {
+                        "model": "llama3",
+                        "prompt": combined_prompt,
+                        "stream": False,
+                        "format": "json",
+                        "options": {"temperature": 0.3}
+                    }
+                    response = requests.post("http://localhost:11434/api/generate", json=payload, timeout=45)
+                    if response.status_code == 200:
+                        response_text = response.json()["response"]
+                    else:
+                        raise RuntimeError(f"Ollama server returned status {response.status_code}")
+                else:
+                    # Call HA cloud gatekeeper
+                    response_text = generate_via_gate(
+                        prompt=prompt,
+                        temperature=0.3,
+                        system_instruction=system_instruction,
+                        response_mime_type="application/json"
+                    )
                 
-                qa_pair = json.loads(response_text)
+                # Clean up potential markdown wrapper from response text
+                cleaned_content = response_text.strip()
+                if cleaned_content.startswith("```json"):
+                    cleaned_content = cleaned_content[7:]
+                if cleaned_content.startswith("```"):
+                    cleaned_content = cleaned_content[3:]
+                if cleaned_content.endswith("```"):
+                    cleaned_content = cleaned_content[:-3]
+                cleaned_content = cleaned_content.strip()
+
+                qa_pair = json.loads(cleaned_content)
                 if "query" in qa_pair and "ground_truth" in qa_pair:
                     golden_cases.append({
                         "query": qa_pair["query"],
