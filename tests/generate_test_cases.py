@@ -92,4 +92,12 @@ def generate_dataset(num_questions_per_doc=3):
         print("\n❌ Failed to generate any Q&A cases.")
 
 if __name__ == "__main__":
-    generate_dataset()
+    import sys
+    num_questions = 3
+    if len(sys.argv) > 1:
+        try:
+            num_questions = int(sys.argv[1])
+        except ValueError:
+            print(f"⚠️ Invalid argument '{sys.argv[1]}'. Defaulting to 3 questions per document.")
+            
+    generate_dataset(num_questions_per_doc=num_questions)
