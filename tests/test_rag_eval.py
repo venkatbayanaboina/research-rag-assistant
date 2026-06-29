@@ -27,10 +27,20 @@ class LLMGateJudge(DeepEvalBaseLLM):
         # Check if Ollama local server is active
         import requests
         try:
-            res = requests.get("http://localhost:11434", timeout=1)
+            res = requests.get("http://localhost:11434/api/tags", timeout=2)
             if res.status_code == 200:
                 self.use_ollama = True
-                print("SYSTEM LOG: Local Ollama server detected. Using local Llama3 as the evaluation judge.")
+                pulled_models = [m["name"] for m in res.json().get("models", [])]
+                short_names = [name.split(":")[0] for name in pulled_models]
+                
+                if "llama3" in short_names:
+                    self.model_name = "llama3"
+                elif "llama3.2" in short_names:
+                    self.model_name = "llama3.2"
+                elif pulled_models:
+                    self.model_name = pulled_models[0]
+                    
+                print(f"SYSTEM LOG: Local Ollama server detected. Using local model: {self.model_name}")
         except Exception:
             pass
 
@@ -42,7 +52,7 @@ class LLMGateJudge(DeepEvalBaseLLM):
             import requests
             try:
                 payload = {
-                    "model": "llama3",
+                    "model": self.model_name,
                     "prompt": prompt,
                     "stream": False,
                     "options": {"temperature": 0.1}

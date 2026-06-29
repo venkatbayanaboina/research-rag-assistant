@@ -28,14 +28,26 @@ def generate_dataset(num_questions_per_doc=3):
             doc_chunks[src] = []
         doc_chunks[src].append(chunk)
 
-    # Auto-detect local Ollama server
+    # Auto-detect local Ollama server and pulled model
     use_ollama = False
+    ollama_model = "llama3"
     import requests
     try:
-        res = requests.get("http://localhost:11434", timeout=1)
+        res = requests.get("http://localhost:11434/api/tags", timeout=2)
         if res.status_code == 200:
             use_ollama = True
-            print("SYSTEM LOG: Local Ollama server detected. Using local Llama3 to generate test cases.")
+            pulled_models = [m["name"] for m in res.json().get("models", [])]
+            # Strip tags for comparison
+            short_names = [name.split(":")[0] for name in pulled_models]
+            
+            if "llama3" in short_names:
+                ollama_model = "llama3"
+            elif "llama3.2" in short_names:
+                ollama_model = "llama3.2"
+            elif pulled_models:
+                ollama_model = pulled_models[0] # Fallback to first available model
+                
+            print(f"SYSTEM LOG: Local Ollama server detected. Using local model: {ollama_model}")
     except Exception:
         pass
 
@@ -77,7 +89,7 @@ def generate_dataset(num_questions_per_doc=3):
                     import requests
                     combined_prompt = f"{system_instruction}\n\nDOCUMENT SECTION:\n{chunk_text}"
                     payload = {
-                        "model": "llama3",
+                        "model": ollama_model,
                         "prompt": combined_prompt,
                         "stream": False,
                         "format": "json",
