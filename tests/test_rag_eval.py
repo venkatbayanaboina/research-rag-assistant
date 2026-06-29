@@ -11,6 +11,8 @@ from src.core.generator import execute_rag_pipeline
 from src.core.generator.gates import generate_via_gate
 from src.core.vector_store import get_indexed_documents
 
+GOLDEN_DATASET_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "tests", "golden_dataset.json")
+
 class LLMGateJudge(DeepEvalBaseLLM):
     """
     Custom DeepEval Judge Model wrapper. 
@@ -33,7 +35,24 @@ class LLMGateJudge(DeepEvalBaseLLM):
     def get_model_name(self):
         return self.model_name
 
-def test_rag_faithfulness_and_relevancy():
+def load_golden_cases():
+    """Loads generated test cases from JSON, falling back to a default if not found."""
+    if os.path.exists(GOLDEN_DATASET_PATH):
+        try:
+            with open(GOLDEN_DATASET_PATH, "r") as f:
+                cases = json.load(f)
+                if cases:
+                    return cases
+        except Exception:
+            pass
+    return [{
+        "query": "what is the difference between trojan paper and the spoofing attack?",
+        "ground_truth": None,
+        "source_file": None
+    }]
+
+@pytest.mark.parametrize("case", load_golden_cases())
+def test_rag_faithfulness_and_relevancy(case):
     """
     Automated RAG evaluation test. Asserts that the synthesized answer is
     faithful to the retrieved context and relevant to the user query.
@@ -42,7 +61,8 @@ def test_rag_faithfulness_and_relevancy():
     if not indexed_docs:
         pytest.skip("No documents indexed in FAISS. Skipping evaluation test.")
         
-    query = "what is the difference between trojan paper and the spoofing attack?"
+    query = case["query"]
+    target_doc = case.get("source_file")
     
     # 1. Execute RAG Pipeline
     result = execute_rag_pipeline(prompt=query, indexed_docs=indexed_docs)
@@ -50,14 +70,13 @@ def test_rag_faithfulness_and_relevancy():
     # 2. Extract context chunks text
     retrieval_context = [res["chunk"]["text"] for res in result["search_results"]]
     
-    # If it was routed as comparison/special intent, we load the raw comparison text as context
+    # If it was routed as comparison/special intent, we load raw comparison text as context
     if not retrieval_context and result["is_special_intent"]:
         from src.core.vector_store import get_registry
-        targets = ["Trojan_DOS.pdf", "Spoofing_attack_using_bus-off_attacks_against_a_specific_ECU_of_the_CAN_bus.pdf"]
         registry = get_registry()
         retrieval_context = [
             chunk["text"] for chunk in registry 
-            if chunk["source_file"] in targets or chunk["source_file"] in indexed_docs
+            if chunk["source_file"] == target_doc or chunk["source_file"] in indexed_docs
         ]
 
     # Ensure context is not empty to avoid DeepEval assertion crashes
@@ -68,7 +87,8 @@ def test_rag_faithfulness_and_relevancy():
     test_case = LLMTestCase(
         input=query,
         actual_output=result["answer"],
-        retrieval_context=retrieval_context
+        retrieval_context=retrieval_context,
+        expected_output=case.get("ground_truth")
     )
     
     # 4. Instantiate custom judge and metrics with a 0.6 threshold
