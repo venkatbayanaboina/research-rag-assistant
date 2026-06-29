@@ -32,6 +32,20 @@ def parse_pdf(file_path, strategy="fast"):
         })
         
     print(f"Parsing PDF in one optimized call (strategy: {strategy}): {os.path.basename(file_path)}...")
+    import time
+    from src.core.utils.profiler import log_timing
+    
+    start_time = time.time()
     elements = partition_pdf(**kwargs)
-    print(f"Finished parsing. Extracted {len(elements)} elements.")
+    duration = time.time() - start_time
+    
+    log_timing(
+        step_name="layout_selection_and_parsing",
+        duration_seconds=duration,
+        metadata={
+            "file_name": os.path.basename(file_path),
+            "strategy": strategy,
+            "element_count": len(elements)
+        }
+    )
     return elements

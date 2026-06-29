@@ -11,6 +11,10 @@ def process_text_chunks(elements, source_filename):
     Groups unstructured elements using chunk_by_title and maps them into dictionaries.
     These will be indexed using BGE text embeddings.
     """
+    import time
+    from src.core.utils.profiler import log_timing
+    
+    start_time = time.time()
     print("Formatting text chunks...")
     chunks = chunk_by_title(
         elements,
@@ -61,7 +65,15 @@ def process_text_chunks(elements, source_filename):
                     
         processed_chunks.append(chunk_dict)
         
-    print(f"Generated {len(processed_chunks)} text chunks for {os.path.basename(source_filename)} (grouped into sections).")
+    duration = time.time() - start_time
+    log_timing(
+        step_name="text_chunking",
+        duration_seconds=duration,
+        metadata={
+            "file_name": os.path.basename(source_filename),
+            "chunk_count": len(processed_chunks)
+        }
+    )
     return processed_chunks
 
 def process_image_chunks(elements, source_filename):
@@ -69,6 +81,10 @@ def process_image_chunks(elements, source_filename):
     Extracts elements representing visual diagrams or tables that have cropped image files.
     These will be indexed using CLIP image embeddings.
     """
+    import time
+    from src.core.utils.profiler import log_timing
+    
+    start_time = time.time()
     print("Formatting visual image chunks...")
     image_chunks = []
     for el in elements:
@@ -86,5 +102,13 @@ def process_image_chunks(elements, source_filename):
                     "caption": el.text.strip()
                 })
                 
-    print(f"Generated {len(image_chunks)} visual chunks for {os.path.basename(source_filename)}.")
+    duration = time.time() - start_time
+    log_timing(
+        step_name="visual_chunking",
+        duration_seconds=duration,
+        metadata={
+            "file_name": os.path.basename(source_filename),
+            "visual_chunk_count": len(image_chunks)
+        }
+    )
     return image_chunks

@@ -24,18 +24,42 @@ def generate_via_gate(prompt, is_image_list=False, temperature=0.3, system_instr
     Unified gatekeeper function that coordinates query execution across active gates.
     If the Gemini gate fails or reports quota exhaustion, it permanently switches to the OpenRouter gate.
     """
-    gate = get_llm_gate()
+    import time
+    from src.core.utils.profiler import log_timing
     
+    gate = get_llm_gate()
+    gate_name = gate.__class__.__name__
+    
+    start_time = time.time()
     try:
-        return gate.generate(
+        res = gate.generate(
             prompt=prompt,
             system_instruction=system_instruction,
             response_mime_type=response_mime_type,
             temperature=temperature
         )
+        duration = time.time() - start_time
+        log_timing(
+            step_name="llm_answer_generation",
+            duration_seconds=duration,
+            metadata={
+                "provider_gate": gate_name,
+                "is_fallback": False
+            }
+        )
+        return res
     except (GeminiQuotaExhaustedError, Exception) as e:
         # If the gate is already OpenRouterGate, don't try to switch/retry
         if isinstance(gate, OpenRouterGate):
+            duration = time.time() - start_time
+            log_timing(
+                step_name="llm_answer_generation_failed",
+                duration_seconds=duration,
+                metadata={
+                    "provider_gate": gate_name,
+                    "error": str(e)
+                }
+            )
             raise e
             
         # Switch permanently to OpenRouter for subsequent requests
@@ -44,14 +68,36 @@ def generate_via_gate(prompt, is_image_list=False, temperature=0.3, system_instr
         
         # Retry the failed request immediately using OpenRouterGate
         new_gate = get_llm_gate()
+        new_gate_name = new_gate.__class__.__name__
+        
+        fallback_start_time = time.time()
         try:
-            return new_gate.generate(
+            res = new_gate.generate(
                 prompt=prompt,
                 system_instruction=system_instruction,
                 response_mime_type=response_mime_type,
                 temperature=temperature
             )
+            duration = time.time() - fallback_start_time
+            log_timing(
+                step_name="fallback_answer_generation",
+                duration_seconds=duration,
+                metadata={
+                    "provider_gate": new_gate_name,
+                    "is_fallback": True
+                }
+            )
+            return res
         except Exception as or_err:
+            duration = time.time() - fallback_start_time
+            log_timing(
+                step_name="fallback_answer_generation_failed",
+                duration_seconds=duration,
+                metadata={
+                    "provider_gate": new_gate_name,
+                    "error": str(or_err)
+                }
+            )
             raise RuntimeError(
                 f"Gemini Gate failed ({e}). OpenRouter Gate also failed: {or_err}"
             ) from e

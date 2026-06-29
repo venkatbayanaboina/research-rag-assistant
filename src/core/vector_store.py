@@ -66,10 +66,25 @@ def add_document_to_store(text_chunks, image_chunks):
         text_registry = get_registry()
         # Avoid duplicate indexing
         if not any(chunk["source_file"] == filename for chunk in text_registry):
+            # Load registry and indexes
             text_index = load_text_db()
             texts = [chunk["text"] for chunk in text_chunks]
             print(f"Generating BGE embeddings for {len(texts)} text chunks...")
+            
+            import time
+            from src.core.utils.profiler import log_timing
+            
+            start_time = time.time()
             embeddings = embed_batch(texts)
+            duration = time.time() - start_time
+            log_timing(
+                step_name="text_embedding_generation",
+                duration_seconds=duration,
+                metadata={
+                    "file_name": filename,
+                    "chunk_count": len(texts)
+                }
+            )
             embeddings = np.array(embeddings, dtype="float32")
             text_index.add(embeddings)
             
@@ -93,7 +108,21 @@ def add_document_to_store(text_chunks, image_chunks):
             image_index = load_image_db()
             image_paths = [chunk["image_path"] for chunk in image_chunks]
             print(f"Generating CLIP embeddings for {len(image_paths)} visual chunks...")
+            
+            import time
+            from src.core.utils.profiler import log_timing
+            
+            start_time = time.time()
             embeddings = embed_image_batch(image_paths)
+            duration = time.time() - start_time
+            log_timing(
+                step_name="visual_embedding_generation",
+                duration_seconds=duration,
+                metadata={
+                    "file_name": filename,
+                    "image_count": len(image_paths)
+                }
+            )
             if len(embeddings) > 0:
                 embeddings = np.array(embeddings, dtype="float32")
                 image_index.add(embeddings)
@@ -115,6 +144,10 @@ def search_store(query, k=None, rerank=None):
     """
     Searches the Text index and applies Cross-Encoder reranking.
     """
+    import time
+    from src.core.utils.profiler import log_timing
+    start_time = time.time()
+    
     with db_lock:
         index = load_text_db()
         registry = get_registry()
@@ -143,6 +176,17 @@ def search_store(query, k=None, rerank=None):
                     "chunk": chunk
                 })
             
+    # Measure initial FAISS text search duration
+    duration = time.time() - start_time
+    log_timing(
+        step_name="text_retrieval_faiss",
+        duration_seconds=duration,
+        metadata={
+            "query": query[:100],
+            "initial_candidates": len(results)
+        }
+    )
+    
     if is_rerank:
         from src.core.reranker import rerank_chunks
         results = rerank_chunks(query, results, enabled=True)
@@ -155,6 +199,10 @@ def search_image_store(query, k=None):
     """
     Searches the Image index using CLIP text query embedding.
     """
+    import time
+    from src.core.utils.profiler import log_timing
+    start_time = time.time()
+    
     with db_lock:
         index = load_image_db()
         registry = get_image_registry()
@@ -181,4 +229,14 @@ def search_image_store(query, k=None):
                     "chunk": registry[idx]
                 })
             
+    # Measure visual CLIP search duration
+    duration = time.time() - start_time
+    log_timing(
+        step_name="visual_retrieval_clip",
+        duration_seconds=duration,
+        metadata={
+            "query": query[:100],
+            "visual_results_count": len(results)
+        }
+    )
     return results

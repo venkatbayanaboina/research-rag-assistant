@@ -24,6 +24,10 @@ def rerank_chunks(query, search_results, enabled=None):
     Reranks search results (lists of {"score": float, "chunk": dict})
     using a joint query-chunk cross-encoder score.
     """
+    import time
+    from src.core.utils.profiler import log_timing
+    start_time = time.time()
+    
     is_enabled = config.RERANK_ENABLED if enabled is None else enabled
     
     if not search_results:
@@ -51,5 +55,17 @@ def rerank_chunks(query, search_results, enabled=None):
     
     # Return top final candidates
     selected_results = search_results[:config.K_FINAL_CONTEXT]
+    
+    duration = time.time() - start_time
+    log_timing(
+        step_name="reranking",
+        duration_seconds=duration,
+        metadata={
+            "query": query[:100],
+            "candidate_count": len(search_results),
+            "selected_count": len(selected_results)
+        }
+    )
+    
     print(f"Reranking completed. Selected top {len(selected_results)} candidates.")
     return selected_results
