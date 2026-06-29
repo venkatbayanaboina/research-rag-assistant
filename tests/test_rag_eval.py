@@ -20,9 +20,43 @@ class LLMGateJudge(DeepEvalBaseLLM):
     Auto-detects if a local Ollama server is active (e.g. running Llama3 on Colab GPU).
     If present, routes evaluations locally for free. Otherwise, falls back to the cloud LLMGate.
     """
+    def ensure_ollama_running(self):
+        import requests
+        import subprocess
+        import time
+        try:
+            # Check if already running
+            res = requests.get("http://localhost:11434/api/tags", timeout=2)
+            if res.status_code == 200:
+                return True
+        except Exception:
+            pass
+
+        print("SYSTEM LOG: Ollama is not running. Attempting to start local Ollama server...")
+        try:
+            # Start Ollama server in background
+            subprocess.Popen(["ollama", "serve"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            
+            # Wait up to 10 seconds for it to start and bind
+            for i in range(10):
+                time.sleep(1)
+                try:
+                    res = requests.get("http://localhost:11434/api/tags", timeout=1)
+                    if res.status_code == 200:
+                        print("SYSTEM LOG: Local Ollama server started successfully.")
+                        return True
+                except Exception:
+                    pass
+        except Exception as e:
+            print(f"⚠️ Failed to start Ollama automatically: {e}")
+        return False
+
     def __init__(self, model_name="llama3"):
         self.model_name = model_name
         self.use_ollama = False
+        
+        # Ensure Ollama server is active
+        self.ensure_ollama_running()
         
         # Check if Ollama local server is active
         import requests

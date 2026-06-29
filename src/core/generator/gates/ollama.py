@@ -12,9 +12,43 @@ class OllamaGate(BaseModelGate):
     Local Ollama Model Gate. 
     Allows RAG queries to run completely locally if cloud APIs are rate-limited.
     """
+    def ensure_ollama_running(self):
+        import requests
+        import subprocess
+        import time
+        try:
+            # Check if already running
+            res = requests.get("http://localhost:11434/api/tags", timeout=2)
+            if res.status_code == 200:
+                return True
+        except Exception:
+            pass
+
+        print("SYSTEM LOG: Ollama is not running. Attempting to start local Ollama server...")
+        try:
+            # Start Ollama server in background
+            subprocess.Popen(["ollama", "serve"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            
+            # Wait up to 10 seconds for it to start and bind
+            for i in range(10):
+                time.sleep(1)
+                try:
+                    res = requests.get("http://localhost:11434/api/tags", timeout=1)
+                    if res.status_code == 200:
+                        print("SYSTEM LOG: Local Ollama server started successfully.")
+                        return True
+                except Exception:
+                    pass
+        except Exception as e:
+            print(f"⚠️ Failed to start Ollama automatically: {e}")
+        return False
+
     def __init__(self):
         self.model_name = "llama3"
         self.url = "http://localhost:11434/api/generate"
+        
+        # Ensure Ollama server is active
+        self.ensure_ollama_running()
         
         # Check active pulled model names
         try:
