@@ -21,12 +21,20 @@ class OllamaGate(BaseModelGate):
             res = requests.get("http://localhost:11434/api/tags", timeout=2)
             if res.status_code == 200:
                 pulled_models = [m["name"] for m in res.json().get("models", [])]
-                short_names = [name.split(":")[0] for name in pulled_models]
                 
-                if "llama3" in short_names:
-                    self.model_name = "llama3"
-                elif "llama3.2" in short_names:
-                    self.model_name = "llama3.2"
+                # Priority preference matching
+                preferences = ["qwen3", "qwen2.5", "llama3.3", "llama3.1", "llama3.2", "mistral", "gemma3", "llama3"]
+                selected_model = None
+                for pref in preferences:
+                    for name in pulled_models:
+                        if name.split(":")[0] == pref or name == pref:
+                            selected_model = name
+                            break
+                    if selected_model:
+                        break
+                
+                if selected_model:
+                    self.model_name = selected_model
                 elif pulled_models:
                     self.model_name = pulled_models[0]
         except Exception:
