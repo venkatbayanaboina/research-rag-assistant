@@ -18,6 +18,10 @@ class OpenRouterGate(BaseModelGate):
         return base64.b64encode(buffered.getvalue()).decode("utf-8")
 
     def generate(self, prompt, system_instruction=None, response_mime_type=None, temperature=0.3):
+        import time
+        print("Pausing 4.5 seconds to respect OpenRouter rate limits...")
+        time.sleep(4.5)
+        
         # Dynamic reload of .env
         from dotenv import load_dotenv
         load_dotenv(os.path.join(config.BASE_DIR, ".env"), override=True)
