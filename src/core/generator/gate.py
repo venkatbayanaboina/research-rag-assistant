@@ -34,7 +34,7 @@ class GeminiGate(BaseModelGate):
             try:
                 from google.colab import userdata
                 api_key = userdata.get("GEMINI_API_KEY")
-            except ImportError:
+            except Exception:
                 pass
                 
         if not api_key:
@@ -119,7 +119,7 @@ class OpenRouterGate(BaseModelGate):
             try:
                 from google.colab import userdata
                 api_key = userdata.get("OPENROUTER_API_KEY")
-            except ImportError:
+            except Exception:
                 pass
                 
         if not api_key:
