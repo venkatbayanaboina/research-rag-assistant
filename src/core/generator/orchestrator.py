@@ -6,7 +6,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
 import config
 from src.core.vector_store import search_store, search_image_store, get_registry
 from src.core.generator import generate_answer, generate_summary, generate_section_summaries, generate_comparison
-from app.components.router import route_user_intent
+from src.core.generator.router import route_user_intent
 
 def execute_rag_pipeline(prompt, indexed_docs, use_rerank=None, chat_history=None):
     """

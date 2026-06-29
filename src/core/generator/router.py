@@ -1,10 +1,9 @@
 import os
 import json
 import sys
-from src.core.generator.client import get_gemini_client
 from google.genai import types
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import config
 
 def route_user_intent(prompt, indexed_files):
