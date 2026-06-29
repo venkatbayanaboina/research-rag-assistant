@@ -83,7 +83,6 @@ class OpenRouterGate(BaseModelGate):
         })
         
         payload = {
-            "model": "openrouter/free",
             "messages": messages,
             "temperature": temperature
         }
@@ -91,14 +90,55 @@ class OpenRouterGate(BaseModelGate):
         if response_mime_type == "application/json":
             payload["response_format"] = {"type": "json_object"}
             
-        print("Sending request to OpenRouter (Model: openrouter/free)...")
-        response = requests.post(url, headers=headers, json=payload)
+        # Rotate through highly capable, permanently free models on OpenRouter
+        models = [
+            "meta-llama/llama-3-8b-instruct:free",
+            "qwen/qwen-2-7b-instruct:free",
+            "openrouter/free"
+        ]
         
-        if response.status_code == 200:
-            res_data = response.json()
+        last_error = None
+        for model in models:
+            payload["model"] = model
+            print(f"Sending request to OpenRouter (Model: {model})...")
+            
             try:
-                return res_data["choices"][0]["message"]["content"]
-            except (KeyError, IndexError):
-                raise ValueError(f"Unexpected response structure from OpenRouter: {res_data}")
-        else:
-            raise RuntimeError(f"OpenRouter API returned error status {response.status_code}: {response.text}")
+                response = requests.post(url, headers=headers, json=payload)
+                if response.status_code == 200:
+                    res_data = response.json()
+                    content = res_data["choices"][0]["message"]["content"].strip()
+                    
+                    # Clean markdown code blocks if the model wrapped JSON
+                    cleaned_content = content
+                    if cleaned_content.startswith("```json"):
+                        cleaned_content = cleaned_content[7:]
+                    if cleaned_content.startswith("```"):
+                        cleaned_content = cleaned_content[3:]
+                    if cleaned_content.endswith("```"):
+                        cleaned_content = cleaned_content[:-3]
+                    cleaned_content = cleaned_content.strip()
+                    
+                    # Guardrail: Check if a safety classification model (e.g. Llama-Guard) intercepted the request
+                    if "user safety: safe" in cleaned_content.lower():
+                        print(f"⚠️ OpenRouter Model {model} request was safety-filtered (returned '{content}'). Rotating model...")
+                        continue
+                        
+                    # Guardrail: If JSON requested, verify that the returned string is valid JSON
+                    if response_mime_type == "application/json":
+                        try:
+                            import json
+                            json.loads(cleaned_content)
+                        except json.JSONDecodeError:
+                            print(f"⚠️ OpenRouter Model {model} failed to return valid JSON. Rotating model...")
+                            continue
+                            
+                    return content
+                else:
+                    print(f"⚠️ OpenRouter Model {model} failed with status {response.status_code}: {response.text}")
+                    last_error = f"API Status {response.status_code}: {response.text}"
+            except Exception as e:
+                print(f"⚠️ OpenRouter Model {model} raised exception: {e}")
+                last_error = e
+                continue
+                
+        raise RuntimeError(f"All OpenRouter candidate models failed. Last error: {last_error}")
