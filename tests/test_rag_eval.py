@@ -90,6 +90,47 @@ class LLMGateJudge(DeepEvalBaseLLM):
     def load_model(self):
         return self
 
+    def clean_json_verdicts(self, json_str: str) -> str:
+        """Self-healing JSON cleaner to normalize typos like 'verdet' or 'verdit' to 'verdict'."""
+        import json
+        try:
+            data = json.loads(json_str)
+            if isinstance(data, dict):
+                cleaned_data = {}
+                # 1. Clean root-level keys
+                for k, v in data.items():
+                    k_clean = k.lower().strip()
+                    if k_clean in ("verdict", "verdicts", "verdet", "verdets", "verdit", "verdits"):
+                        cleaned_data["verdicts"] = v
+                    else:
+                        cleaned_data[k] = v
+                
+                # 2. Clean items inside the verdicts list
+                if "verdicts" in cleaned_data and isinstance(cleaned_data["verdicts"], list):
+                    cleaned_verdicts = []
+                    for item in cleaned_data["verdicts"]:
+                        if isinstance(item, dict):
+                            cleaned_item = {}
+                            for k, v in item.items():
+                                k_clean = k.lower().strip()
+                                if k_clean in ("verdict", "verdet", "verdit"):
+                                    cleaned_item["verdict"] = v
+                                else:
+                                    cleaned_item[k] = v
+                            cleaned_verdicts.append(cleaned_item)
+                        else:
+                            cleaned_verdicts.append(item)
+                    cleaned_data["verdicts"] = cleaned_verdicts
+                
+                return json.dumps(cleaned_data)
+        except Exception as e:
+            print(f"⚠️ JSON self-healing failed to parse: {e}")
+        
+        # Fallback to regex-like string replacements
+        modified = json_str.replace('"verdet":', '"verdict":').replace('"verdit":', '"verdict":')
+        modified = modified.replace('"verdets":', '"verdicts":').replace('"verdits":', '"verdicts":')
+        return modified
+
     def generate(self, prompt: str) -> str:
         if self.use_ollama:
             import requests
@@ -111,7 +152,8 @@ class LLMGateJudge(DeepEvalBaseLLM):
                     
                 response = requests.post("http://localhost:11434/api/generate", json=payload, timeout=120)
                 if response.status_code == 200:
-                    return response.json()["response"]
+                    raw_res = response.json()["response"]
+                    return self.clean_json_verdicts(raw_res)
             except Exception as e:
                 print(f"⚠️ Local Ollama query failed: {e}. Falling back to cloud LLMGate...")
                 
@@ -147,7 +189,8 @@ class LLMGateJudge(DeepEvalBaseLLM):
                 
                 response = requests.post("http://localhost:11434/api/generate", json=payload, timeout=120)
                 if response.status_code == 200:
-                    return response.json()["response"]
+                    raw_res = response.json()["response"]
+                    return self.clean_json_verdicts(raw_res)
             except Exception as e:
                 print(f"⚠️ Local Ollama structured query failed: {e}. Falling back to cloud LLMGate...")
                 

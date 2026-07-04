@@ -43,8 +43,10 @@ def generate_answer(query, search_results, image_results=None, chat_history=None
 =============================
   GENERATION RULES
 =============================     
-Answer the question using the retrieved text context and any attached images/diagrams.
-If the answer cannot be found in the retrieved context, say:
+1. Answer the question using ONLY the retrieved text context and any attached images/diagrams.
+2. Output ONLY the direct answer. Do NOT include any conversational introduction, summary, or prefix (e.g. do NOT say 'Based on the context' or 'Here is the answer'). Start directly with the factual response.
+3. Do NOT search the web under any circumstances.
+4. If the answer cannot be found in the retrieved context, say:
 "I could not find the answer in the input documents."
 """
 

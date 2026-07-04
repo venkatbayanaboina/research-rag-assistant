@@ -13,8 +13,12 @@ _model = None
 _clip_model = None
 
 def get_device():
-    """Detects if GPU is available to accelerate embedding generation."""
-    return "cuda" if torch.cuda.is_available() else "cpu"
+    """Detects if GPU (CUDA or MPS) is available to accelerate embedding generation."""
+    if torch.cuda.is_available():
+        return "cuda"
+    elif hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
+        return "mps"
+    return "cpu"
 
 def get_model():
     """Lazy-loads and caches the SentenceTransformer model for text embeddings (BGE)."""

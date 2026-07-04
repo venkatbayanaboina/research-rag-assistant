@@ -76,7 +76,7 @@ class GeminiGate(BaseModelGate):
                 is_429 = "429" in err_msg or "RESOURCE_EXHAUSTED" in err_msg or "RATE" in err_msg
                 
                 # Check if it is a daily quota exhaustion (can't be fixed by waiting)
-                is_daily_quota = "DAILY" in err_msg or "QUOTA" in err_msg
+                is_daily_quota = "DAILY" in err_msg or "PERDAY" in err_msg
                 
                 if is_daily_quota:
                     raise GeminiQuotaExhaustedError(e)
