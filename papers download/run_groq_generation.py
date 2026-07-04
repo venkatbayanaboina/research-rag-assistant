@@ -20,8 +20,8 @@ MODEL_NAME = "llama-3.3-70b-versatile"
 # Throttling per thread to stay under 12,000 TPM
 RATE_LIMIT_DELAY = 7.5
 
-# Thread lock to prevent concurrent write collisions to the main file
-db_lock = threading.Lock()
+# Thread lock to prevent concurrent write collisions to the main file (using RLock to prevent self-deadlocks)
+db_lock = threading.RLock()
 
 def load_data() -> dict:
     if not RAG_OUTPUT.exists():
