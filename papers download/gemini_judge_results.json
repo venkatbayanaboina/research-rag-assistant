@@ -1,0 +1,182 @@
+{
+  "1407.7906_Q01": {
+    "question_id": "1407.7906_Q01",
+    "question_quality": 5,
+    "answer_accuracy": 5,
+    "evidence_relevance": 5,
+    "rag_suitability": 5,
+    "overall_score": 5.0,
+    "comment": "Excellent fundamental question that captures the core thesis of the paper and is highly representative of a natural user query."
+  },
+  "1407.7906_Q02": {
+    "question_id": "1407.7906_Q02",
+    "question_quality": 4,
+    "answer_accuracy": 5,
+    "evidence_relevance": 5,
+    "rag_suitability": 4,
+    "overall_score": 4.5,
+    "comment": "Good technical question, though referencing equations purely by number can be brittle in RAG systems where parsed mathematical formatting varies."
+  },
+  "1407.7906_Q03": {
+    "question_id": "1407.7906_Q03",
+    "question_quality": 4,
+    "answer_accuracy": 5,
+    "evidence_relevance": 5,
+    "rag_suitability": 4,
+    "overall_score": 4.5,
+    "comment": "Solid multimodal question, though requiring the user to know the specific figure number slightly reduces its naturalness for text-based RAG."
+  },
+  "1407.7906_Q04": {
+    "question_id": "1407.7906_Q04",
+    "question_quality": 5,
+    "answer_accuracy": 5,
+    "evidence_relevance": 5,
+    "rag_suitability": 5,
+    "overall_score": 5.0,
+    "comment": "Perfect factual question for retrieving contextual and historical background information from the introduction."
+  },
+  "1407.7906_Q05": {
+    "question_id": "1407.7906_Q05",
+    "question_quality": 4,
+    "answer_accuracy": 5,
+    "evidence_relevance": 5,
+    "rag_suitability": 3,
+    "overall_score": 4.2,
+    "comment": "Accurate extraction, but querying by specific equation numbers to fetch mathematical derivations is less representative of realistic RAG workflows."
+  },
+  "1407.7906_Q06": {
+    "question_id": "1407.7906_Q06",
+    "question_quality": 4,
+    "answer_accuracy": 5,
+    "evidence_relevance": 5,
+    "rag_suitability": 4,
+    "overall_score": 4.5,
+    "comment": "Thorough answer that effectively captures the visual and structural information described in the figure's associated text."
+  },
+  "1407.7906_Q07": {
+    "question_id": "1407.7906_Q07",
+    "question_quality": 5,
+    "answer_accuracy": 5,
+    "evidence_relevance": 5,
+    "rag_suitability": 5,
+    "overall_score": 5.0,
+    "comment": "Strong conceptual question that tests the retrieval system's ability to find and synthesize the authors' core claims and hypotheses."
+  },
+  "1407.7906_Q08": {
+    "question_id": "1407.7906_Q08",
+    "question_quality": 4,
+    "answer_accuracy": 5,
+    "evidence_relevance": 5,
+    "rag_suitability": 3,
+    "overall_score": 4.2,
+    "comment": "A very complex formulation that might be too strictly tied to exact document notation to be a common user RAG query."
+  },
+  "1407.7906_Q09": {
+    "question_id": "1407.7906_Q09",
+    "question_quality": 4,
+    "answer_accuracy": 5,
+    "evidence_relevance": 5,
+    "rag_suitability": 4,
+    "overall_score": 4.5,
+    "comment": "Good synthesis of the proposed mechanism, asking 'how' it works conceptually rather than just relying on visual identification."
+  },
+  "1407.7906_Q10": {
+    "question_id": "1407.7906_Q10",
+    "question_quality": 5,
+    "answer_accuracy": 5,
+    "evidence_relevance": 5,
+    "rag_suitability": 5,
+    "overall_score": 5.0,
+    "comment": "Excellent citation-based question that is highly realistic and appropriate for academic document RAG evaluation."
+  },
+  "1407.7906_Q11": {
+    "question_id": "1407.7906_Q11",
+    "question_quality": 5,
+    "answer_accuracy": 5,
+    "evidence_relevance": 5,
+    "rag_suitability": 5,
+    "overall_score": 5.0,
+    "comment": "Excellent question that demands precise retrieval and comprehension of mathematical notation within the paper's context."
+  },
+  "1407.7906_Q12": {
+    "question_id": "1407.7906_Q12",
+    "question_quality": 4,
+    "answer_accuracy": 5,
+    "evidence_relevance": 5,
+    "rag_suitability": 4,
+    "overall_score": 4.5,
+    "comment": "Good RAG target, though explicitly referencing 'Figure 4' slightly reduces standalone question naturalness."
+  },
+  "1407.7906_Q13": {
+    "question_id": "1407.7906_Q13",
+    "question_quality": 5,
+    "answer_accuracy": 5,
+    "evidence_relevance": 5,
+    "rag_suitability": 5,
+    "overall_score": 5.0,
+    "comment": "Very strong, context-independent question perfectly suited for testing semantic retrieval."
+  },
+  "1407.7906_Q14": {
+    "question_id": "1407.7906_Q14",
+    "question_quality": 5,
+    "answer_accuracy": 5,
+    "evidence_relevance": 5,
+    "rag_suitability": 5,
+    "overall_score": 5.0,
+    "comment": "Highly specific and complex, rigorously testing a RAG system's ability to extract technical comparisons."
+  },
+  "1407.7906_Q15": {
+    "question_id": "1407.7906_Q15",
+    "question_quality": 4,
+    "answer_accuracy": 5,
+    "evidence_relevance": 5,
+    "rag_suitability": 4,
+    "overall_score": 4.5,
+    "comment": "Accurate and relevant, though referring to specific figure numbers makes the question slightly less natural for an end-user query."
+  },
+  "1408.5882_Q01": {
+    "question_id": "1408.5882_Q01",
+    "question_quality": 3,
+    "answer_accuracy": 5,
+    "evidence_relevance": 5,
+    "rag_suitability": 3,
+    "overall_score": 4.0,
+    "comment": "The phrase 'this paper' is ambiguous for a general RAG system and would require conversational context or metadata filtering."
+  },
+  "1408.5882_Q02": {
+    "question_id": "1408.5882_Q02",
+    "question_quality": 4,
+    "answer_accuracy": 5,
+    "evidence_relevance": 5,
+    "rag_suitability": 5,
+    "overall_score": 4.8,
+    "comment": "Strong two-part question that demands retrieving both a conceptual role and a specific factual source."
+  },
+  "1408.5882_Q03": {
+    "question_id": "1408.5882_Q03",
+    "question_quality": 5,
+    "answer_accuracy": 5,
+    "evidence_relevance": 5,
+    "rag_suitability": 5,
+    "overall_score": 5.0,
+    "comment": "Excellent needle-in-a-haystack evaluation question that requires precise extraction of multiple numerical constraints."
+  },
+  "1408.5882_Q04": {
+    "question_id": "1408.5882_Q04",
+    "question_quality": 4,
+    "answer_accuracy": 5,
+    "evidence_relevance": 5,
+    "rag_suitability": 5,
+    "overall_score": 4.8,
+    "comment": "A solid question for RAG evaluation, extracting a specific quantifiable empirical result from the text."
+  },
+  "1408.5882_Q05": {
+    "question_id": "1408.5882_Q05",
+    "question_quality": 4,
+    "answer_accuracy": 5,
+    "evidence_relevance": 5,
+    "rag_suitability": 4,
+    "overall_score": 4.5,
+    "comment": "Accurately captures architectural details, but the explicit 'Figure 1' reference assumes the user already knows the document layout."
+  }
+}

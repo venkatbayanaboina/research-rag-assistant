@@ -1,0 +1,317 @@
+# 📚 Papers Evaluation Tracking Checklist
+
+- [x] 1407.7906 - How Auto-Encoders Could Provide Credit Assignment in Deep Networks via Target Propagation
+- [x] 1408.5882 - Convolutional Neural Networks for Sentence Classification
+- [x] 1409.3215 - Sequence to Sequence Learning with Neural Networks
+- [x] 1409.7770 - Entanglement-Based Machine Learning on a Quantum Computer
+- [x] 1412.0233 - The Loss Surfaces of Multilayer Networks
+- [x] 1412.5474 - Flattened Convolutional Neural Networks for Feedforward Acceleration
+- [x] 1412.6544 - Qualitatively characterizing neural network optimization problems
+- [x] 1412.6558 - Random Walk Initialization for Training Very Deep Feedforward Networks
+- [x] 1412.7091 - Efficient Exact Gradient Update for training Deep Networks with Very Large Sparse Targets
+- [x] 1412.7419 - ADASECANT: Robust Adaptive Secant Method for Stochastic Gradient
+- [x] 1412.7755 - Multiple Object Recognition with Visual Attention
+- [x] 1501.00092 - Image Super-Resolution Using Deep Convolutional Networks
+- [x] 1502.01710 - Text Understanding from Scratch
+- [x] 1502.02551 - Deep Learning with Limited Numerical Precision
+- [x] 1502.06464 - Rectified Factor Networks
+- [x] 1503.03244 - Convolutional Neural Network Architectures for Matching Natural Language Sentences
+- [x] 1503.03535 - On Using Monolingual Corpora in Neural Machine Translation
+- [x] 1503.04881 - Long Short-Term Memory Over Tree Structures
+- [x] 1503.08873 - Fast Label Embeddings for Extremely Large Output Spaces
+- [x] 1504.00941 - A Simple Way to Initialize Recurrent Networks of Rectified Linear Units
+- [x] 1505.05424 - Weight Uncertainty in Neural Networks
+- [x] 1506.01057 - A Hierarchical Neural Autoencoder for Paragraphs and Documents
+- [x] 1506.05163 - Deep Convolutional Networks on Graph-Structured Data
+- [x] 1506.06442 - A Deep Memory-based Architecture for Sequence-to-Sequence Learning
+- [x] 1506.06825 - DeepStereo: Learning to Predict New Views from the World's Imagery
+- [x] 1506.07285 - Ask Me Anything: Dynamic Memory Networks for Natural Language Processing
+- [x] 1506.07650 - Semantic Relation Classification via Convolutional Neural Networks with Simple Negative Sampling
+- [x] 1506.08941 - Language Understanding for Text-based Games Using Deep Reinforcement Learning
+- [x] 1507.01053 - Describing Multimedia Content using Attention-based Encoder--Decoder Networks
+- [x] 1507.02030 - Beyond Convexity: Stochastic Quasi-Convex Optimization
+- [x] 1507.07680 - Training recurrent networks online without backtracking
+- [x] 1508.00952 - Graphical Newton
+- [x] 1508.02096 - Finding Function in Form: Compositional Character Models for Open Vocabulary Word Representation
+- [x] 1508.04945 - DeepWriterID: An End-to-end Online Text-independent Writer Identification System
+- [x] 1509.04612 - Adapting Resilient Propagation for Deep Learning
+- [x] 1509.06569 - Tensorizing Neural Networks
+- [x] 1510.00149 - Deep Compression: Compressing Deep Neural Networks with Pruning, Trained Quantization and Huffman Coding
+- [x] 1510.01722 - Structured Transforms for Small-Footprint Deep Learning
+- [x] 1510.01799 - Efficient Per-Example Gradient Computations
+- [x] 1510.05336 - Clustering is Easy When ....What?
+- [x] 1510.06356 - Application of Quantum Annealing to Training of Deep Neural Networks
+- [x] 1511.05641 - Net2Net: Accelerating Learning via Knowledge Transfer
+- [x] 1511.06241 - Convolutional Clustering for Unsupervised Learning
+- [x] 1511.06279 - Neural Programmer-Interpreters
+- [x] 1511.06392 - Neural Random-Access Machines
+- [x] 1511.06434 - Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks
+- [x] 1511.06807 - Adding Gradient Noise Improves Learning for Very Deep Networks
+- [x] 1511.06909 - BlackOut: Speeding up Recurrent Neural Network Language Models With Very Large Vocabularies
+- [x] 1511.08130 - A Roadmap towards Machine Intelligence
+- [x] 1511.08400 - Regularizing RNNs by Stabilizing Activations
+- [x] 1409.2329 - Recurrent Neural Network Regularization
+- [x] 1409.5185 - Deeply-Supervised Nets
+- [x] 1410.0759 - cuDNN: Efficient Primitives for Deep Learning
+- [x] 1410.1054 - Experimental Realization of Quantum Artificial Intelligence
+- [x] 1410.4615 - Learning to Execute
+- [x] 1412.2007 - On Using Very Large Target Vocabulary for Neural Machine Translation
+- [x] 1412.6071 - Fractional Max-Pooling
+- [x] 1412.7149 - Deep Fried Convnets
+- [x] 1412.7449 - Grammar as a Foreign Language
+- [x] 1502.03492 - Gradient-based Hyperparameter Optimization through Reversible Learning
+- [x] 1502.04623 - DRAW: A Recurrent Neural Network For Image Generation
+- [x] 1502.04681 - Unsupervised Learning of Video Representations using LSTMs
+- [x] 1502.05698 - Towards AI-Complete Question Answering: A Set of Prerequisite Toy Tasks
+- [x] 1502.07257 - Breaking Sticks and Ambiguities with Adaptive Skip-gram
+- [x] 1503.01838 - Encoding Source Language with Convolutional Neural Network for Machine Translation
+- [x] 1503.03832 - FaceNet: A Unified Embedding for Face Recognition and Clustering
+- [x] 1503.08895 - End-To-End Memory Networks
+- [x] 1504.00641 - A Probabilistic Theory of Deep Learning
+- [x] 1504.00702 - End-to-End Training of Deep Visuomotor Policies
+- [x] 1504.04658 - Deep Karaoke: Extracting Vocals from Musical Mixtures Using a Convolutional Deep Neural Network
+- [x] 1506.03877 - Bidirectional Helmholtz Machines
+- [x] 1506.04214 - Convolutional LSTM Network: A Machine Learning Approach for Precipitation Nowcasting
+- [x] 1507.01526 - Grid Long Short-Term Memory
+- [x] 1507.04808 - Building End-To-End Dialogue Systems Using Generative Hierarchical Neural Network Models
+- [x] 1507.08050 - Probabilistic Programming in Python using PyMC
+- [x] 1508.00019 - A Minimal Architecture for General Cognition
+- [x] 1509.00519 - Importance Weighted Autoencoders
+- [x] 1509.05009 - On the Expressive Power of Deep Learning: A Tensor Analysis
+- [x] 1509.08379 - Learning FRAME Models Using CNN Filters
+- [x] 1509.08731 - Variational Information Maximisation for Intrinsically Motivated Reinforcement Learning
+- [x] 1510.03776 - Towards Trainable Media: Using Waves for Neural Network-Style Training
+- [x] 1511.02954 - Reducing the Training Time of Neural Networks by Partitioning
+- [x] 1511.05644 - Adversarial Autoencoders
+- [x] 1511.05952 - Prioritized Experience Replay
+- [x] 1511.06068 - Reducing Overfitting in Deep Networks by Decorrelating Representations
+- [x] 1511.06390 - Unsupervised and Semi-supervised Learning with Categorical Generative Adversarial Networks
+- [x] 1511.06421 - Deep Manifold Traversal: Changing Labels with Convolutional Features
+- [x] 1511.06426 - Reasoning in Vector Space: An Exploratory Study of Question Answering
+- [x] 1511.06440 - Towards Principled Unsupervised Learning
+- [x] 1511.06827 - GradNets: Dynamic Interpolation Between Neural Architectures
+- [x] 1104.5557 - Randomized algorithms for matrices and data
+- [x] 1212.5701 - ADADELTA: An Adaptive Learning Rate Method
+- [x] 1306.0543 - Predicting Parameters in Deep Learning
+- [x] 1307.0411 - Quantum algorithms for supervised and unsupervised machine learning
+- [x] 1310.2700 - Analyzing Big Data with Dynamic Quantum Clustering
+- [x] 1402.3511 - A Clockwork RNN
+- [x] 1404.2334 - Informed RRT*: Optimal Sampling-based Path Planning Focused via Direct Sampling of an Admissible Ellipsoidal Heuristic
+- [x] 1404.7828 - Deep Learning in Neural Networks: An Overview
+- [x] 1405.1380 - Is Joint Training Better for Deep Auto-Encoders?
+- [x] 1406.6247 - Recurrent Models of Visual Attention
+- [x] 1409.1556 - Very Deep Convolutional Networks for Large-Scale Image Recognition
+- [x] 1409.4842 - Going Deeper with Convolutions
+- [x] 1412.4729 - Translating Videos to Natural Language Using Deep Recurrent Neural Networks
+- [x] 1412.6621 - Why does Deep Learning work? - A perspective from Group Theory
+- [x] 1412.7026 - Language Recognition using Random Indexing
+- [x] 1412.7155 - Learning Compact Convolutional Neural Networks with Nested Dropout
+- [x] 1501.04719 - Stability of Surface Contacts for Humanoid Robots: Closed-Form Formulae of the Contact Wrench Cone for Rectangular Support Areas
+- [x] 1502.05336 - Probabilistic Backpropagation for Scalable Learning of Bayesian Neural Networks
+- [x] 1502.05767 - Automatic differentiation in machine learning: a survey
+- [x] 1503.02364 - Neural Responding Machine for Short-Text Conversation
+- [x] 1503.03167 - Deep Convolutional Inverse Graphics Network
+- [x] 1503.03438 - A mathematical motivation for complex-valued convolutional networks
+- [x] 1503.03585 - Deep Unsupervised Learning using Nonequilibrium Thermodynamics
+- [x] 1503.04069 - LSTM: A Search Space Odyssey
+- [x] 1504.02518 - Unsupervised Feature Learning from Temporal Data
+- [x] 1504.03398 - An average-case depth hierarchy theorem for Boolean circuits
+- [x] 1505.00521 - Reinforcement Learning Neural Turing Machines - Revised
+- [x] 1505.01504 - A Fixed-Size Encoding Method for Variable-Length Sequences with its Application to Neural Network Language Models
+- [x] 1505.05114 - Solving Random Quadratic Systems of Equations Is Nearly as Easy as Solving Linear Systems
+- [x] 1506.09016 - Online Learning to Sample
+- [x] 1508.00657 - Improved Transition-Based Parsing by Modeling Characters instead of Words with LSTMs
+- [x] 1508.03790 - Depth-Gated LSTM
+- [x] 1508.06585 - Towards universal neural nets: Gibbs machines and ACE
+- [x] 1509.00913 - On-the-Fly Learning in a Perpetual Learning Machine
+- [x] 1509.08967 - Very Deep Multilingual Convolutional Neural Networks for LVCSR
+- [x] 1509.09308 - Fast Algorithms for Convolutional Neural Networks
+- [x] 1510.03931 - Structured Memory for Neural Turing Machines
+- [x] 1510.07211 - On End-to-End Program Generation from User Intention by Deep Neural Networks
+- [x] 1511.01432 - Semi-supervised Sequence Learning
+- [x] 1511.06464 - Unitary Evolution Recurrent Neural Networks
+- [x] 1511.09249 - On Learning to Think: Algorithmic Information Theory for Novel Combinations of Reinforcement Learning Controllers and Recurrent Neural World Models
+- [x] 0309048 - Goedel Machines: Self-Referential Universal Problem Solvers Making Provably Optimal Self-Improvements
+- [x] 0903.0340 - Physics, Topology, Logic and Computation: A Rosetta Stone
+- [x] 1103.0398 - Natural Language Processing (almost) from Scratch
+- [x] 1105.1186 - Sampling-based Algorithms for Optimal Motion Planning
+- [x] 1206.2082 - Dimension Independent Similarity Computation
+- [x] 1206.4683 - Marginalized Denoising Autoencoders for Domain Adaptation
+- [x] 1207.0580 - Improving neural networks by preventing co-adaptation of feature detectors
+- [x] 1211.5590 - Theano: new features and speed improvements
+- [x] 1212.0901 - Advances in Optimizing Recurrent Networks
+- [x] 1301.3666 - Zero-Shot Learning Through Cross-Modal Transfer
+- [x] 1301.7115 - Statistical mechanics of complex neural systems and high dimensional data
+- [x] 1302.4389 - Maxout Networks
+- [x] 1303.6055 - A quantum speedup in machine learning: Finding a N-bit Boolean function for a classification
+- [x] 1304.1467 - Dimension Independent Matrix Square using MapReduce
+- [x] 1305.6663 - Generalized Denoising Auto-Encoders as Generative Models
+- [x] 1309.4168 - Exploiting Similarities among Languages for Machine Translation
+- [x] 1310.4546 - Distributed Representations of Words and Phrases and their Compositionality
+- [x] 1312.3005 - One Billion Word Benchmark for Measuring Progress in Statistical Language Modeling
+- [x] 1312.4400 - Network In Network
+- [x] 1312.4659 - DeepPose: Human Pose Estimation via Deep Neural Networks
+- [x] 1312.5602 - Playing Atari with Deep Reinforcement Learning
+- [x] 1312.6026 - How to Construct Deep Recurrent Neural Networks
+- [x] 1312.6034 - Deep Inside Convolutional Networks: Visualising Image Classification Models and Saliency Maps
+- [x] 1312.6055 - Unit Tests for Stochastic Optimization
+- [x] 1312.6114 - Auto-Encoding Variational Bayes
+- [x] 1312.6120 - Exact solutions to the nonlinear dynamics of learning in deep linear neural networks
+- [x] 1402.1869 - On the Number of Linear Regions of Deep Neural Networks
+- [x] 1402.3337 - Zero-bias autoencoders and the benefits of co-adapting features
+- [x] 1404.2188 - A Convolutional Neural Network for Modelling Sentences
+- [x] 1404.4171 - Dropout Training for Support Vector Machines
+- [x] 1405.4053 - Distributed Representations of Sentences and Documents
+- [x] 1405.4604 - On the saddle point problem for non-convex optimization
+- [x] 1405.5713 - Spectral tensor-train decomposition
+- [x] 1405.5848 - Batch Informed Trees (BIT*): Sampling-based Optimal Planning via the Heuristically Guided Search of Implicit Random Geometric Graphs
+- [x] 1406.1078 - Learning Phrase Representations using RNN Encoder-Decoder for Statistical Machine Translation
+- [x] 1406.1831 - Analyzing noise in autoencoders and deep networks
+- [x] 1406.2294 - A Fast, Minimal Memory, Consistent Hash Algorithm
+- [x] 1406.2572 - Identifying and attacking the saddle point problem in high-dimensional non-convex optimization
+- [x] 1406.2751 - Reweighted Wake-Sleep
+- [x] 1406.5298 - Semi-Supervised Learning with Deep Generative Models
+- [x] 1406.7444 - Learning to Deblur
+- [x] 1408.5093 - Caffe: Convolutional Architecture for Fast Feature Embedding
+- [x] 1409.0473 - Neural Machine Translation by Jointly Learning to Align and Translate
+- [x] 1409.2752 - Winner-Take-All Autoencoders
+- [x] 1410.0781 - SimNets: A Generalization of Convolutional Networks
+- [x] 1410.3831 - An exact mapping between the Variational Renormalization Group and Deep Learning
+- [x] 1410.3916 - Memory Networks
+- [x] 1410.8251 - Notes on Noise Contrastive Estimation and Negative Sampling
+- [x] 1411.0030 - A* Sampling
+- [x] 1411.0247 - Random feedback weights support learning in deep neural networks
+- [x] 1411.6836 - Deep convolutional filter banks for texture recognition and segmentation
+- [x] 1411.7610 - Learning Stochastic Recurrent Networks
+- [x] 1412.1632 - Deep Learning for Answer Sentence Selection
+- [x] 1412.4446 - Domain-Adversarial Neural Networks
+- [x] 1412.5896 - On the Stability of Deep Networks
+- [x] 1412.6181 - Crypto-Nets: Neural Networks over Encrypted Data
+- [x] 1412.6547 - Fast Label Embeddings via Randomized Linear Algebra
+- [x] 1412.6583 - Discovering Hidden Factors of Variation in Deep Networks
+- [x] 1412.6597 - An Analysis of Unsupervised Pre-training in Light of Recent Advances
+- [x] 1412.6806 - Striving for Simplicity: The All Convolutional Net
+- [x] 1412.6980 - Adam: A Method for Stochastic Optimization
+- [x] 1412.7024 - Training deep neural networks with low precision multiplications
+- [x] 1412.7210 - Denoising autoencoder with modulated lateral connections learns invariant representations of natural images
+- [x] 1412.7580 - Fast Convolutional Nets With fbfft: A GPU Performance Evaluation
+- [x] 1412.7753 - Learning Longer Memory in Recurrent Neural Networks
+- [x] 1502.01852 - Delving Deep into Rectifiers: Surpassing Human-Level Performance on ImageNet Classification
+- [x] 1502.02251 - From Pixels to Torques: Policy Learning with Deep Dynamical Models
+- [x] 1502.02367 - Gated Feedback Recurrent Neural Networks
+- [x] 1502.02476 - An Infinite Restricted Boltzmann Machine
+- [x] 1502.02478 - Efficient batchwise dropout training using submatrices
+- [x] 1502.03167 - Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift
+- [x] 1502.03436 - An exploration of parameter redundancy in deep networks with circulant projections
+- [x] 1502.03509 - MADE: Masked Autoencoder for Distribution Estimation
+- [x] 1502.03520 - A Latent Variable Model Approach to PMI-based Word Embeddings
+- [x] 1502.03648 - Over-Sampling in a Deep Neural Network
+- [x] 1502.04156 - Towards Biologically Plausible Deep Learning
+- [x] 1502.04390 - Equilibrated adaptive learning rates for non-convex optimization
+- [x] 1502.04434 - Invariant backpropagation: how to train a transformation-invariant neural network
+- [x] 1503.00075 - Improved Semantic Representations From Tree-Structured Long Short-Term Memory Networks
+- [x] 1503.01007 - Inferring Algorithmic Patterns with Stack-Augmented Recurrent Nets
+- [x] 1503.02531 - Distilling the Knowledge in a Neural Network
+- [x] 1503.07077 - Rotation-invariant convolutional neural networks for galaxy morphology prediction
+- [x] 1504.00548 - Learning to Understand Phrases by Embedding the Dictionary
+- [x] 1504.02462 - A Group Theoretic Perspective on Unsupervised Deep Learning
+- [x] 1504.06852 - FlowNet: Learning Optical Flow with Convolutional Networks
+- [x] 1504.07225 - Correlational Neural Networks
+- [x] 1504.08215 - Lateral Connections in Denoising Autoencoders Support Supervised Learning
+- [x] 1505.00387 - Highway Networks
+- [x] 1505.00393 - ReNet: A Recurrent Neural Network Based Alternative to Convolutional Networks
+- [x] 1505.00468 - VQA: Visual Question Answering
+- [x] 1505.00853 - Empirical Evaluation of Rectified Activations in Convolutional Network
+- [x] 1505.01121 - Ask Your Neurons: A Neural-based Approach to Answering Questions about Images
+- [x] 1505.01809 - Language Models for Image Captioning: The Quirks and What Works
+- [x] 1505.03159 - Monocular Object Instance Segmentation and Depth Ordering with CNNs
+- [x] 1505.05612 - Are You Talking to a Machine? Dataset and Methods for Multilingual Image Question Answering
+- [x] 1506.02075 - Large-scale Simple Question Answering with Memory Networks
+- [x] 1506.02078 - Visualizing and Understanding Recurrent Networks
+- [x] 1506.02216 - A Recurrent Latent Variable Model for Sequential Data
+- [x] 1506.02338 - Modeling Order in Neural Word Embeddings at Scale
+- [x] 1506.02516 - Learning to Transduce with Unbounded Memory
+- [x] 1506.02544 - Learning with Group Invariant Features: A Kernel Perspective
+- [x] 1506.02617 - Path-SGD: Path-Normalized Optimization in Deep Neural Networks
+- [x] 1506.02626 - Learning both Weights and Connections for Efficient Neural Networks
+- [x] 1506.03011 - Learning to Linearize Under Uncertainty
+- [x] 1506.03134 - Pointer Networks
+- [x] 1506.03340 - Teaching Machines to Read and Comprehend
+- [x] 1506.03767 - Spectral Representations for Convolutional Neural Networks
+- [x] 1506.04834 - Tree-structured composition in neural networks without tree-structured architectures
+- [x] 1506.05254 - Gradient Estimation Using Stochastic Computation Graphs
+- [x] 1506.05751 - Deep Generative Image Models using a Laplacian Pyramid of Adversarial Networks
+- [x] 1506.05869 - A Neural Conversational Model
+- [x] 1506.05908 - Deep Knowledge Tracing
+- [x] 1506.06726 - Skip-Thought Vectors
+- [x] 1506.08230 - Convolutional networks and learning invariant to homogeneous multiplicative scalings
+- [x] 1506.08473 - Beating the Perils of Non-Convexity: Guaranteed Training of Neural Networks using Tensor Methods
+- [x] 1506.08700 - Dropout as data augmentation
+- [x] 1506.08909 - The Ubuntu Dialogue Corpus: A Large Dataset for Research in Unstructured Multi-Turn Dialogue Systems
+- [x] 1507.02672 - Semi-Supervised Learning with Ladder Networks
+- [x] 1507.02743 - Locally Non-linear Embeddings for Extreme Multi-label Learning
+- [x] 1507.06228 - Training Very Deep Networks
+- [x] 1507.07998 - Document Embedding with Paragraph Vectors
+- [x] 1507.08286 - Deep Learning for Single-View Instance Recognition
+- [x] 1508.02933 - No Regret Bound for Extreme Bandits
+- [x] 1508.05003 - AdaDelay: Delay Adaptive Distributed Stochastic Convex Optimization
+- [x] 1508.05133 - Steps Toward Deep Kernel Methods from Infinite Neural Networks
+- [x] 1508.06576 - A Neural Algorithm of Artistic Style
+- [x] 1508.06615 - Character-Aware Neural Language Models
+- [x] 1508.07096 - Partitioning Large Scale Deep Belief Networks Using Dropout
+- [x] 1509.00552 - DAG-Recurrent Neural Networks For Scene Labeling
+- [x] 1509.01549 - Giraffe: Using Deep Reinforcement Learning to Play Chess
+- [x] 1509.02256 - Matrix Computations and Optimization in Apache Spark
+- [x] 1509.05329 - Recurrent Spatial Transformer Networks
+- [x] 1509.06664 - Reasoning about Entailment with Neural Attention
+- [x] 1509.06825 - Supersizing Self-supervision: Learning to Grasp from 50K Tries and 700 Robot Hours
+- [x] 1509.07385 - Provable approximation properties for deep neural networks
+- [x] 1509.08972 - VLSI Implementation of Deep Neural Network Using Integral Stochastic Computing
+- [x] 1510.01378 - Batch Normalized Recurrent Neural Networks
+- [x] 1510.02675 - Controlled Experiments for Word Embeddings
+- [x] 1510.02693 - Feedforward Sequential Memory Neural Networks without Recurrent Feedback
+- [x] 1510.03009 - Neural Networks with Few Multiplications
+- [x] 1510.03528 - $\ell_1$-regularized Neural Networks are Improperly Learnable in Polynomial Time
+- [x] 1510.05067 - How Important is Weight Symmetry in Backpropagation?
+- [x] 1510.05572 - On the Computability of AIXI
+- [x] 1510.06096 - When Are Nonconvex Problems Not Scary?
+- [x] 1510.06664 - Random Projections through multiple optical scattering: Approximating kernels at the speed of light
+- [x] 1510.07389 - The Human Kernel
+- [x] 1510.08565 - Attention with Intention for a Neural Network Conversation Model
+- [x] 1511.00083 - Why Neurons Have Thousands of Synapses, A Theory of Sequence Memory in Neocortex
+- [x] 1511.02301 - The Goldilocks Principle: Reading Children's Books with Explicit Memory Representations
+- [x] 1511.04586 - Character-based Neural Machine Translation
+- [x] 1511.04834 - Neural Programmer: Inducing Latent Programs with Gradient Descent
+- [x] 1511.05497 - Learning Neural Network Architectures using Backpropagation
+- [x] 1511.06114 - Multi-task Sequence to Sequence Learning
+- [x] 1511.06349 - Generating Sentences from a Continuous Space
+- [x] 1511.06391 - Order Matters: Sequence to sequence for sets
+- [x] 1511.06418 - Binding via Reconstruction Clustering
+- [x] 1511.06456 - Task Loss Estimation for Sequence Prediction
+- [x] 1511.07275 - Learning Simple Algorithms from Examples
+- [x] 1511.07289 - Fast and Accurate Deep Network Learning by Exponential Linear Units (ELUs)
+- [x] 1511.07916 - Natural Language Understanding with Distributed Representation
+- [x] 1106.5730 - HOGWILD!: A Lock-Free Approach to Parallelizing Stochastic Gradient Descent
+- [x] 1506.08669 - Efficient and Parsimonious Agnostic Active Learning
+- [x] 1402.0915 - Learning Ordered Representations with Nested Dropout
+- [x] 1507.02642 - Quantum Inspired Training for Boltzmann Machines
+- [x] 1301.3781 - Efficient Estimation of Word Representations in Vector Space
+- [x] 1312.5663 - k-Sparse Autoencoders
+- [x] 1411.5928 - Learning to Generate Chairs, Tables and Cars with Convolutional Networks
+- [x] 1511.08228 - Neural GPUs Learn Algorithms
+- [x] 1509.02971 - Continuous control with deep reinforcement learning
+- [x] 1508.04306 - Deep clustering: Discriminative embeddings for segmentation and separation
+- [x] 1412.7525 - Difference Target Propagation
+- [x] 1506.00619 - Blocks and Fuel: Frameworks for deep learning
+- [x] 1506.02025 - Spatial Transformer Networks
+- [x] 1402.2333 - Modeling sequential data using higher-order relational features and predictive training
+- [x] 1509.01626 - Character-level Convolutional Networks for Text Classification
+- [x] 1511.06303 - Alternative structures for character-level RNNs
+- [x] 1504.04788 - Compressing Neural Networks with the Hashing Trick
+- [x] 1508.02788 - The Effects of Hyperparameters on SGD Training of Neural Networks
+- [x] 1506.03099 - Scheduled Sampling for Sequence Prediction with Recurrent Neural Networks
+- [x] 1509.09292 - Convolutional Networks on Graphs for Learning Molecular Fingerprints
+- [x] 1506.06724 - Aligning Books and Movies: Towards Story-like Visual Explanations by Watching Movies and Reading Books
+- [x] 1411.4389 - Long-term Recurrent Convolutional Networks for Visual Recognition and Description
+- [x] 1412.3489 - Quantum Deep Learning
+- [x] 1410.5401 - Neural Turing Machines

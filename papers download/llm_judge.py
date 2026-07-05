@@ -28,7 +28,7 @@ JUDGE_OUT   = ROOT / "papers download" / "llm_judge_results.json"
 REPORT_OUT  = ROOT / "papers download" / "llm_judge_report.txt"
 
 # ── Cerebras API ──────────────────────────────────────────────────────────────
-CEREBRAS_API_KEY = os.getenv("CEREBRAS_API_KEY", "YOUR_CEREBRAS_API_KEY_HERE")
+CEREBRAS_API_KEY = os.getenv("CEREBRAS_API_KEY", "CEREBRAS_API_KEY")
 API_URL  = "https://api.cerebras.ai/v1/chat/completions"
 MODEL    = "gpt-oss-120b"
 RATE_LIMIT_DELAY = 6.0

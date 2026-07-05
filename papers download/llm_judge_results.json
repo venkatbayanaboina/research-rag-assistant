@@ -1,0 +1,62 @@
+{
+  "1511.06434_Q13": {
+    "question_id": "1511.06434_Q13",
+    "question": "According to Table 2, how does the DCGAN feature extractor compare with the supervised CNN using the same architecture on the SVHN task?",
+    "difficulty": "medium",
+    "question_type": "table",
+    "expected_answer": "DCGAN with an L2-SVM achieves a 22.48% error rate, outperforming the supervised CNN with the same architecture, which has a 28.87% validation error.",
+    "rag_answer": "The context does not provide information about Table 2, DCGAN feature extractors, supervised CNNs, or the SVHN task.",
+    "correctness": 1,
+    "completeness": 1,
+    "relevance": 1,
+    "reasoning": "The RAG answer incorrectly claims the information is missing from the context when a valid gold answer exists."
+  },
+  "1502.02551_Q10": {
+    "question_id": "1502.02551_Q10",
+    "question": "Based on Table 1, what percentage of the available Block RAM on the XCVK325T FPGA is utilized by the matrix multiplier?",
+    "difficulty": "medium",
+    "question_type": "table",
+    "expected_answer": "The matrix multiplier utilizes 75% of the available Block RAM (334 out of 445).",
+    "rag_answer": "The provided context does not contain information about Table 1, the XCVK325T FPGA, or the Block RAM utilization of the matrix multiplier.",
+    "correctness": 1,
+    "completeness": 1,
+    "relevance": 1,
+    "reasoning": "The RAG answer incorrectly states that the context lacks the required information when a definitive gold answer is present."
+  },
+  "1409.0473_Q04": {
+    "question_id": "1409.0473_Q04",
+    "question": "According to the conclusion, what remaining challenge do the authors identify for future neural machine translation systems?",
+    "difficulty": "easy",
+    "question_type": "text",
+    "expected_answer": "A major remaining challenge is handling unknown or rare words more effectively so that neural machine translation can match state-of-the-art systems in all contexts.",
+    "rag_answer": "The provided conclusion excerpt does not specify any remaining challenge for future neural machine translation systems.",
+    "correctness": 1,
+    "completeness": 1,
+    "relevance": 1,
+    "reasoning": "The RAG answer incorrectly claims the text does not identify a challenge when a specific one is outlined in the gold answer."
+  },
+  "1312.5602_Q12": {
+    "question_id": "1312.5602_Q12",
+    "question": "What relationship is expressed by Equation (1), and why is it fundamental to Q-learning?",
+    "difficulty": "hard",
+    "question_type": "equation",
+    "expected_answer": "Equation (1) is the Bellman optimality equation, expressing the optimal action-value as the expected immediate reward plus the discounted maximum future action-value. It provides the recursive relationship that underlies Q-learning updates.",
+    "rag_answer": "The provided context does not contain Equation (1) or any discussion of Q‑learning, so I cannot answer the question.",
+    "correctness": 1,
+    "completeness": 1,
+    "relevance": 1,
+    "reasoning": "The RAG answer incorrectly states that the context lacks Equation (1) and Q-learning details, contradicting the established gold answer."
+  },
+  "1211.5590_Q14": {
+    "question_id": "1211.5590_Q14",
+    "question": "According to Table 1, how does support for parallel functions differ between Torch7 and Theano?",
+    "difficulty": "medium",
+    "question_type": "table",
+    "expected_answer": "Torch7 widely uses OpenMP for parallel functions, whereas Theano's parallel execution is limited to BLAS and Conv2D operations.",
+    "rag_answer": "The context does not provide information about Table 1 or the support for parallel functions in Torch7 versus Theano.",
+    "correctness": 1,
+    "completeness": 1,
+    "relevance": 1,
+    "reasoning": "The RAG answer incorrectly claims the information about parallel functions in Torch7 and Theano is missing when a valid gold answer exists."
+  }
+}
