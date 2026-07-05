@@ -5,3 +5,4 @@ __pycache__/
 
 # Ignore raw PDFs inside storage, but keep indexes and registry tracked
 storage/raw_pdfs/
+*.zip
