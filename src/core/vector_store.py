@@ -86,15 +86,19 @@ def add_document_to_store(text_chunks, image_chunks, session_paths=None):
     """
     Appends text chunks to the BGE text index and visual images to the CLIP index.
     """
+    filename = None
+    if text_chunks:
+        filename = text_chunks[0]["source_file"]
+    elif image_chunks:
+        filename = image_chunks[0]["source_file"]
+        
+    if not filename:
+        return
+        
+    # Auto-delete existing records of the same document to support clean re-indexing/overwriting
+    delete_document_from_store(filename, session_paths=session_paths)
+    
     with db_lock:
-        filename = None
-        if text_chunks:
-            filename = text_chunks[0]["source_file"]
-        elif image_chunks:
-            filename = image_chunks[0]["source_file"]
-            
-        if not filename:
-            return
         
     # 1. Index Text Chunks
     if text_chunks:
@@ -278,19 +282,23 @@ def search_image_store(query, k=None):
     )
     return results
 
-def delete_document_from_store(filename):
+def delete_document_from_store(filename, session_paths=None):
     """
     Purges a document's text and visual chunks from both registries
     and reconstructs the FAISS indexes from the remaining vectors (API-free).
     """
     with db_lock:
-        registry = get_registry()
-        image_registry = get_image_registry()
+        registry = get_registry(session_paths)
+        image_registry = get_image_registry(session_paths)
         
         # 1. Identify indices to keep
         keep_text_indices = [idx for idx, c in enumerate(registry) if c["source_file"] != filename]
         keep_image_indices = [idx for idx, c in enumerate(image_registry) if c["source_file"] != filename]
         
+        # If nothing needs to be deleted, bypass reconstruction to save time
+        if len(keep_text_indices) == len(registry) and len(keep_image_indices) == len(image_registry):
+            return
+            
         new_registry = [registry[idx] for idx in keep_text_indices]
         new_image_registry = [image_registry[idx] for idx in keep_image_indices]
         
@@ -301,7 +309,7 @@ def delete_document_from_store(filename):
             chunk["image_id"] = idx
             
         # 2. Reconstruct Text Index
-        old_text_index = load_text_db()
+        old_text_index = load_text_db(session_paths)
         new_text_index = faiss.IndexFlatIP(1024)
         if keep_text_indices and old_text_index.ntotal > 0:
             vectors = []
@@ -312,7 +320,7 @@ def delete_document_from_store(filename):
                 new_text_index.add(np.array(vectors, dtype="float32"))
                 
         # 3. Reconstruct Image Index
-        old_image_index = load_image_db()
+        old_image_index = load_image_db(session_paths)
         new_image_index = faiss.IndexFlatIP(512)
         if keep_image_indices and old_image_index.ntotal > 0:
             img_vectors = []
@@ -323,7 +331,7 @@ def delete_document_from_store(filename):
                 new_image_index.add(np.array(img_vectors, dtype="float32"))
                 
         # 4. Save updated registries and FAISS indexes
-        paths = get_paths()
+        paths = get_paths(session_paths)
         with open(paths["chunks"], "w") as f:
             json.dump(new_registry, f, indent=2)
             
