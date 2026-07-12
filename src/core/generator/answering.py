@@ -49,6 +49,7 @@ def generate_answer(query, search_results, image_results=None, chat_history=None
 4. Do NOT search the web or bring in external knowledge not present in the context.
 5. If the user asks about the documents but the answer cannot be found in the retrieved context, say:
 "I could not find the answer in the input documents."
+6. Format all mathematical equations, formulas, symbols, and derivations using standard LaTeX notation: use double dollar signs ($$...$$) on separate lines for display block equations, and single dollar signs ($...$) for inline math. Never use unescaped brackets or braces (like [ \text{...} ]) for equations, as they break UI markdown rendering.
 """
 
     # 4. Construct content payload list (Text Prompt + PIL Images)
