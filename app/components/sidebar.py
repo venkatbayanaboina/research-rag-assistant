@@ -99,6 +99,7 @@ def render_sidebar():
             "Upload PDF files", 
             type=["pdf"], 
             accept_multiple_files=True,
+            key="pdf_uploader",
             help="Upload one or multiple research papers"
         )
         
@@ -116,13 +117,18 @@ def render_sidebar():
                     with open(file_path, "wb") as f:
                         f.write(uploaded_file.getbuffer())
                 
+                # Capture static file names/paths before clearing the uploader widget
+                file_info = [(os.path.join(paths["raw_pdfs"], f.name), f.name) for f in uploaded_files]
+                
                 def run_indexing_pipeline():
-                    for uploaded_file in uploaded_files:
-                        file_path = os.path.join(paths["raw_pdfs"], uploaded_file.name)
-                        bg_index_worker(file_path, strategy, uploaded_file.name, paths)
+                    for f_path, f_name in file_info:
+                        bg_index_worker(f_path, strategy, f_name, paths)
                         
                 thread = threading.Thread(target=run_indexing_pipeline)
                 thread.start()
+                
+                # Clear file uploader queue from UI state immediately
+                st.session_state.pdf_uploader = []
                 st.rerun()
 
         # Render persistent indexing status (non-blocking, allows chatting simultaneously)
