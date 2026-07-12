@@ -73,4 +73,4 @@ Attached Figures/Tables details:
 
     print(f"Generating multimodal comparison matrix between {doc_a_name} and {doc_b_name} with Gemini...")
     contents = [prompt] + pil_images
-    return generate_content_with_retry(contents, temperature=0.2)
+    return generate_content_with_retry(contents, temperature=0.0)

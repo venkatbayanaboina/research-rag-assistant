@@ -3,6 +3,6 @@ class GeminiQuotaExhaustedError(Exception):
     pass
 
 class BaseModelGate:
-    def generate(self, prompt, system_instruction=None, response_mime_type=None, temperature=0.3):
+    def generate(self, prompt, system_instruction=None, response_mime_type=None, temperature=0.0):
         """Generates text from prompts. Must be overridden by subclasses."""
         raise NotImplementedError()

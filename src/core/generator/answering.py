@@ -64,4 +64,4 @@ def generate_answer(query, search_results, image_results=None, chat_history=None
                     print(f"Failed to open image file at {path}: {e}")
 
     print("Synthesizing answer with Gemini...")
-    return generate_content_with_retry(contents, temperature=0.3)
+    return generate_content_with_retry(contents, temperature=0.0)

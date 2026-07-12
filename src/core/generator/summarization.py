@@ -114,7 +114,7 @@ Attached Figures/Tables details:
 {full_text}
 """
         contents = [prompt] + pil_images
-        return generate_content_with_retry(contents, temperature=0.2)
+        return generate_content_with_retry(contents, temperature=0.0)
         
     else:
         print("SYSTEM LOG: Document size exceeds threshold. Executing Hierarchical Map-Reduce Summarization...")
@@ -143,7 +143,7 @@ Attached Figures/Tables details:
 """
         print("SYSTEM LOG: Merging section summaries into master summary...")
         contents = [merge_prompt] + pil_images
-        return generate_content_with_retry(contents, temperature=0.2)
+        return generate_content_with_retry(contents, temperature=0.0)
 
 def generate_section_summaries(chunks):
     """
@@ -184,4 +184,4 @@ Format your output as a markdown section-by-section breakdown:
 """
 
     print(f"Generating section-wise summary for {filename} with Gemini...")
-    return generate_content_with_retry(prompt, temperature=0.2)
+    return generate_content_with_retry(prompt, temperature=0.0)

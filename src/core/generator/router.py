@@ -50,7 +50,7 @@ Return your decision strictly in JSON format matching this schema:
         from src.core.generator.client import generate_content_with_retry
         response_text = generate_content_with_retry(
             prompt=prompt,
-            temperature=0.1,
+            temperature=0.0,
             system_instruction=system_instruction,
             response_mime_type="application/json"
         )

@@ -74,7 +74,7 @@ class OllamaGate(BaseModelGate):
         except Exception:
             pass
 
-    def generate(self, prompt, system_instruction=None, response_mime_type=None, temperature=0.3):
+    def generate(self, prompt, system_instruction=None, response_mime_type=None, temperature=0.0):
         # Format the combined prompt since Ollama standard endpoint expects a unified string
         combined_prompt = ""
         if system_instruction:

@@ -27,7 +27,7 @@ def switch_active_gate_to_ollama():
         print("SYSTEM LOG: Switching active LLM gate to local Ollama Gate.")
         _active_gate_instance = OllamaGate()
 
-def generate_via_gate(prompt, is_image_list=False, temperature=0.3, system_instruction=None, response_mime_type=None):
+def generate_via_gate(prompt, is_image_list=False, temperature=0.0, system_instruction=None, response_mime_type=None):
     """
     Unified gatekeeper function that coordinates query execution across active gates.
     Failover chain: Gemini -> OpenRouter -> Ollama (local)

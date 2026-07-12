@@ -14,7 +14,7 @@ def get_gemini_client():
     g_gate = GeminiGate()
     return g_gate._get_client()
 
-def generate_content_with_retry(prompt, is_image_list=False, temperature=0.3, system_instruction=None, response_mime_type=None):
+def generate_content_with_retry(prompt, is_image_list=False, temperature=0.0, system_instruction=None, response_mime_type=None):
     """
     Unified gatekeeper wrapper. Redirects directly to generate_via_gate
     for clean backward compatibility across the codebase.
