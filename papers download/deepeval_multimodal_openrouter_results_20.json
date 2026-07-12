@@ -1,0 +1,222 @@
+{
+  "1407.7906_Q01": {
+    "question_id": "1407.7906_Q01",
+    "question": "What is the primary purpose of target propagation as proposed in this paper, and how does it relate to back-propagation?",
+    "rag_answer": "The primary purpose of target propagation, as proposed in this paper, is to exploit reconstruction as a layer-local training signal for deep learning. Specifically, it uses auto-encoders to provide learned reconstructions as targets for intermediate layers, enabling credit assignment across many levels of strong non-linearities and allowing the training of deep networks with discrete hidden units.\n\nTarget propagation plays a role similar to back-propagation. It is identical to back-propagation when the target is viewed as an infinitesimal direction of change and the gradient can be computed analytically. However, target propagation generalizes back-propagation by reducing reliance on derivatives and extending to non-differential and discrete changes, thereby aiming to \"learn the back-propagation computation.\"",
+    "faithfulness_score": 1.0,
+    "faithfulness_reason": "The RAG Answer is factually supported by the retrieved Context, as it accurately summarizes the main idea of target propagation, its relationship to back-propagation, and its ability to handle discrete changes and non-differential changes.",
+    "relevancy_score": 1.0,
+    "relevancy_reason": "The answer directly addresses the question by explaining the primary purpose of target propagation and its relationship to back-propagation, providing a clear and relevant explanation.",
+    "status": "SUCCESS",
+    "eval_time_sec": 2.9414491653442383
+  },
+  "1407.7906_Q02": {
+    "question_id": "1407.7906_Q02",
+    "question": "According to Equation (1), what is the joint distribution over x and h structured as in the generative model?",
+    "rag_answer": "The provided text and image do not contain an equation explicitly labeled as \"Equation (1)\".",
+    "faithfulness_score": 1.0,
+    "faithfulness_reason": "The RAG answer is factually supported by the retrieved context because the text explicitly states that there is no equation labeled as 'Equation (1)'.",
+    "relevancy_score": 0.0,
+    "relevancy_reason": "",
+    "status": "SUCCESS",
+    "eval_time_sec": 1.8350551128387451
+  },
+  "1407.7906_Q03": {
+    "question_id": "1407.7906_Q03",
+    "question": "In Figure 1, what three main actors are illustrated for an intermediate layer h in the generative model?",
+    "rag_answer": "P(h), Q(h|x) and P(x|h)",
+    "faithfulness_score": 1.0,
+    "faithfulness_reason": "The RAG Answer is completely supported by the context, as the text explicitly mentions P(h), Q(h|x), and P(x|h) as the main actors of the proposed generative stack of auto-encoders.",
+    "relevancy_score": 1.0,
+    "relevancy_reason": "The answer directly references the components of the generative model illustrated in Figure 1, making it highly relevant to the question.",
+    "status": "SUCCESS",
+    "eval_time_sec": 20.337607860565186
+  },
+  "1407.7906_Q04": {
+    "question_id": "1407.7906_Q04",
+    "question": "What are the three main approaches deep learning methods have historically relied on to propagate training signals across different levels of representation?",
+    "rag_answer": "1. Greedy layer-wise pre-training\n2. Back-propagated gradients\n3. Monte-Carlo Markov chains (MCMC)",
+    "faithfulness_score": 1.0,
+    "faithfulness_reason": "The three approaches to propagate training signals across different levels of representation in deep learning are explicitly listed in the context as 1. Greedy layer-wise pre-training, 2. Back-propagated gradients, and 3. Monte-Carlo Markov chains (MCMC).",
+    "relevancy_score": 1.0,
+    "relevancy_reason": "The RAG Answer directly addresses the question by listing three specific approaches deep learning methods have historically relied on to propagate training signals.",
+    "status": "SUCCESS",
+    "eval_time_sec": 21.19197177886963
+  },
+  "1407.7906_Q05": {
+    "question_id": "1407.7906_Q05",
+    "question": "How is the KL-divergence between Q and P decomposed in Equation (3) to better understand the objective of matching P(X, H) and Q(X, H)?",
+    "rag_answer": "The KL-divergence between Q and P is decomposed as follows in Equation (3):\n\nKL(Q || P) = E(x,h) ~ Q(X,H) [log Q(X,H) - log P(X,H)] = Ex ~ Q(X) Eh ~ Q(H|x) [log Q(x) + log Q(h|x) - log P(x|h) - log P(h)]",
+    "faithfulness_score": 1.0,
+    "faithfulness_reason": "The RAG answer is completely supported by the context, as it directly quotes Equation (3) from the text, which decomposes the KL-divergence between Q and P as described.",
+    "relevancy_score": 1.0,
+    "relevancy_reason": "The answer directly and accurately addresses the question by providing the decomposition of KL-divergence between Q and P as specified in Equation (3), making it highly relevant to the question.",
+    "status": "SUCCESS",
+    "eval_time_sec": 1.4099459648132324
+  },
+  "1407.7906_Q06": {
+    "question_id": "1407.7906_Q06",
+    "question": "What does Figure 2 illustrate regarding the training procedure for deep generative models?",
+    "rag_answer": "The context and image do not contain enough information to answer this question. Figure 2 is not provided in the context.",
+    "faithfulness_score": 1.0,
+    "faithfulness_reason": "The RAG Answer is factually supported by the retrieved Context because the text explicitly states that the context and image do not contain enough information to answer the question, which matches the RAG Answer.",
+    "relevancy_score": 1.0,
+    "relevancy_reason": "The answer directly addresses the question by stating that Figure 2 is not provided, implying that it is relevant to the question about illustrating the training procedure for deep generative models.",
+    "status": "SUCCESS",
+    "eval_time_sec": 9.017308712005615
+  },
+  "1407.7906_Q07": {
+    "question_id": "1407.7906_Q07",
+    "question": "What is the main conjecture regarding the proposed training scheme's ability to handle very deep non-linear networks compared to back-propagated gradients?",
+    "rag_answer": "The main conjecture is that by providing a training signal at each layer, the proposed training scheme will be less prone to the training difficulties encountered when training very deep non-linear networks with back-propagated gradients.",
+    "faithfulness_score": 1.0,
+    "faithfulness_reason": "The RAG Answer is factually supported by the retrieved Context, as it directly quotes the main conjecture presented in the text.",
+    "relevancy_score": 1.0,
+    "relevancy_reason": "The RAG Answer directly addresses the question by stating the main conjecture regarding the proposed training scheme's ability to handle very deep non-linear networks compared to back-propagated gradients.",
+    "status": "SUCCESS",
+    "eval_time_sec": 7.89396858215332
+  },
+  "1407.7906_Q08": {
+    "question_id": "1407.7906_Q08",
+    "question": "In the context of a deterministic encoder, as described by Equation (8), what condition must be met for the reconstruction log-likelihood to be totally minimized, as shown in Equation (9)?",
+    "rag_answer": "The context does not contain enough information to answer the question, as Equation (9) is not provided and the condition is not fully stated.",
+    "faithfulness_score": 0.0,
+    "faithfulness_reason": "",
+    "relevancy_score": 1.0,
+    "relevancy_reason": "The answer directly addresses the question by stating the necessary information for a relevant answer is missing, making it a relevant response to the question.",
+    "status": "SUCCESS",
+    "eval_time_sec": 1.5797829627990723
+  },
+  "1407.7906_Q09": {
+    "question_id": "1407.7906_Q09",
+    "question": "According to Figure 3, how do auto-encoders allow good targets at level l to be propagated into good targets at level l-1?",
+    "rag_answer": "According to Figure 3, auto-encoders allow good targets at level l to be propagated into good targets at level l-1 simply because the decoder `gl` is approximately inverting the encoder `fl`. If `ˆhl` is a good target for `Hl`, and `fl(gl(ˆhl)) ≈ ˆhl` (meaning the encoders are good inverses of each other in the neighborhood of the reconstructions `ˆhl`), then setting `ˆhl-1 = gl(ˆhl)` results in `ˆhl-1` also being a good target for `Hl-1`.",
+    "faithfulness_score": 1.0,
+    "faithfulness_reason": "",
+    "relevancy_score": 1.0,
+    "relevancy_reason": "The answer directly addresses the question by explaining the mechanism of how auto-encoders allow good targets to be propagated from one level to the previous level, using the concept of the decoder inverting the encoder.",
+    "status": "SUCCESS",
+    "eval_time_sec": 1.5261478424072266
+  },
+  "1407.7906_Q10": {
+    "question_id": "1407.7906_Q10",
+    "question": "What is the key insight from Alain and Bengio (2013) that allows for estimating a target ˆhl for a layer hl?",
+    "rag_answer": "The key insight from Alain and Bengio (2013) is regarding the estimation of ∂ log P(h) via the difference between reconstruction ˆh and input h.",
+    "faithfulness_score": 1.0,
+    "faithfulness_reason": "The RAG Answer is factually supported by the retrieved Context because it directly quotes the relevant sentence from Alain and Bengio (2013) regarding the estimation of ∂ log P(h) via the difference between reconstruction ˆh and input h.",
+    "relevancy_score": 0.75,
+    "relevancy_reason": "The answer is relevant to the question as it mentions the key insight from Alain and Bengio (2013) and its relation to estimating a target ˆhl, but it doesn't explicitly mention how this insight allows for estimating ˆhl for a layer hl.",
+    "status": "SUCCESS",
+    "eval_time_sec": 2.507506847381592
+  },
+  "1407.7906_Q12": {
+    "question_id": "1407.7906_Q12",
+    "question": "How does Figure 4 generalize the architecture for supervised training?",
+    "rag_answer": "The context and image provided do not contain information about Figure 4.",
+    "faithfulness_score": 0.0,
+    "faithfulness_reason": "The context does not mention Figure 4 at all, making it impossible to determine if the answer is supported by the context.",
+    "relevancy_score": 0.0,
+    "relevancy_reason": "The answer does not address the question at all, as it states that there is no information about Figure 4 in the context.",
+    "status": "SUCCESS",
+    "eval_time_sec": 10.44900393486023
+  },
+  "1407.7906_Q13": {
+    "question_id": "1407.7906_Q13",
+    "question": "What is a potential issue with sampling from denoising auto-encoders if the amount of corruption is either too small or too large?",
+    "rag_answer": "One potential issue with sampling from denoising auto-encoders is that if the amount of corruption is small, the chain mixes very slowly. If the amount of corruption is large, the reconstruction distribution might not be well approximated by a unimodal reconstruction distribution.",
+    "faithfulness_score": 1.0,
+    "faithfulness_reason": "The RAG Answer is completely supported by the context, as it directly quotes the text from the section 'Sampling from the Denoising Auto-encoder'.",
+    "relevancy_score": 1.0,
+    "relevancy_reason": "The answer directly addresses the potential issues with sampling from denoising auto-encoders under specific conditions of corruption amount.",
+    "status": "SUCCESS",
+    "eval_time_sec": 8.300102710723877
+  },
+  "1407.7906_Q14": {
+    "question_id": "1407.7906_Q14",
+    "question": "In the context of a linear top-level auto-encoder, what is the form of the optimal denoising reconstruction function minus the input hL-1, and what does it behave similarly to?",
+    "rag_answer": "In the special case of a linear top-level auto-encoder, the optimal denoising reconstruction function minus the input hL-1 takes the form Σ−1(hL-1 - µ), and it behaves similarly to the gradient of the log-likelihood.",
+    "faithfulness_score": 1.0,
+    "faithfulness_reason": "The RAG Answer is factually supported by the retrieved Context because it directly quotes the relevant sentence from the text, 'In the special case where the top-level is linear, training it to minimize denoising reconstruction error estimates a multivariate Gaussian prior for P(HL 1). One can readily verify that the optimal − denoising reconstruction function minus the input hL 1 behaves similarly to the gradient of the log- − 1(hL likelihood, Σ− µ), which pushes back towards the mean in a stronger way in directions 1 − − of smaller eigenvalue.'",
+    "relevancy_score": 1.0,
+    "relevancy_reason": "The RAG Answer directly addresses the question by specifying the form of the optimal denoising reconstruction function and its behavior, making it highly relevant to the question.",
+    "status": "SUCCESS",
+    "eval_time_sec": 9.9331533908844
+  },
+  "1407.7906_Q15": {
+    "question_id": "1407.7906_Q15",
+    "question": "What does Figure 5 illustrate regarding the architecture for structured output or multi-modal cases?",
+    "rag_answer": "Architecture associated with the structured output or multi-modal cases (two modalities shown, here, x and y). Each modality has its own representation, but a top-level deep auto-encoder learns to represent their joint or conditional distribution. The top-level auto-encoder can be used to sample (MCMC) or predict (MAP) some modalities given others.",
+    "faithfulness_score": 1.0,
+    "faithfulness_reason": "The RAG Answer is completely supported by the context, as it is directly mentioned in Figure 5 and described in the surrounding text.",
+    "relevancy_score": 1.0,
+    "relevancy_reason": "The answer directly addresses the question by describing the specific architecture illustrated in Figure 5, making it highly relevant to the question.",
+    "status": "SUCCESS",
+    "eval_time_sec": 5.505100727081299
+  },
+  "1408.5882_Q01": {
+    "question_id": "1408.5882_Q01",
+    "question": "What is the primary purpose of convolutional neural networks (CNNs) in the context of this paper?",
+    "rag_answer": "The primary purpose of convolutional neural networks (CNNs) in this context is for integrated recognition, localization, and detection, as well as for image classification and large-scale image recognition in general vision applications.",
+    "faithfulness_score": 0.75,
+    "faithfulness_reason": "The context mentions several papers and authors related to convolutional neural networks, including Sermanet et al.'s 'Overfeat: Integrated recognition, localization and detection using convolutional networks' and Simonyan and Zisserman's 'Very deep convolutional networks for large-scale image recognition', which supports the primary purpose of CNNs in this context.",
+    "relevancy_score": 1.0,
+    "relevancy_reason": "The answer directly addresses the question by specifying the primary purpose of CNNs in the context of the paper, which is to perform various tasks such as recognition, localization, detection, and image classification.",
+    "status": "SUCCESS",
+    "eval_time_sec": 8.853529691696167
+  },
+  "1408.5882_Q02": {
+    "question_id": "1408.5882_Q02",
+    "question": "How does the paper describe the role of pre-trained word vectors in improving model performance, and what specific source was used for these vectors?",
+    "rag_answer": "The paper describes pre-trained word vectors as \"universal feature extractors\" that can be utilized for various classification tasks, leading to excellent results on multiple benchmarks even with little hyperparameter tuning and static vectors. They are considered an important ingredient in deep learning for NLP. The specific source used for these vectors was Mikolov et al. (2013), trained on 100 billion words of Google News (word2vec).",
+    "faithfulness_score": 1.0,
+    "faithfulness_reason": "The paper explicitly states that pre-trained word vectors are 'universal feature extractors' that can be utilized for various classification tasks, and cites Mikolov et al. (2013) as the source of these vectors, which were trained on 100 billion words of Google News.",
+    "relevancy_score": 1.0,
+    "relevancy_reason": "The answer directly addresses the question by describing the role of pre-trained word vectors and specifying the source used for these vectors, making it highly relevant to the question.",
+    "status": "SUCCESS",
+    "eval_time_sec": 19.183183670043945
+  },
+  "1408.5882_Q03": {
+    "question_id": "1408.5882_Q03",
+    "question": "What are the fixed hyperparameters used across all datasets for the CNN model, as determined by a grid search on the SST-2 dev set?",
+    "rag_answer": "The context and image do not contain enough information to answer the question.",
+    "faithfulness_score": 1.0,
+    "faithfulness_reason": "The RAG answer is factually supported by the retrieved context because the context explicitly states that the performance of the model improves when using a larger training set, specifically when comparing the use of 91 images to the use of 395,909 images from the ILSVRC 2013 ImageNet detection training partition.",
+    "relevancy_score": 0.0,
+    "relevancy_reason": "Parsed from raw response.",
+    "status": "SUCCESS",
+    "eval_time_sec": 12.258336782455444
+  },
+  "1408.5882_Q04": {
+    "question_id": "1408.5882_Q04",
+    "question": "What was observed regarding the effectiveness of dropout as a regularizer in the experiments?",
+    "rag_answer": "Dropout proved to be such a good regularizer that it was fine to use a larger than necessary network and simply let dropout regularize it. It consistently added 2%–4% relative performance.",
+    "faithfulness_score": 1.0,
+    "faithfulness_reason": "The statement is directly supported by the context, specifically the first bullet point under the '2.1 Regularization' section, which states 'Dropout proved to be such a good regularizer that it was fine to use a larger than necessary network and simply let dropout regularize it. Dropout consistently added 2%–4% relative performance.'",
+    "relevancy_score": 1.0,
+    "relevancy_reason": "The answer directly addresses the effectiveness of dropout as a regularizer in the experiments, providing a specific observation regarding its impact on performance.",
+    "status": "SUCCESS",
+    "eval_time_sec": 2.1673715114593506
+  },
+  "1408.5882_Q05": {
+    "question_id": "1408.5882_Q05",
+    "question": "According to Figure 1, what are the main sequential layers in the model architecture after the sentence representation?",
+    "rag_answer": "According to Figure 1, the main sequential layers in the model architecture after the sentence representation are:\n\n1.  Convolutional layer with multiple filter widths and feature maps\n2.  Max-over-time pooling\n3.  Fully connected layer with dropout and softmax output",
+    "faithfulness_score": 1.0,
+    "faithfulness_reason": "The answer is directly supported by the text, specifically Figure 1, which illustrates the model architecture and lists the sequential layers as Convolutional layer with multiple filter widths and feature maps, Max-over-time pooling, and Fully connected layer with dropout and softmax output.",
+    "relevancy_score": 1.0,
+    "relevancy_reason": "The answer directly and accurately lists the main sequential layers in the model architecture after the sentence representation, as requested by the question.",
+    "status": "SUCCESS",
+    "eval_time_sec": 2.627819061279297
+  },
+  "1408.5882_Q06": {
+    "question_id": "1408.5882_Q06",
+    "question": "How does Figure 1 illustrate the concept of 'two channels' for sentence representation?",
+    "rag_answer": "Figure 1 illustrates the concept of 'two channels' for sentence representation by showing the initial input sentence \"wait for the video and do n't rent it\" being represented in two parallel ways: a \"static channel\" and a \"non-static channel,\" both of which then feed into the convolutional layer. The text indicates that one channel (static) is kept static throughout training, and the other (non-static) is fine-tuned.",
+    "faithfulness_score": 1.0,
+    "faithfulness_reason": "The text explicitly states that the model architecture has two channels, a static channel and a non-static channel, and describes how they are used in the convolutional layer, which is illustrated in Figure 1.",
+    "relevancy_score": 1.0,
+    "relevancy_reason": "",
+    "status": "SUCCESS",
+    "eval_time_sec": 1.8764536380767822
+  }
+}
