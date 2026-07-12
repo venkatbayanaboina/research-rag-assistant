@@ -23,6 +23,15 @@ def execute_rag_pipeline(prompt, indexed_docs, use_rerank=None, chat_history=Non
             "is_special_intent": bool
         }
     """
+    if not indexed_docs:
+        return {
+            "intent": "STANDARD_CHAT",
+            "answer": "No documents are currently indexed in your database. Please upload and index a PDF paper first!",
+            "image_results": [],
+            "search_results": [],
+            "is_special_intent": True
+        }
+
     if use_rerank is None:
         use_rerank = config.RERANK_ENABLED
     if chat_history is None:
