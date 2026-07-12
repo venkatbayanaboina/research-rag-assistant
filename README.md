@@ -153,3 +153,13 @@ research-rag-assistant/
 ├── archives/                 # Backup zip archives and testing folders
 ├── development_phases/       # Historic developmental phase code (Phases 1-6)
 ```
+
+---
+
+## 📈 Running Evaluations
+
+All benchmarking datasets, LLM judges, sharded run logs, and detailed reports are managed inside the `evaluation_suite/` directory.
+
+To run the evaluations and read step-by-step guidelines, refer to the **[Evaluation Guide](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/evaluation_suite/EVALUATION_GUIDE.md)**:
+👉 **[`evaluation_suite/EVALUATION_GUIDE.md`](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/evaluation_suite/EVALUATION_GUIDE.md)**
+
