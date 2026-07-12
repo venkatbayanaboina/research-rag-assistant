@@ -6,3 +6,9 @@ __pycache__/
 # Ignore raw PDFs inside storage, but keep indexes and registry tracked
 storage/raw_pdfs/
 *.zip
+
+# Ignore heavy PDFs, logs, and zip archives
+evaluation_suite/configs/pdfs/
+evaluation_suite/logs/
+archives/
+
