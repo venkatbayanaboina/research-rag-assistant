@@ -23,7 +23,7 @@ def render_chat_interface(use_rerank, indexed_docs):
         with st.chat_message(msg["role"]):
             st.markdown(msg["content"])
             if msg.get("images"):
-                st.markdown("#### 🖼️ Retrieved Diagrams / Charts:")
+                st.markdown("#### Retrieved Diagrams / Charts:")
                 for img_path in msg["images"]:
                     if os.path.exists(img_path):
                         st.image(img_path)
@@ -71,7 +71,7 @@ def render_chat_interface(use_rerank, indexed_docs):
                 st.markdown(answer)
                 saved_image_paths = []
                 if image_results:
-                    st.markdown("#### 🖼️ Retrieved Diagrams / Charts:")
+                    st.markdown("#### Retrieved Diagrams / Charts:")
                     for img_res in image_results:
                         img_chunk = img_res["chunk"]
                         path = img_chunk["image_path"]
@@ -87,7 +87,7 @@ def render_chat_interface(use_rerank, indexed_docs):
             
             # 4. Show text sources in expander if standard RAG search results were retrieved
             if not is_special_intent and search_results:
-                with st.expander("🔍 View Retrieved Text Sources"):
+                with st.expander("View Retrieved Text Sources"):
                     for idx, result in enumerate(search_results):
                         chunk = result["chunk"]
                         st.markdown(f"**Source {idx+1}: {chunk['source_file']} (Page {chunk['page']})**")

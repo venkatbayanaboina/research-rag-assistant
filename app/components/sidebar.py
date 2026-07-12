@@ -58,7 +58,7 @@ def render_sidebar():
         indexed_docs (list): List of currently indexed files
     """
     with st.sidebar:
-        st.header("📂 Document Control Center")
+        st.header("Document Control Center")
         
         # 1. Parsing Strategy Choice
         strategy = st.selectbox(
@@ -79,7 +79,7 @@ def render_sidebar():
         # Ingestion Runner
         if uploaded_files:
             button_disabled = PROGRESS_STATE["in_progress"]
-            if st.button("🚀 Process & Index Files", use_container_width=True, disabled=button_disabled):
+            if st.button("Process & Index Files", use_container_width=True, disabled=button_disabled):
                 PROGRESS_STATE["in_progress"] = True
                 
                 # Save files first
@@ -100,11 +100,11 @@ def render_sidebar():
         # Render persistent indexing status (non-blocking, allows chatting simultaneously)
         if PROGRESS_STATE["in_progress"]:
             st.markdown("---")
-            st.markdown("⏳ **Background Ingestion Active**")
+            st.markdown("**Background Ingestion Active**")
             st.info(PROGRESS_STATE["status_msg"])
             
         if PROGRESS_STATE["success_msg"]:
-            st.toast(PROGRESS_STATE["success_msg"], icon="✅")
+            st.toast(PROGRESS_STATE["success_msg"])
             PROGRESS_STATE["success_msg"] = ""
             
         if PROGRESS_STATE["error_msg"]:
@@ -117,7 +117,7 @@ def render_sidebar():
         indexed_docs = get_indexed_documents()
         if indexed_docs:
             for doc in indexed_docs:
-                st.markdown(f"- 📄 `{doc}`")
+                st.markdown(f"- `{doc}`")
         else:
             st.caption("No documents indexed yet. Upload files to get started!")
             
@@ -125,7 +125,7 @@ def render_sidebar():
         st.markdown("---")
         use_rerank = st.toggle("Enable Reranking (Cross-Encoder)", value=config.RERANK_ENABLED)
         
-        if st.button("🗑️ Clear Chat History", use_container_width=True):
+        if st.button("Clear Chat History", use_container_width=True):
             st.session_state.chat_history = []
             st.success("Chat history cleared!")
             st.rerun()

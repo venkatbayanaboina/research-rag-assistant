@@ -7,7 +7,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from app.components import render_sidebar, render_chat_interface
 
 # Configure page settings
-st.set_page_config(page_title="Multi-PDF Multimodal RAG Suite", layout="wide", page_icon="📚")
+st.set_page_config(page_title="Multimodal Research RAG Suite", layout="wide")
 
 # Premium CSS Injection for clean typography and gradients
 st.markdown("""
@@ -45,7 +45,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Custom HTML Heading
-st.markdown('<div class="app-title">📚 Multimodal Research RAG Suite</div>', unsafe_allow_html=True)
+st.markdown('<div class="app-title">Multimodal Research RAG Suite</div>', unsafe_allow_html=True)
 st.markdown('<div class="app-subtitle">Upload papers to index text in FAISS and layout elements in CLIP, then chat and compare visual figures side-by-side.</div>', unsafe_allow_html=True)
 
 
