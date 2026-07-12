@@ -12,11 +12,14 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(
 import config
 from src.core.embedder import embed_batch, embed_text, embed_image_batch, embed_clip_text
 
-def get_paths():
+def get_paths(session_paths=None):
     """
-    Returns the active database paths. If running inside a Streamlit user session,
-    returns session-isolated temporary paths, otherwise falls back to config.
+    Returns the active database paths. If session_paths is explicitly passed,
+    uses it. If running inside a Streamlit user session, returns session-isolated
+    temporary paths, otherwise falls back to config.
     """
+    if session_paths:
+        return session_paths
     try:
         import streamlit as st
         if st.session_state and "session_id" in st.session_state:
@@ -40,46 +43,46 @@ def get_paths():
         "extracted_images": config.EXTRACTED_IMAGE_DIR
     }
 
-def get_registry():
+def get_registry(session_paths=None):
     """Loads the text chunk registry if it exists, otherwise returns an empty list."""
-    paths = get_paths()
+    paths = get_paths(session_paths)
     if os.path.exists(paths["chunks"]):
         with open(paths["chunks"], "r") as f:
             return json.load(f)
     return []
 
-def get_image_registry():
+def get_image_registry(session_paths=None):
     """Loads the image chunk registry if it exists, otherwise returns an empty list."""
-    paths = get_paths()
+    paths = get_paths(session_paths)
     if os.path.exists(paths["images_registry"]):
         with open(paths["images_registry"], "r") as f:
             return json.load(f)
     return []
 
-def get_indexed_documents():
+def get_indexed_documents(session_paths=None):
     """Returns a list of unique filenames that have been indexed."""
-    registry = get_registry()
+    registry = get_registry(session_paths)
     return list(sorted(list(set(chunk["source_file"] for chunk in registry))))
 
-def load_text_db():
+def load_text_db(session_paths=None):
     """Loads the text FAISS index (1024-dim)."""
-    paths = get_paths()
+    paths = get_paths(session_paths)
     if os.path.exists(paths["text_index"]):
         print(f"Loading Text FAISS index from {paths['text_index']}...")
         return faiss.read_index(paths["text_index"])
     print("No existing Text FAISS index found. Creating a new IndexFlatIP (1024-dim)...")
     return faiss.IndexFlatIP(1024)
 
-def load_image_db():
+def load_image_db(session_paths=None):
     """Loads the image FAISS index (512-dim)."""
-    paths = get_paths()
+    paths = get_paths(session_paths)
     if os.path.exists(paths["image_index"]):
         print(f"Loading Image FAISS index from {paths['image_index']}...")
         return faiss.read_index(paths["image_index"])
     print("No existing Image FAISS index found. Creating a new IndexFlatIP (512-dim)...")
     return faiss.IndexFlatIP(512)
 
-def add_document_to_store(text_chunks, image_chunks):
+def add_document_to_store(text_chunks, image_chunks, session_paths=None):
     """
     Appends text chunks to the BGE text index and visual images to the CLIP index.
     """
@@ -95,11 +98,11 @@ def add_document_to_store(text_chunks, image_chunks):
         
     # 1. Index Text Chunks
     if text_chunks:
-        text_registry = get_registry()
+        text_registry = get_registry(session_paths)
         # Avoid duplicate indexing
         if not any(chunk["source_file"] == filename for chunk in text_registry):
             # Load registry and indexes
-            text_index = load_text_db()
+            text_index = load_text_db(session_paths)
             texts = [chunk["text"] for chunk in text_chunks]
             print(f"Generating BGE embeddings for {len(texts)} text chunks...")
             
@@ -126,7 +129,7 @@ def add_document_to_store(text_chunks, image_chunks):
                 chunk["chunk_id"] = start_id + idx
                 text_registry.append(chunk)
                 
-            paths = get_paths()
+            paths = get_paths(session_paths)
             with open(paths["chunks"], "w") as f:
                 json.dump(text_registry, f, indent=2)
             faiss.write_index(text_index, paths["text_index"])
@@ -136,9 +139,9 @@ def add_document_to_store(text_chunks, image_chunks):
             
     # 2. Index Image Chunks (CLIP)
     if image_chunks:
-        image_registry = get_image_registry()
+        image_registry = get_image_registry(session_paths)
         if not any(chunk["source_file"] == filename for chunk in image_registry):
-            image_index = load_image_db()
+            image_index = load_image_db(session_paths)
             image_paths = [chunk["image_path"] for chunk in image_chunks]
             print(f"Generating CLIP embeddings for {len(image_paths)} visual chunks...")
             
@@ -166,7 +169,7 @@ def add_document_to_store(text_chunks, image_chunks):
                     chunk["image_id"] = start_id + idx
                     image_registry.append(chunk)
                     
-                paths = get_paths()
+                paths = get_paths(session_paths)
                 with open(paths["images_registry"], "w") as f:
                     json.dump(image_registry, f, indent=2)
                 faiss.write_index(image_index, paths["image_index"])

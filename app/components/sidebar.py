@@ -20,7 +20,7 @@ PROGRESS_STATE = {
     "cancel_requested": False
 }
 
-def bg_index_worker(file_path, strategy, uploaded_name):
+def bg_index_worker(file_path, strategy, uploaded_name, session_paths):
     try:
         PROGRESS_STATE["in_progress"] = True
         PROGRESS_STATE["error_msg"] = ""
@@ -56,7 +56,7 @@ def bg_index_worker(file_path, strategy, uploaded_name):
             
         PROGRESS_STATE["status_msg"] = "Stage 3/3: Generating embeddings and indexing in FAISS..."
         PROGRESS_STATE["progress_val"] = 0.80
-        add_document_to_store(text_chunks, image_chunks)
+        add_document_to_store(text_chunks, image_chunks, session_paths=session_paths)
         
         # Complete
         PROGRESS_STATE["progress_val"] = 1.00
@@ -119,7 +119,7 @@ def render_sidebar():
                 def run_indexing_pipeline():
                     for uploaded_file in uploaded_files:
                         file_path = os.path.join(paths["raw_pdfs"], uploaded_file.name)
-                        bg_index_worker(file_path, strategy, uploaded_file.name)
+                        bg_index_worker(file_path, strategy, uploaded_file.name, paths)
                         
                 thread = threading.Thread(target=run_indexing_pipeline)
                 thread.start()
