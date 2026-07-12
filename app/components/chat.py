@@ -18,15 +18,27 @@ def render_chat_interface(use_rerank, indexed_docs):
     if "current_prompt" not in st.session_state:
         st.session_state.current_prompt = None
 
-    # 1. Render Chat Message History (with diagrams)
+    # 1. Render Chat Message History (with diagrams and collapsible references)
     for msg in st.session_state.chat_history:
         with st.chat_message(msg["role"]):
             st.markdown(msg["content"])
             if msg.get("images"):
                 st.markdown("#### Retrieved Diagrams / Charts:")
-                for img_path in msg["images"]:
-                    if os.path.exists(img_path):
-                        st.image(img_path)
+                for img_data in msg["images"]:
+                    if isinstance(img_data, dict):
+                        path = img_data["path"]
+                        caption = img_data.get("caption", "")
+                    else:
+                        path = img_data
+                        caption = ""
+                    if os.path.exists(path):
+                        st.image(path, caption=caption)
+            if msg.get("sources"):
+                with st.expander("View Retrieved Text Sources"):
+                    for idx, src in enumerate(msg["sources"]):
+                        st.markdown(f"**Source {idx+1}: {src['file']} (Page {src['page']})**")
+                        st.text(src["text"])
+                        st.markdown("---")
                         
     # 2. Capture and route prompt inputs
     active_prompt = None
@@ -69,30 +81,46 @@ def render_chat_interface(use_rerank, indexed_docs):
             # 3. Show model response and display image files
             with st.chat_message("assistant"):
                 st.markdown(answer)
-                saved_image_paths = []
+                saved_images = []
                 if image_results:
                     st.markdown("#### Retrieved Diagrams / Charts:")
                     for img_res in image_results:
                         img_chunk = img_res["chunk"]
                         path = img_chunk["image_path"]
                         if os.path.exists(path):
-                            st.image(path, caption=f"Source: {img_chunk['source_file']} (Page {img_chunk['page']}) - CLIP Score: {img_res['score']:.4f}")
-                            saved_image_paths.append(path)
+                            caption_str = f"Source: {img_chunk['source_file']} (Page {img_chunk['page']}) - CLIP Score: {img_res['score']:.4f}"
+                            st.image(path, caption=caption_str)
+                            saved_images.append({
+                                "path": path,
+                                "caption": caption_str
+                            })
+                            
+                # Display active sources expander locally during creation
+                if not is_special_intent and search_results:
+                    with st.expander("View Retrieved Text Sources"):
+                        for idx, result in enumerate(search_results):
+                            chunk = result["chunk"]
+                            st.markdown(f"**Source {idx+1}: {chunk['source_file']} (Page {chunk['page']})**")
+                            st.text(chunk["text"])
+                            st.markdown("---")
+                            
+            # Convert retrieved text search results into history source objects
+            saved_sources = []
+            if not is_special_intent and search_results:
+                for res in search_results:
+                    chunk = res["chunk"]
+                    saved_sources.append({
+                        "file": chunk["source_file"],
+                        "page": chunk["page"],
+                        "text": chunk["text"]
+                    })
                             
             st.session_state.chat_history.append({
                 "role": "assistant",
                 "content": answer,
-                "images": saved_image_paths
+                "images": saved_images,
+                "sources": saved_sources
             })
-            
-            # 4. Show text sources in expander if standard RAG search results were retrieved
-            if not is_special_intent and search_results:
-                with st.expander("View Retrieved Text Sources"):
-                    for idx, result in enumerate(search_results):
-                        chunk = result["chunk"]
-                        st.markdown(f"**Source {idx+1}: {chunk['source_file']} (Page {chunk['page']})**")
-                        st.text(chunk["text"])
-                        st.markdown("---")
         finally:
             # Safely release the thinking lock and trigger rerun to re-enable inputs
             st.session_state.current_prompt = None
