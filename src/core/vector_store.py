@@ -341,3 +341,29 @@ def delete_document_from_store(filename, session_paths=None):
         
         print(f"Successfully purged '{filename}' from database stores.")
 
+def clear_all_documents_from_store(session_paths=None):
+    """
+    Wipes all indexed documents, text registry, CLIP image registry,
+    and FAISS indexes for the current database session.
+    """
+    with db_lock:
+        paths = get_paths(session_paths)
+        # Delete database index files
+        for key in ["chunks", "images_registry", "text_index", "image_index"]:
+            path = paths.get(key)
+            if path and os.path.exists(path):
+                try:
+                    os.remove(path)
+                except:
+                    pass
+                    
+        # Clear cropped images directory
+        img_dir = paths.get("extracted_images")
+        if img_dir and os.path.exists(img_dir):
+            import shutil
+            try:
+                shutil.rmtree(img_dir)
+                os.makedirs(img_dir, exist_ok=True)
+            except:
+                pass
+

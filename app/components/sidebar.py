@@ -184,9 +184,18 @@ def render_sidebar():
         st.markdown("---")
         use_rerank = st.toggle("Enable Reranking (Cross-Encoder)", value=config.RERANK_ENABLED)
         
-        if st.button("Clear Chat History", use_container_width=True):
-            st.session_state.chat_history = []
-            st.success("Chat history cleared!")
-            st.rerun()
+        col_clear_chat, col_clear_db = st.columns(2)
+        with col_clear_chat:
+            if st.button("Clear Chat", use_container_width=True, help="Clear active conversation logs"):
+                st.session_state.chat_history = []
+                st.success("Chat cleared!")
+                st.rerun()
+        with col_clear_db:
+            if st.button("Clear DB", use_container_width=True, help="Clear all indexed documents and FAISS databases for this session"):
+                from src.core.vector_store import clear_all_documents_from_store, get_paths
+                paths = get_paths()
+                clear_all_documents_from_store(paths)
+                st.success("Database cleared!")
+                st.rerun()
             
     return use_rerank, indexed_docs
