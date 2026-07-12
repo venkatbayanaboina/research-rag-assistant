@@ -12,17 +12,47 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(
 import config
 from src.core.embedder import embed_batch, embed_text, embed_image_batch, embed_clip_text
 
+def get_paths():
+    """
+    Returns the active database paths. If running inside a Streamlit user session,
+    returns session-isolated temporary paths, otherwise falls back to config.
+    """
+    try:
+        import streamlit as st
+        if st.session_state and "session_id" in st.session_state:
+            return {
+                "chunks": st.session_state.CHUNKS_PATH,
+                "text_index": st.session_state.TEXT_INDEX_PATH,
+                "image_index": st.session_state.IMAGE_INDEX_PATH,
+                "images_registry": st.session_state.IMAGES_REGISTRY_PATH,
+                "raw_pdfs": st.session_state.RAW_PDF_DIR,
+                "extracted_images": st.session_state.EXTRACTED_IMAGE_DIR
+            }
+    except:
+        pass
+    
+    return {
+        "chunks": config.CHUNKS_PATH,
+        "text_index": config.TEXT_INDEX_PATH,
+        "image_index": config.IMAGE_INDEX_PATH,
+        "images_registry": config.IMAGES_REGISTRY_PATH,
+        "raw_pdfs": config.RAW_PDF_DIR,
+        "extracted_images": config.EXTRACTED_IMAGE_DIR
+    }
+
 def get_registry():
     """Loads the text chunk registry if it exists, otherwise returns an empty list."""
-    if os.path.exists(config.CHUNKS_PATH):
-        with open(config.CHUNKS_PATH, "r") as f:
+    paths = get_paths()
+    if os.path.exists(paths["chunks"]):
+        with open(paths["chunks"], "r") as f:
             return json.load(f)
     return []
 
 def get_image_registry():
     """Loads the image chunk registry if it exists, otherwise returns an empty list."""
-    if os.path.exists(config.IMAGES_REGISTRY_PATH):
-        with open(config.IMAGES_REGISTRY_PATH, "r") as f:
+    paths = get_paths()
+    if os.path.exists(paths["images_registry"]):
+        with open(paths["images_registry"], "r") as f:
             return json.load(f)
     return []
 
@@ -33,17 +63,19 @@ def get_indexed_documents():
 
 def load_text_db():
     """Loads the text FAISS index (1024-dim)."""
-    if os.path.exists(config.TEXT_INDEX_PATH):
-        print(f"Loading Text FAISS index from {config.TEXT_INDEX_PATH}...")
-        return faiss.read_index(config.TEXT_INDEX_PATH)
+    paths = get_paths()
+    if os.path.exists(paths["text_index"]):
+        print(f"Loading Text FAISS index from {paths['text_index']}...")
+        return faiss.read_index(paths["text_index"])
     print("No existing Text FAISS index found. Creating a new IndexFlatIP (1024-dim)...")
     return faiss.IndexFlatIP(1024)
 
 def load_image_db():
     """Loads the image FAISS index (512-dim)."""
-    if os.path.exists(config.IMAGE_INDEX_PATH):
-        print(f"Loading Image FAISS index from {config.IMAGE_INDEX_PATH}...")
-        return faiss.read_index(config.IMAGE_INDEX_PATH)
+    paths = get_paths()
+    if os.path.exists(paths["image_index"]):
+        print(f"Loading Image FAISS index from {paths['image_index']}...")
+        return faiss.read_index(paths["image_index"])
     print("No existing Image FAISS index found. Creating a new IndexFlatIP (512-dim)...")
     return faiss.IndexFlatIP(512)
 
@@ -94,9 +126,10 @@ def add_document_to_store(text_chunks, image_chunks):
                 chunk["chunk_id"] = start_id + idx
                 text_registry.append(chunk)
                 
-            with open(config.CHUNKS_PATH, "w") as f:
+            paths = get_paths()
+            with open(paths["chunks"], "w") as f:
                 json.dump(text_registry, f, indent=2)
-            faiss.write_index(text_index, config.TEXT_INDEX_PATH)
+            faiss.write_index(text_index, paths["text_index"])
             print("Successfully indexed text chunks.")
         else:
             print(f"Text chunks for '{filename}' already indexed.")
@@ -133,9 +166,10 @@ def add_document_to_store(text_chunks, image_chunks):
                     chunk["image_id"] = start_id + idx
                     image_registry.append(chunk)
                     
-                with open(config.IMAGES_REGISTRY_PATH, "w") as f:
+                paths = get_paths()
+                with open(paths["images_registry"], "w") as f:
                     json.dump(image_registry, f, indent=2)
-                faiss.write_index(image_index, config.IMAGE_INDEX_PATH)
+                faiss.write_index(image_index, paths["image_index"])
                 print("Successfully indexed visual chunks.")
         else:
             print(f"Visual chunks for '{filename}' already indexed.")
@@ -286,14 +320,15 @@ def delete_document_from_store(filename):
                 new_image_index.add(np.array(img_vectors, dtype="float32"))
                 
         # 4. Save updated registries and FAISS indexes
-        with open(config.CHUNKS_PATH, "w") as f:
+        paths = get_paths()
+        with open(paths["chunks"], "w") as f:
             json.dump(new_registry, f, indent=2)
             
-        with open(config.IMAGES_REGISTRY_PATH, "w") as f:
+        with open(paths["images_registry"], "w") as f:
             json.dump(new_image_registry, f, indent=2)
             
-        faiss.write_index(new_text_index, config.TEXT_INDEX_PATH)
-        faiss.write_index(new_image_index, config.IMAGE_INDEX_PATH)
+        faiss.write_index(new_text_index, paths["text_index"])
+        faiss.write_index(new_image_index, paths["image_index"])
         
         print(f"Successfully purged '{filename}' from database stores.")
 

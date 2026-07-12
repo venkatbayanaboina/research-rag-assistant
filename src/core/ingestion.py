@@ -23,10 +23,12 @@ def parse_pdf(file_path, strategy="fast"):
     }
     
     if strategy == "hi_res":
+        from src.core.vector_store import get_paths
+        paths = get_paths()
         # Extract visual structures as standalone PNG files
         kwargs.update({
             "extract_image_block_types": ["Image", "Table"],
-            "extract_image_block_output_dir": config.EXTRACTED_IMAGE_DIR,
+            "extract_image_block_output_dir": paths["extracted_images"],
             "extract_image_block_to_payload": False,
             "hi_res_model_name": "yolox"
         })

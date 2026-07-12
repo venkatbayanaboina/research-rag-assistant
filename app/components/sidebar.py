@@ -83,14 +83,16 @@ def render_sidebar():
                 PROGRESS_STATE["in_progress"] = True
                 
                 # Save files first
+                from src.core.vector_store import get_paths
+                paths = get_paths()
                 for uploaded_file in uploaded_files:
-                    file_path = os.path.join(config.RAW_PDF_DIR, uploaded_file.name)
+                    file_path = os.path.join(paths["raw_pdfs"], uploaded_file.name)
                     with open(file_path, "wb") as f:
                         f.write(uploaded_file.getbuffer())
                 
                 def run_indexing_pipeline():
                     for uploaded_file in uploaded_files:
-                        file_path = os.path.join(config.RAW_PDF_DIR, uploaded_file.name)
+                        file_path = os.path.join(paths["raw_pdfs"], uploaded_file.name)
                         bg_index_worker(file_path, strategy, uploaded_file.name)
                         
                 thread = threading.Thread(target=run_indexing_pipeline)

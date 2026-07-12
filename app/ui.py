@@ -9,6 +9,40 @@ from app.components import render_sidebar, render_chat_interface
 # Configure page settings
 st.set_page_config(page_title="Multimodal Research RAG Suite", layout="wide")
 
+import uuid
+import shutil
+import time
+import config
+
+# Initialize dynamic user session isolation paths
+if "session_id" not in st.session_state:
+    st.session_state.session_id = uuid.uuid4().hex
+    
+    # Define session-specific storage paths
+    session_dir = os.path.join(config.STORAGE_DIR, "sessions", st.session_state.session_id)
+    st.session_state.RAW_PDF_DIR = os.path.join(session_dir, "raw_pdfs")
+    st.session_state.EXTRACTED_IMAGE_DIR = os.path.join(session_dir, "extracted_images")
+    st.session_state.CHUNKS_PATH = os.path.join(session_dir, "chunks.json")
+    st.session_state.IMAGES_REGISTRY_PATH = os.path.join(session_dir, "images_registry.json")
+    st.session_state.TEXT_INDEX_PATH = os.path.join(session_dir, "text_db.faiss")
+    st.session_state.IMAGE_INDEX_PATH = os.path.join(session_dir, "image_db.faiss")
+    
+    # Ensure session directories exist
+    os.makedirs(st.session_state.RAW_PDF_DIR, exist_ok=True)
+    os.makedirs(st.session_state.EXTRACTED_IMAGE_DIR, exist_ok=True)
+    
+    # Auto-cleanup old inactive user sessions (older than 2 hours) on startup
+    sessions_root = os.path.join(config.STORAGE_DIR, "sessions")
+    if os.path.exists(sessions_root):
+        for s_dir in os.listdir(sessions_root):
+            full_path = os.path.join(sessions_root, s_dir)
+            if os.path.isdir(full_path) and s_dir != st.session_state.session_id:
+                try:
+                    if time.time() - os.path.getmtime(full_path) > 7200:
+                        shutil.rmtree(full_path)
+                except:
+                    pass
+
 # Premium CSS Injection for clean typography and gradients
 st.markdown("""
 <style>
