@@ -137,14 +137,22 @@ def render_sidebar():
                 st.rerun()
 
         # Render persistent indexing status (non-blocking, allows chatting simultaneously)
-        if PROGRESS_STATE["in_progress"]:
-            st.markdown("---")
-            st.markdown("**Background Ingestion Active**")
-            st.info(PROGRESS_STATE["status_msg"])
-            if st.button("Cancel Ingestion", key="btn_cancel_ingest", use_container_width=True):
-                PROGRESS_STATE["cancel_requested"] = True
-                st.toast("Cancellation requested...")
-                st.rerun()
+        @st.fragment(run_every="2s" if PROGRESS_STATE["in_progress"] else None)
+        def render_progress_status():
+            if PROGRESS_STATE["in_progress"]:
+                st.markdown("---")
+                st.markdown("**Background Ingestion Active**")
+                st.info(PROGRESS_STATE["status_msg"])
+                if st.button("Cancel Ingestion", key="btn_cancel_ingest", use_container_width=True):
+                    PROGRESS_STATE["cancel_requested"] = True
+                    st.toast("Cancellation requested...")
+                    st.rerun()
+            else:
+                # If progress just finished, trigger a full page refresh to display the newly indexed doc
+                if PROGRESS_STATE["success_msg"] or PROGRESS_STATE["error_msg"]:
+                    st.rerun()
+                    
+        render_progress_status()
             
         if PROGRESS_STATE["success_msg"]:
             st.toast(PROGRESS_STATE["success_msg"])
