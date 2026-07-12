@@ -14667,3 +14667,8 @@
 {"timestamp": "2026-07-05T05:24:08Z", "step": "text_embedding_generation", "duration_ms": 23265.41, "file_name": "1409.7770_Entanglement-Based_Machine_Learning_on_a_Quantum_Computer.pdf", "chunk_count": 24}
 {"timestamp": "2026-07-12T08:21:32Z", "step": "llm_answer_generation", "duration_ms": 1839.94, "provider_gate": "GeminiGate", "is_fallback": false}
 {"timestamp": "2026-07-12T08:21:52Z", "step": "text_retrieval_faiss", "duration_ms": 20185.96, "query": "What is the primary contribution of the Attention is All You Need paper?", "initial_candidates": 15}
+{"timestamp": "2026-07-12T10:10:54Z", "step": "layout_selection_and_parsing", "duration_ms": 27020.12, "file_name": "Computer-Networks-Deep-Dive (1).pdf", "strategy": "fast", "element_count": 18349}
+{"timestamp": "2026-07-12T10:10:54Z", "step": "text_chunking", "duration_ms": 144.24, "file_name": "Computer-Networks-Deep-Dive (1).pdf", "chunk_count": 2340}
+{"timestamp": "2026-07-12T10:11:05Z", "step": "llm_answer_generation", "duration_ms": 1655.52, "provider_gate": "GeminiGate", "is_fallback": false}
+{"timestamp": "2026-07-12T10:11:27Z", "step": "text_retrieval_faiss", "duration_ms": 22352.04, "query": "whats the auto encoder?", "initial_candidates": 15}
+{"timestamp": "2026-07-12T10:11:44Z", "step": "reranking", "duration_ms": 15193.45, "query": "whats the auto encoder?", "candidate_count": 15, "selected_count": 5}
