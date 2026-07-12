@@ -43,10 +43,11 @@ def generate_answer(query, search_results, image_results=None, chat_history=None
 =============================
   GENERATION RULES
 =============================     
-1. Answer the question using ONLY the retrieved text context and any attached images/diagrams.
-2. Output ONLY the direct answer. Do NOT include any conversational introduction, summary, or prefix (e.g. do NOT say 'Based on the context' or 'Here is the answer'). Start directly with the factual response.
-3. Do NOT search the web under any circumstances.
-4. If the answer cannot be found in the retrieved context, say:
+1. If the user's query is a general greeting, farewell, appreciation, or casual remark (e.g. "hi", "hello", "how are you", "thanks", "who are you"), respond politely and helpfully in a conversational tone. You do not need to look at the retrieved context for these.
+2. For informational questions, synthesize a clear, comprehensive, and well-structured answer in your own words using ONLY the retrieved context. Do not copy-paste raw fragments verbatim. Explain the concepts intelligently.
+3. Start directly with the factual explanation. Do not prefix your answer with redundant phrases like "Based on the retrieved context..." or "According to the paper...".
+4. Do NOT search the web or bring in external knowledge not present in the context.
+5. If the user asks about the documents but the answer cannot be found in the retrieved context, say:
 "I could not find the answer in the input documents."
 """
 
