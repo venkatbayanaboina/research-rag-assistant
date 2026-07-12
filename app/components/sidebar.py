@@ -16,7 +16,8 @@ PROGRESS_STATE = {
     "progress_val": 0.0,
     "status_msg": "",
     "error_msg": "",
-    "success_msg": ""
+    "success_msg": "",
+    "cancel_requested": False
 }
 
 def bg_index_worker(file_path, strategy, uploaded_name):
@@ -24,19 +25,35 @@ def bg_index_worker(file_path, strategy, uploaded_name):
         PROGRESS_STATE["in_progress"] = True
         PROGRESS_STATE["error_msg"] = ""
         PROGRESS_STATE["success_msg"] = ""
+        PROGRESS_STATE["cancel_requested"] = False
         
         # Stage 1: Parsing
+        if PROGRESS_STATE["cancel_requested"]:
+            raise InterruptedError("Ingestion cancelled by user.")
+            
         PROGRESS_STATE["status_msg"] = f"Stage 1/3: Parsing PDF layout & structures (strategy: {strategy})..."
         PROGRESS_STATE["progress_val"] = 0.15
         elements = parse_pdf(file_path, strategy=strategy)
         
         # Stage 2: Chunking
+        if PROGRESS_STATE["cancel_requested"]:
+            raise InterruptedError("Ingestion cancelled by user.")
+            
         PROGRESS_STATE["status_msg"] = "Stage 2/3: Chunking document elements..."
         PROGRESS_STATE["progress_val"] = 0.50
         text_chunks = process_text_chunks(elements, file_path)
-        image_chunks = process_image_chunks(elements, file_path) if strategy == "hi_res" else []
+        
+        if strategy == "hi_res":
+            if PROGRESS_STATE["cancel_requested"]:
+                raise InterruptedError("Ingestion cancelled by user.")
+            image_chunks = process_image_chunks(elements, file_path)
+        else:
+            image_chunks = []
         
         # Stage 3: Embedding & Indexing
+        if PROGRESS_STATE["cancel_requested"]:
+            raise InterruptedError("Ingestion cancelled by user.")
+            
         PROGRESS_STATE["status_msg"] = "Stage 3/3: Generating embeddings and indexing in FAISS..."
         PROGRESS_STATE["progress_val"] = 0.80
         add_document_to_store(text_chunks, image_chunks)
@@ -45,6 +62,15 @@ def bg_index_worker(file_path, strategy, uploaded_name):
         PROGRESS_STATE["progress_val"] = 1.00
         PROGRESS_STATE["success_msg"] = f"Successfully indexed '{uploaded_name}'!"
         PROGRESS_STATE["in_progress"] = False
+    except InterruptedError as ie:
+        PROGRESS_STATE["error_msg"] = str(ie)
+        PROGRESS_STATE["in_progress"] = False
+        # Clean up partial upload files
+        try:
+            if os.path.exists(file_path):
+                os.remove(file_path)
+        except:
+            pass
     except Exception as e:
         PROGRESS_STATE["error_msg"] = f"Error indexing '{uploaded_name}': {e}"
         PROGRESS_STATE["in_progress"] = False
@@ -104,6 +130,10 @@ def render_sidebar():
             st.markdown("---")
             st.markdown("**Background Ingestion Active**")
             st.info(PROGRESS_STATE["status_msg"])
+            if st.button("Cancel Ingestion", key="btn_cancel_ingest", use_container_width=True):
+                PROGRESS_STATE["cancel_requested"] = True
+                st.toast("Cancellation requested...")
+                st.rerun()
             
         if PROGRESS_STATE["success_msg"]:
             st.toast(PROGRESS_STATE["success_msg"])
