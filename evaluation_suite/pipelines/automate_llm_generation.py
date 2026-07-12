@@ -9,7 +9,7 @@ from playwright.sync_api import sync_playwright
 
 # ── Paths ────────────────────────────────────────────────────────────────────
 ROOT = Path(__file__).resolve().parent.parent
-RAG_OUTPUT = ROOT / "papers download" / "rag_retrieved_answers.json"
+RAG_OUTPUT = ROOT / "evaluation_suite" / "rag_retrieved_answers.json"
 
 # ── Selectors ────────────────────────────────────────────────────────────────
 GEMINI_CONFIG = {

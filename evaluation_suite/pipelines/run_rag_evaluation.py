@@ -30,8 +30,8 @@ import config
 from src.core.vector_store import search_store, search_image_store, get_indexed_documents
 
 # ── Paths ────────────────────────────────────────────────────────────────────
-EVAL_DATASET  = ROOT / "papers download" / "gold_qa_dataset.json"
-RAG_OUTPUT    = ROOT / "papers download" / "rag_retrieved_answers.json"
+EVAL_DATASET  = ROOT / "evaluation_suite" / "gold_qa_dataset.json"
+RAG_OUTPUT    = ROOT / "evaluation_suite" / "rag_retrieved_answers.json"
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
 

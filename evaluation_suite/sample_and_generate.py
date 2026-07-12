@@ -3,7 +3,7 @@ sample_and_generate.py
 -----------------------
 1. Randomly samples 100 questions from rag_retrieved_answers.json
 2. Generates RAG answers using Cerebras API (gpt-oss-120b)
-3. Saves results to papers download/sample_100_answers.json
+3. Saves results to evaluation_suite/sample_100_answers.json
 """
 
 import os
@@ -16,8 +16,8 @@ from pathlib import Path
 
 # ── Paths ────────────────────────────────────────────────────────────────────
 ROOT = Path(__file__).resolve().parent.parent
-RAG_INPUT  = ROOT / "papers download" / "rag_retrieved_answers.json"
-SAMPLE_OUT = ROOT / "papers download" / "sample_100_answers.json"
+RAG_INPUT  = ROOT / "evaluation_suite" / "rag_retrieved_answers.json"
+SAMPLE_OUT = ROOT / "evaluation_suite" / "sample_100_answers.json"
 
 # ── Cerebras API ─────────────────────────────────────────────────────────────
 CEREBRAS_API_KEY = os.getenv("CEREBRAS_API_KEY", "YOUR_CEREBRAS_API_KEY_HERE")

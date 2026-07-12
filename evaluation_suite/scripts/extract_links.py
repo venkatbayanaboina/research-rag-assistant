@@ -2,7 +2,7 @@ import re
 from pathlib import Path
 
 # Read README.md
-readme_path = Path("/Users/nanibayanaboina2750/Desktop/research-rag-assistant/papers download/research papers.md")
+readme_path = Path("/Users/nanibayanaboina2750/Desktop/research-rag-assistant/evaluation_suite/research papers.md")
 
 with open(readme_path, "r", encoding="utf-8") as f:
     content = f.read()

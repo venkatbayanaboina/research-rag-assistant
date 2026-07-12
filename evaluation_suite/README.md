@@ -29,7 +29,7 @@ The evaluation framework consists of **5 sequential phases** designed to isolate
 * **Why Colab?**: Running the YOLOX layout parsing and BGE-Large/CLIP embedding models locally on CPU for 315 papers takes hours. A Colab T4 GPU finishes the entire ingestion in **~15 minutes**.
 * **OCR Optimization**: To maximize ingestion speed, the pipeline completely bypasses OCR (`ocr_languages="eng"`), relying on the PDF's native selectable digital text. Additionally, a `ThreadPoolExecutor` with **3 parallel threads** processes 3 papers concurrently.
 * **Execution**:
-  1. Zip your local PDFs: `zip -r papers_pdfs.zip "papers download/pdfs"`
+  1. Zip your local PDFs: `zip -r papers_pdfs.zip "evaluation_suite/pdfs"`
   2. Open Colab and connect to a **T4 GPU** runtime.
   3. Upload `papers_pdfs.zip` to Colab.
   4. Copy and run the setup and ingestion cells from [colab_ingestion_guide.md](file:///Users/nanibayanaboina2750/.gemini/antigravity/brain/ade3cade-6db7-41f6-9e90-1d91ffbcd0f9/colab_ingestion_guide.md).
@@ -40,7 +40,7 @@ The evaluation framework consists of **5 sequential phases** designed to isolate
 
 ### 📝 Phase 2: Gold QA Dataset Generation (API & Sharding)
 * **Goal**: Generate a structured benchmark dataset containing **15 research-grade QA pairs per academic paper**.
-* **Direct API Script (⚡ Highly Recommended)**: [`generate_dataset_api.py`](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/papers download/generate_dataset_api.py)
+* **Direct API Script (⚡ Highly Recommended)**: [`generate_dataset_api.py`](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/evaluation_suite/generate_dataset_api.py)
   * Directly queries Google AI Studio using your `GEMINI_API_KEY`. 
   * Bypasses the browser completely. Takes ~3 seconds per paper.
   * Respects the **15 RPM free tier limit** to remain 100% free (takes ~21 minutes for 315 papers).
@@ -53,8 +53,8 @@ The evaluation framework consists of **5 sequential phases** designed to isolate
   # In terminal 2 (Process 2 handles shard 2):
   GEMINI_API_KEY="api_key_two" python3 generate_dataset_api.py --shard 2 --num-shards 2
   ```
-* **Primary Web Script (Browser Fallback)**: [`automate_gemini.py`](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/papers download/automate_gemini.py) (uses Gemini Web App).
-* **Secondary Web Script (Browser Fallback)**: [`automate_chatgpt.py`](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/papers download/automate_chatgpt.py) (uses ChatGPT Web App).
+* **Primary Web Script (Browser Fallback)**: [`automate_gemini.py`](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/evaluation_suite/automate_gemini.py) (uses Gemini Web App).
+* **Secondary Web Script (Browser Fallback)**: [`automate_chatgpt.py`](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/evaluation_suite/automate_chatgpt.py) (uses ChatGPT Web App).
 
 ---
 
@@ -120,12 +120,12 @@ To prevent script freezes, uniform **60-second timeouts** are enforced at every 
 
 #### 💾 Parsing and Checklist Updates
 * **JSON Parsing**: The script uses a regular expression to extract the structured JSON schema enclosed within standard markdown code fences (`` ```json ... ``` ``).
-* **Dataset Update**: Parses the object, validates keys (`question_id`, `question_type`, `question`, `expected_answer`, `evidence`, `difficulty`), and appends the records directly to [`gold_qa_dataset.json`](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/papers download/gold_qa_dataset.json).
-* **Checklist Update**: Reads [`papers_list.md`](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/papers download/papers_list.md) and converts `- [ ] <paper>` to `- [x] <paper>` to track progress.
+* **Dataset Update**: Parses the object, validates keys (`question_id`, `question_type`, `question`, `expected_answer`, `evidence`, `difficulty`), and appends the records directly to [`gold_qa_dataset.json`](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/evaluation_suite/gold_qa_dataset.json).
+* **Checklist Update**: Reads [`papers_list.md`](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/evaluation_suite/papers_list.md) and converts `- [ ] <paper>` to `- [x] <paper>` to track progress.
 
 ---
 
-* **Output**: Updates [`gold_qa_dataset.json`](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/papers download/gold_qa_dataset.json).
+* **Output**: Updates [`gold_qa_dataset.json`](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/evaluation_suite/gold_qa_dataset.json).
 
 ---
 
@@ -139,7 +139,7 @@ To prevent script freezes, uniform **60-second timeouts** are enforced at every 
   # Recommended (Low-Cost/Free-Tier Limit): Run for only 50 questions:
   python3 run_rag_evaluation.py --limit 50
   ```
-* **Output**: Generates [`rag_retrieved_answers.json`](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/papers download/rag_retrieved_answers.json) containing questions, expected answers, and retrieved chunks.
+* **Output**: Generates [`rag_retrieved_answers.json`](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/evaluation_suite/rag_retrieved_answers.json) containing questions, expected answers, and retrieved chunks.
 
 ---
 
@@ -154,7 +154,7 @@ To prevent script freezes, uniform **60-second timeouts** are enforced at every 
   # Recommended (Low-Cost/Free-Tier Limit): Generate answers for only 50 questions:
   python3 run_llm_generation.py --limit 50
   ```
-* **Output**: Populates the `"rag_answer"` fields inside [`rag_retrieved_answers.json`](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/papers download/rag_retrieved_answers.json) in-place.
+* **Output**: Populates the `"rag_answer"` fields inside [`rag_retrieved_answers.json`](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/evaluation_suite/rag_retrieved_answers.json) in-place.
 
 ---
 
@@ -169,16 +169,16 @@ To prevent script freezes, uniform **60-second timeouts** are enforced at every 
   # Recommended (Low-Cost/Free-Tier Limit): Evaluate only 50 questions:
   python3 evaluate_ragvschatgpt.py --limit 50
   ```
-* **Output**: Generates [`deep_eval_results.json`](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/papers download/deep_eval_results.json) and prints the final pipeline accuracy scores.
+* **Output**: Generates [`deep_eval_results.json`](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/evaluation_suite/deep_eval_results.json) and prints the final pipeline accuracy scores.
 
 ---
 
 ## 🏷️ File Definitions
 
-*   [`gold_qa_dataset.json`](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/papers download/gold_qa_dataset.json): Benchmark dataset containing generated questions, gold answers, and evidence mappings.
-*   [`rag_retrieved_answers.json`](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/papers download/rag_retrieved_answers.json): Output containing retrieved chunks and generated answers from the local RAG pipeline.
-*   [`deep_eval_results.json`](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/papers download/deep_eval_results.json): Final accuracy scores and reasons graded by DeepEval & Gemini.
-*   [`gemini_judge_results.json`](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/papers download/gemini_judge_results.json): Preserved outputs from the legacy evaluation script.
+*   [`gold_qa_dataset.json`](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/evaluation_suite/gold_qa_dataset.json): Benchmark dataset containing generated questions, gold answers, and evidence mappings.
+*   [`rag_retrieved_answers.json`](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/evaluation_suite/rag_retrieved_answers.json): Output containing retrieved chunks and generated answers from the local RAG pipeline.
+*   [`deep_eval_results.json`](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/evaluation_suite/deep_eval_results.json): Final accuracy scores and reasons graded by DeepEval & Gemini.
+*   [`gemini_judge_results.json`](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/evaluation_suite/gemini_judge_results.json): Preserved outputs from the legacy evaluation script.
 
 ---
 

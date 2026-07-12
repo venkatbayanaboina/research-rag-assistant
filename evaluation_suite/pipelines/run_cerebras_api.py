@@ -7,7 +7,7 @@ from pathlib import Path
 
 # ── Paths ────────────────────────────────────────────────────────────────────
 ROOT = Path(__file__).resolve().parent.parent
-RAG_OUTPUT = ROOT / "papers download" / "rag_retrieved_answers.json"
+RAG_OUTPUT = ROOT / "evaluation_suite" / "rag_retrieved_answers.json"
 
 # ── Cerebras API Settings ─────────────────────────────────────────────────────
 CEREBRAS_API_KEY = os.getenv("CEREBRAS_API_KEY", "YOUR_CEREBRAS_API_KEY_HERE")

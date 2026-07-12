@@ -41,9 +41,9 @@ In the Chrome window launched by the step above:
 3. Keep this window open.
 
 ### 4. Execute the Automation
-In your terminal, navigate to the `papers download` directory and run the script:
+In your terminal, navigate to the `evaluation_suite` directory and run the script:
 ```bash
-cd "/Users/nanibayanaboina2750/Desktop/research-rag-assistant/papers download"
+cd "/Users/nanibayanaboina2750/Desktop/research-rag-assistant/evaluation_suite"
 python3 automate_chatgpt.py
 ```
 
@@ -51,7 +51,7 @@ python3 automate_chatgpt.py
 
 ## ⚙️ How the Automation Works
 
-1. **Checklist Scanning**: The script reads [papers_list.md](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/papers%20download/papers_list.md) to locate the next unprocessed (`- [ ]`) paper.
+1. **Checklist Scanning**: The script reads [papers_list.md](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/evaluation_suite/papers_list.md) to locate the next unprocessed (`- [ ]`) paper.
 2. **Dynamic Modal Allocation**: It scans the PDF text locally to detect figures, tables, and equations, and calculates the exact counts required for the 15 QA pairs.
 3. **File Upload**: It uploads the PDF to the input file input (`#upload-files`) and waits up to **30 seconds** for the upload to complete.
 4. **Prompt Submission**: It fills in the detailed system schema prompt and submits it once the Send button becomes active.
@@ -59,4 +59,4 @@ python3 automate_chatgpt.py
    - Checks if the stop-generating button disappears.
    - Monitors when the send button becomes visible again.
    - Fallback: Checks the text of the last response element to verify it has stopped growing (remains stable for 6 seconds).
-6. **JSON Extraction & Sanitization**: It extracts the JSON block from the message bubble (with a global body-text fallback), parses it, appends it to [evaluation_dataset.json](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/papers%20download/evaluation_dataset.json), and checks the paper off in the checklist.
+6. **JSON Extraction & Sanitization**: It extracts the JSON block from the message bubble (with a global body-text fallback), parses it, appends it to [evaluation_dataset.json](file:///Users/nanibayanaboina2750/Desktop/research-rag-assistant/evaluation_suite/evaluation_dataset.json), and checks the paper off in the checklist.

@@ -25,8 +25,8 @@ from src.core.vector_store import get_indexed_documents, add_document_to_store
 from src.core.ingestion import parse_pdf
 from src.core.chunker import process_text_chunks
 
-SAMPLE_IN   = ROOT / "papers download" / "sample_100_answers.json"
-PDF_DIR     = ROOT / "papers download" / "pdfs"
+SAMPLE_IN   = ROOT / "evaluation_suite" / "sample_100_answers.json"
+PDF_DIR     = ROOT / "evaluation_suite" / "pdfs"
 
 def find_pdf_file(paper_id: str) -> Path:
     for p in PDF_DIR.glob("*.pdf"):

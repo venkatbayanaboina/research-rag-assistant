@@ -9,7 +9,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 # ── Paths ────────────────────────────────────────────────────────────────────
 ROOT = Path(__file__).resolve().parent.parent
-RAG_OUTPUT = ROOT / "papers download" / "rag_retrieved_answers.json"
+RAG_OUTPUT = ROOT / "evaluation_suite" / "rag_retrieved_answers.json"
 
 # ── Gemini API Settings ──────────────────────────────────────────────────────
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")

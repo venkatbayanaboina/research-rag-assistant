@@ -30,8 +30,8 @@ from src.core.ingestion import parse_pdf
 from src.core.chunker import process_text_chunks, process_image_chunks
 
 # ── Paths ────────────────────────────────────────────────────────────────────
-EVAL_DATASET  = ROOT / "papers download" / "gold_qa_dataset.json"
-PDF_DIR       = ROOT / "papers download" / "pdfs"
+EVAL_DATASET  = ROOT / "evaluation_suite" / "gold_qa_dataset.json"
+PDF_DIR       = ROOT / "evaluation_suite" / "pdfs"
 
 def find_pdf_file(paper_id: str) -> Path:
     """Finds the local PDF matching the given arXiv paper_id."""

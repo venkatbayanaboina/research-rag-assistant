@@ -65,7 +65,7 @@ This phase validates specialized scientific features: **summarization** and **si
 
 The evaluations directory is structured as follows:
 ```text
-papers download/
+evaluation_suite/
 ├── dataset/                           # Dataset & QA generator scripts
 │   ├── gold_qa_dataset.json           # 200 question benchmark dataset
 │   └── generate_eval_dataset.py       # QA parser script

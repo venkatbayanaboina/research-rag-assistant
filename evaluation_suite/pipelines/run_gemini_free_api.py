@@ -7,7 +7,7 @@ from pathlib import Path
 
 # ── Paths ────────────────────────────────────────────────────────────────────
 ROOT = Path(__file__).resolve().parent.parent
-RAG_OUTPUT = ROOT / "papers download" / "rag_retrieved_answers.json"
+RAG_OUTPUT = ROOT / "evaluation_suite" / "rag_retrieved_answers.json"
 
 # ── Gemini Free API Settings ─────────────────────────────────────────────────
 # Retrieve key from environment or use a default if set

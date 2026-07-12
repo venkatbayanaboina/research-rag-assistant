@@ -23,7 +23,7 @@ import config
 from src.core.generator import generate_answer
 
 # ── Paths ────────────────────────────────────────────────────────────────────
-RAG_OUTPUT = ROOT / "papers download" / "rag_retrieved_answers.json"
+RAG_OUTPUT = ROOT / "evaluation_suite" / "rag_retrieved_answers.json"
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
 

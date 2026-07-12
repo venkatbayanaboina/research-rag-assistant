@@ -10,8 +10,8 @@ on three dimensions:
   • Relevance     (1–5): Is it focused and on-topic?
 
 Saves per-question scores + aggregate stats to:
-  papers download/llm_judge_results.json
-  papers download/llm_judge_report.txt
+  evaluation_suite/llm_judge_results.json
+  evaluation_suite/llm_judge_report.txt
 """
 
 import os
@@ -23,9 +23,9 @@ from pathlib import Path
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
 ROOT        = Path(__file__).resolve().parent.parent
-SAMPLE_IN   = ROOT / "papers download" / "sample_100_answers.json"
-JUDGE_OUT   = ROOT / "papers download" / "llm_judge_results.json"
-REPORT_OUT  = ROOT / "papers download" / "llm_judge_report.txt"
+SAMPLE_IN   = ROOT / "evaluation_suite" / "sample_100_answers.json"
+JUDGE_OUT   = ROOT / "evaluation_suite" / "llm_judge_results.json"
+REPORT_OUT  = ROOT / "evaluation_suite" / "llm_judge_report.txt"
 
 # ── Cerebras API ──────────────────────────────────────────────────────────────
 CEREBRAS_API_KEY = os.getenv("CEREBRAS_API_KEY", "CEREBRAS_API_KEY")

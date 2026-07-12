@@ -5,7 +5,7 @@ from pathlib import Path
 # Paths to try
 paths = [
     Path("storage/rag_hybrid_answers.json"),
-    Path("papers download/rag_hybrid_answers.json"),
+    Path("evaluation_suite/rag_hybrid_answers.json"),
     Path("research-rag-assistant/storage/rag_hybrid_answers.json")
 ]
 
@@ -19,7 +19,7 @@ if not input_file:
     # If the file hasn't been placed in the folder yet, try to look for the baseline file
     paths_baseline = [
         Path("storage/rag_retrieved_answers.json"),
-        Path("papers download/rag_retrieved_answers.json"),
+        Path("evaluation_suite/rag_retrieved_answers.json"),
         Path("research-rag-assistant/storage/rag_retrieved_answers.json")
     ]
     for p in paths_baseline:
@@ -27,7 +27,7 @@ if not input_file:
             input_file = p
             break
 
-output_file = Path("papers download/rag_sample_qa_report.md")
+output_file = Path("evaluation_suite/rag_sample_qa_report.md")
 
 if not input_file:
     print("⚠️ Could not find any RAG answers JSON file in the project. Please place 'rag_hybrid_answers.json' in your project's storage/ folder first.")

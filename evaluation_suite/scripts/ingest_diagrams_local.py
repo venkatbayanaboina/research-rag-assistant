@@ -12,7 +12,7 @@ from sentence_transformers import SentenceTransformer
 
 # ── Configuration ────────────────────────────────────────────────────────────
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-PDF_DIR = PROJECT_ROOT / "papers download" / "pdfs"
+PDF_DIR = PROJECT_ROOT / "evaluation_suite" / "pdfs"
 STORAGE_DIR = PROJECT_ROOT / "storage"
 IMAGES_REGISTRY_PATH = STORAGE_DIR / "images_registry.json"
 IMAGE_INDEX_PATH = STORAGE_DIR / "image_db.faiss"
