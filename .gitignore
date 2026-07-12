@@ -12,3 +12,6 @@ evaluation_suite/configs/pdfs/
 evaluation_suite/logs/
 archives/
 
+# Ignore Python virtual environment
+rag/
+
