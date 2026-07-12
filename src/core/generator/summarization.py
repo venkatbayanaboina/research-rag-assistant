@@ -6,14 +6,26 @@ from src.core.generator.client import generate_content_with_retry
 
 def generate_summary(chunks):
     """
-    Generates a structured, comprehensive summary of a document
-    using the text extracted from its chunks.
+    Generates a structured, comprehensive summary of a document.
+    Uses a Hybrid Router:
+    - If document size <= 60,000 characters, uses Direct Single-Pass Summarization.
+    - If document size > 60,000 characters, uses Hierarchical Map-Reduce (section summaries -> merge).
     """
-    # Reconstruct document text
-    full_text = "\n\n".join([chunk["text"] for chunk in chunks])
+    if not chunks:
+        return "Error: No chunks provided for summarization."
+        
     filename = chunks[0]["source_file"] if chunks else "Document"
+    total_chars = sum(len(chunk.get("text", "")) for chunk in chunks)
+    threshold = 60000 # ~12,000 tokens
     
-    prompt = f"""
+    print(f"SYSTEM LOG: Summarization request for '{filename}' | Total size: {total_chars} chars (Threshold: {threshold})")
+    
+    if total_chars <= threshold:
+        print("SYSTEM LOG: Document size within threshold. Executing Direct Single-Pass Summarization...")
+        # Direct single-pass reconstruction
+        full_text = "\n\n".join([chunk["text"] for chunk in chunks])
+        
+        prompt = f"""
 You are a senior scientific research analyst.
 Analyze the following document text extracted from the PDF '{filename}' and write a structured, comprehensive summary.
 
@@ -30,9 +42,34 @@ Be highly factual, precise, and professional.
 =============================
 {full_text}
 """
+        return generate_content_with_retry(prompt, temperature=0.2)
+        
+    else:
+        print("SYSTEM LOG: Document size exceeds threshold. Executing Hierarchical Map-Reduce Summarization...")
+        # 1. Generate section summaries
+        section_summaries_text = generate_section_summaries(chunks)
+        
+        # 2. Merge section summaries into a final structured master summary
+        merge_prompt = f"""
+You are a senior scientific research analyst.
+The following is a section-by-section summary of the document '{filename}'.
+Merge these section summaries into a single, cohesive, structured final master summary.
 
-    print(f"Generating summary for {filename} with Gemini...")
-    return generate_content_with_retry(prompt, temperature=0.2)
+Your final master summary must include:
+1. **Core Overview**: A brief high-level description of the paper/document's purpose.
+2. **Key Findings / Contributions**: Bullet points of the main achievements, models introduced, or results.
+3. **Methodology**: Explanation of the methods, architectures, or procedures described.
+4. **Conclusion**: Main takeaways or future directions.
+
+Be highly factual, precise, and professional.
+
+=============================
+  SECTION SUMMARIES
+=============================
+{section_summaries_text}
+"""
+        print("SYSTEM LOG: Merging section summaries into master summary...")
+        return generate_content_with_retry(merge_prompt, temperature=0.2)
 
 def generate_section_summaries(chunks):
     """

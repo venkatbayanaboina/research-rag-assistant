@@ -47,7 +47,8 @@ def run_summarize(doc_name):
     
     try:
         registry = get_registry()
-        doc_chunks = [chunk for chunk in registry if os.path.basename(chunk["source_file"]) == os.path.basename(doc_name)]
+        doc_name_base = os.path.basename(doc_name)
+        doc_chunks = [chunk for chunk in registry if os.path.basename(chunk["source_file"]) == doc_name_base]
         
         if not doc_chunks:
             print(f"Error: No chunks found for document '{doc_name}'. Please ensure it is indexed.")
@@ -59,6 +60,31 @@ def run_summarize(doc_name):
         print("=============================\n")
     except Exception as e:
         print(f"Summary generation failed: {e}")
+
+def run_compare(doc_a_name, doc_b_name):
+    from src.core.vector_store import get_registry
+    from src.core.generator.comparison import generate_comparison
+    
+    try:
+        registry = get_registry()
+        doc_a_base = os.path.basename(doc_a_name)
+        doc_b_base = os.path.basename(doc_b_name)
+        doc_a_chunks = [chunk for chunk in registry if os.path.basename(chunk["source_file"]) == doc_a_base]
+        doc_b_chunks = [chunk for chunk in registry if os.path.basename(chunk["source_file"]) == doc_b_base]
+        
+        if not doc_a_chunks:
+            print(f"Error: No chunks found for document '{doc_a_name}'. Please ensure it is indexed.")
+            return
+        if not doc_b_chunks:
+            print(f"Error: No chunks found for document '{doc_b_name}'. Please ensure it is indexed.")
+            return
+            
+        comparison = generate_comparison(doc_a_name, doc_a_chunks, doc_b_name, doc_b_chunks)
+        print(f"\n=== COMPARISON: {doc_a_name} VS {doc_b_name} ===")
+        print(comparison)
+        print("==============================================\n")
+    except Exception as e:
+        print(f"Comparison generation failed: {e}")
 
 def run_chat():
     from src.core.generator import execute_rag_pipeline
@@ -123,6 +149,11 @@ def main():
     parser_sum = subparsers.add_parser("summarize", help="Generate summary for an indexed document")
     parser_sum.add_argument("doc_name", type=str, help="Filename of the indexed document")
     
+    # Compare subcommand
+    parser_compare = subparsers.add_parser("compare", help="Generate side-by-side comparison for two indexed documents")
+    parser_compare.add_argument("doc_a", type=str, help="Filename of first indexed document")
+    parser_compare.add_argument("doc_b", type=str, help="Filename of second indexed document")
+    
     # Chat subcommand
     subparsers.add_parser("chat", help="Start an interactive chat session in CLI")
     
@@ -137,6 +168,8 @@ def main():
         run_query(args.query_text)
     elif args.command == "summarize":
         run_summarize(args.doc_name)
+    elif args.command == "compare":
+        run_compare(args.doc_a, args.doc_b)
     elif args.command == "chat":
         run_chat()
     elif args.command == "ui":
@@ -146,3 +179,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
