@@ -6,3 +6,4 @@ streamlit
 pdf2image
 pillow
 python-dotenv
+opencv-python-headless
