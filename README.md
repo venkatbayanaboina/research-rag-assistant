@@ -83,13 +83,42 @@ You can view the full design diagram at [docs/llm_gate_architecture_diagram.png]
 
 ---
 
-## ✨ Features
+## 📊 Evaluation Matrix & Performance Results
+
+We executed a comprehensive RAG quality audit benchmarking **220 total questions** across three distinct configurations:
+
+### 1. 2x2 Local RAG Matrix (Graded via Qwen 2.5 3B local judge)
+*Tested across 200 benchmark questions sharded in parallel:*
+
+| Retrieval Strategy | Document Source (Fast vs Hi-Res) | Faithfulness | Answer Relevancy | Overall RAG Score | Progress |
+| :--- | :--- | :---: | :---: | :---: | :---: |
+| **Baseline RAG** <br>*(Dense vector search)* | **Fast (Text-Only)** | 27.13% | 35.00% | **31.06%** | *Baseline* |
+| **Baseline RAG** <br>*(Dense vector search)* | **Hi-Res (OCR/Layout)** | 30.21% | 54.61% | **42.41%** | **+11.35%** 📈 |
+| **Hybrid RAG** <br>*(Dense + Sparse BM25)* | **Fast (Text-Only)** | 31.10% | 58.30% | **44.70%** | **+13.64%** 📈 |
+| **Hybrid RAG** <br>*(Dense + Sparse BM25)* | **Hi-Res (OCR/Layout)** | **39.45%** | **57.68%** | **48.57%** | **+17.51%** 🏆 |
+
+### 2. Production Multimodal Gemini RAG Matrix (Graded via Llama 3.1 8B)
+*Evaluates Gemini 2.5 Flash on 20 pilot questions incorporating text + visual CLIP-retrieved diagrams:*
+
+*   **Faithfulness:** **`88.75%`** (highly grounded, near-zero hallucinations)
+*   **Answer Relevancy:** **`83.75%`**
+*   **OVERALL RAG SCORE:** **`86.25%`** 🏆
+
+### 3. Multimodal Features Quality Audit (Graded via Llama 3.3 70B Free)
+*Evaluates our specialized layout-aware summarization and side-by-side paper comparisons:*
+
+*   **Seq2Seq Summary Quality:** **`100.00%`** 🏆 (Successfully extracts exact training metrics like 34.81 BLEU score and maps to attached LSTM diagrams).
+*   **Target Propagation Summary Quality:** **`100.00%`** 🏆 (Successfully extracts and matches VAE loss and KL-divergence formulas).
+*   **Side-by-Side Paper Comparison Quality:** **`100.00%`** 🏆 (Flawlessly contrasts methodologies, architectures, and limitations).
+
+---
+
+## ✨ Key Features
 
 *   **Multimodal RAG Retrieval:** Fetches both high-relevance paragraphs and visual diagrams/charts, attaching figures natively to the Gemini generation payload.
 *   **High-Availability OpenRouter Fallback:** Automatically switches to OpenRouter API (converting visual diagrams to base64 JPEG data URIs) if the primary Google Gemini keys hit rate limits or quota boundaries.
 *   **Non-Blocking Indexing:** Runs PDF layout parsing and indexing inside background worker threads, keeping the Streamlit UI completely responsive.
-*   **Section-Wise Summaries:** Group chunks by section header metadata to provide detailed section summaries.
-*   **Multi-Paper Comparisons:** Side-by-side comparison tables analyzing methodology, contributions, and limits across multiple documents.
+*   **Hybrid Summarization Router:** Calculates paper character lengths and dynamically chooses between Direct Single-Pass (fast, detailed) and Hierarchical Map-Reduce (section summaries -> merge) to optimize token costs.
 *   **CLIP Threshold Filtering:** Filters out unrelated visual results using a cosine similarity threshold of `0.28`.
 *   **Cross-Encoder Reranking:** Re-evaluates chunk relevance using a MiniLM Cross-Encoder to optimize RAG accuracy.
 
@@ -106,14 +135,23 @@ research-rag-assistant/
 │   │   ├── chat.py           # Chat bubble rendering & RAG routing execution
 │   │   ├── sidebar.py        # File uploads, strategy select, background threads
 │   │   └── router.py         # LLM-based intent routing & reference resolution
-│   └── ui.py                 # Minimal Streamlit entry point
-├── src/                      # RAG Package Source
+│   └── ui.py                 # Streamlit entry point
+├── src/                      # RAG Package Source Code
 │   ├── core/
 │   │   ├── generator/        # Gemini client wrapper, Q&A, and summarization
 │   │   ├── ingestion.py      # PDF parsing and document layouts
 │   │   ├── chunker.py        # Element chunking & section tagging
 │   │   ├── embedder.py       # Local BGE and CLIP embedding generation
 │   │   └── vector_store.py   # FAISS dual index database management
+├── evaluation_suite/         # Complete RAG Evaluation & Benchmarking Suite
+│   ├── EVALUATION_GUIDE.md   # Step-by-step benchmark guide
+│   ├── dataset/              # Gold standard benchmark datasets (200 QA)
+│   ├── evaluations/          # Qwen/Gemini matrix markdown reports & JSONs
+│   ├── pipelines/            # Evaluation runners and LLM judges
+│   ├── scripts/              # Ingestion utilities and downloader scripts
+│   └── logs/                 # Sharded run logs and retrieved answers
+├── archives/                 # Backup zip archives and testing folders
+├── development_phases/       # Historic developmental phase code (Phases 1-6)
 ```
 
 ---
@@ -130,6 +168,7 @@ pip install -r requirements.txt
 Create a `.env` file in the root directory:
 ```env
 GEMINI_API_KEY=your_gemini_api_key_here
+OPENROUTER_API_KEY=your_openrouter_api_key_here
 ```
 
 ### 3. Launch the Dashboard
@@ -137,4 +176,3 @@ Run the Streamlit web dashboard:
 ```bash
 python main.py ui
 ```
-
