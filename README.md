@@ -153,26 +153,3 @@ research-rag-assistant/
 ├── archives/                 # Backup zip archives and testing folders
 ├── development_phases/       # Historic developmental phase code (Phases 1-6)
 ```
-
----
-
-## 🚀 Quickstart
-
-### 1. Installation
-Install dependencies in a virtual environment:
-```bash
-pip install -r requirements.txt
-```
-
-### 2. Configure Environment
-Create a `.env` file in the root directory:
-```env
-GEMINI_API_KEY=your_gemini_api_key_here
-OPENROUTER_API_KEY=your_openrouter_api_key_here
-```
-
-### 3. Launch the Dashboard
-Run the Streamlit web dashboard:
-```bash
-python main.py ui
-```
