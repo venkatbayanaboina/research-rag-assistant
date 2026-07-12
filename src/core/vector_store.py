@@ -98,8 +98,6 @@ def add_document_to_store(text_chunks, image_chunks, session_paths=None):
     # Auto-delete existing records of the same document to support clean re-indexing/overwriting
     delete_document_from_store(filename, session_paths=session_paths)
     
-    with db_lock:
-        
     # 1. Index Text Chunks
     if text_chunks:
         text_registry = get_registry(session_paths)
