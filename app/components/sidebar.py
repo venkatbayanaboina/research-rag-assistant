@@ -95,11 +95,16 @@ def render_sidebar():
         )
         
         # 2. File Uploader
+        if "uploader_key_suffix" not in st.session_state:
+            st.session_state.uploader_key_suffix = 0
+            
+        uploader_key = f"pdf_uploader_{st.session_state.uploader_key_suffix}"
+        
         uploaded_files = st.file_uploader(
             "Upload PDF files", 
             type=["pdf"], 
             accept_multiple_files=True,
-            key="pdf_uploader",
+            key=uploader_key,
             help="Upload one or multiple research papers"
         )
         
@@ -127,8 +132,8 @@ def render_sidebar():
                 thread = threading.Thread(target=run_indexing_pipeline)
                 thread.start()
                 
-                # Clear file uploader queue from UI state immediately
-                st.session_state.pdf_uploader = []
+                # Increment the suffix to generate a fresh new uploader widget, clearing the UI queue
+                st.session_state.uploader_key_suffix += 1
                 st.rerun()
 
         # Render persistent indexing status (non-blocking, allows chatting simultaneously)
