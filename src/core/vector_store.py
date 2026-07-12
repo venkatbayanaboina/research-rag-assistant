@@ -240,3 +240,60 @@ def search_image_store(query, k=None):
         }
     )
     return results
+
+def delete_document_from_store(filename):
+    """
+    Purges a document's text and visual chunks from both registries
+    and reconstructs the FAISS indexes from the remaining vectors (API-free).
+    """
+    with db_lock:
+        registry = get_registry()
+        image_registry = get_image_registry()
+        
+        # 1. Identify indices to keep
+        keep_text_indices = [idx for idx, c in enumerate(registry) if c["source_file"] != filename]
+        keep_image_indices = [idx for idx, c in enumerate(image_registry) if c["source_file"] != filename]
+        
+        new_registry = [registry[idx] for idx in keep_text_indices]
+        new_image_registry = [image_registry[idx] for idx in keep_image_indices]
+        
+        # Re-map IDs to match new array positions
+        for idx, chunk in enumerate(new_registry):
+            chunk["chunk_id"] = idx
+        for idx, chunk in enumerate(new_image_registry):
+            chunk["image_id"] = idx
+            
+        # 2. Reconstruct Text Index
+        old_text_index = load_text_db()
+        new_text_index = faiss.IndexFlatIP(1024)
+        if keep_text_indices and old_text_index.ntotal > 0:
+            vectors = []
+            for idx in keep_text_indices:
+                if idx < old_text_index.ntotal:
+                    vectors.append(old_text_index.reconstruct(idx))
+            if vectors:
+                new_text_index.add(np.array(vectors, dtype="float32"))
+                
+        # 3. Reconstruct Image Index
+        old_image_index = load_image_db()
+        new_image_index = faiss.IndexFlatIP(512)
+        if keep_image_indices and old_image_index.ntotal > 0:
+            img_vectors = []
+            for idx in keep_image_indices:
+                if idx < old_image_index.ntotal:
+                    img_vectors.append(old_image_index.reconstruct(idx))
+            if img_vectors:
+                new_image_index.add(np.array(img_vectors, dtype="float32"))
+                
+        # 4. Save updated registries and FAISS indexes
+        with open(config.CHUNKS_PATH, "w") as f:
+            json.dump(new_registry, f, indent=2)
+            
+        with open(config.IMAGES_REGISTRY_PATH, "w") as f:
+            json.dump(new_image_registry, f, indent=2)
+            
+        faiss.write_index(new_text_index, config.TEXT_INDEX_PATH)
+        faiss.write_index(new_image_index, config.IMAGE_INDEX_PATH)
+        
+        print(f"Successfully purged '{filename}' from database stores.")
+

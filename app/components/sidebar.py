@@ -117,7 +117,15 @@ def render_sidebar():
         indexed_docs = get_indexed_documents()
         if indexed_docs:
             for doc in indexed_docs:
-                st.markdown(f"- `{doc}`")
+                col_name, col_btn = st.columns([0.75, 0.25])
+                with col_name:
+                    st.markdown(f"`{doc}`")
+                with col_btn:
+                    if st.button("Delete", key=f"del_{doc}", use_container_width=True):
+                        from src.core.vector_store import delete_document_from_store
+                        delete_document_from_store(doc)
+                        st.toast(f"Successfully purged '{doc}'!")
+                        st.rerun()
         else:
             st.caption("No documents indexed yet. Upload files to get started!")
             
