@@ -97,25 +97,19 @@ def render_sidebar():
                 thread.start()
                 st.rerun()
 
-        # Render persistent indexing status
+        # Render persistent indexing status (non-blocking, allows chatting simultaneously)
         if PROGRESS_STATE["in_progress"]:
             st.markdown("---")
-            st.markdown("⏳ **Background Indexing Active**")
-            st.progress(PROGRESS_STATE["progress_val"])
-            st.caption(PROGRESS_STATE["status_msg"])
-            
-            time.sleep(0.5)
-            st.rerun()
+            st.markdown("⏳ **Background Ingestion Active**")
+            st.info(PROGRESS_STATE["status_msg"])
             
         if PROGRESS_STATE["success_msg"]:
-            st.success(PROGRESS_STATE["success_msg"])
+            st.toast(PROGRESS_STATE["success_msg"], icon="✅")
             PROGRESS_STATE["success_msg"] = ""
-            st.rerun()
             
         if PROGRESS_STATE["error_msg"]:
             st.error(PROGRESS_STATE["error_msg"])
             PROGRESS_STATE["error_msg"] = ""
-            st.rerun()
             
         # 3. List of Indexed Files
         st.markdown("---")
