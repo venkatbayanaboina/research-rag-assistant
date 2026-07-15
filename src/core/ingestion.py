@@ -1,6 +1,7 @@
 import os
 # Prevent Loky multiprocessing segmentation faults on Apple Silicon macOS
 os.environ["UNSTRUCTURED_PARALLEL"] = "False"
+os.environ["TRANSFORMERS_NO_ADVISORY_WARNINGS"] = "1"
 
 import sys
 from unstructured.partition.pdf import partition_pdf
@@ -92,4 +93,8 @@ def parse_pdf(file_path, strategy="fast"):
         }
     )
     return elements
+
+
+
+
 

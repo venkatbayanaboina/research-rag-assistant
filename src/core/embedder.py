@@ -1,4 +1,6 @@
 import os
+os.environ["TRANSFORMERS_NO_ADVISORY_WARNINGS"] = "1"
+
 import sys
 from sentence_transformers import SentenceTransformer
 from PIL import Image
