@@ -148,19 +148,27 @@ def render_sidebar():
                     st.toast("Cancellation requested...")
                     st.rerun()
             else:
-                # If progress just finished, trigger a full page refresh to display the newly indexed doc
-                if PROGRESS_STATE["success_msg"] or PROGRESS_STATE["error_msg"]:
+                # Safe state transition: Copy to session state & clear globals BEFORE calling st.rerun()
+                # to prevent infinite recursive rerun loops.
+                if PROGRESS_STATE["success_msg"]:
+                    st.session_state.toast_msg = PROGRESS_STATE["success_msg"]
+                    PROGRESS_STATE["success_msg"] = ""
+                    st.rerun()
+                if PROGRESS_STATE["error_msg"]:
+                    st.session_state.err_msg = PROGRESS_STATE["error_msg"]
+                    PROGRESS_STATE["error_msg"] = ""
                     st.rerun()
                     
         render_progress_status()
             
-        if PROGRESS_STATE["success_msg"]:
-            st.toast(PROGRESS_STATE["success_msg"])
-            PROGRESS_STATE["success_msg"] = ""
+        # Display feedback toasts and errors from session state to prevent looping
+        if "toast_msg" in st.session_state and st.session_state.toast_msg:
+            st.toast(st.session_state.toast_msg)
+            st.session_state.toast_msg = ""
             
-        if PROGRESS_STATE["error_msg"]:
-            st.error(PROGRESS_STATE["error_msg"])
-            PROGRESS_STATE["error_msg"] = ""
+        if "err_msg" in st.session_state and st.session_state.err_msg:
+            st.error(st.session_state.err_msg)
+            st.session_state.err_msg = ""
             
         # 3. List of Indexed Files
         st.markdown("---")
