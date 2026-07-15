@@ -61,10 +61,8 @@ def bg_index_worker(file_path, strategy, uploaded_name, session_paths):
         # Complete
         PROGRESS_STATE["progress_val"] = 1.00
         PROGRESS_STATE["success_msg"] = f"Successfully indexed '{uploaded_name}'!"
-        PROGRESS_STATE["in_progress"] = False
     except InterruptedError as ie:
         PROGRESS_STATE["error_msg"] = str(ie)
-        PROGRESS_STATE["in_progress"] = False
         # Clean up partial upload files
         try:
             if os.path.exists(file_path):
@@ -73,6 +71,7 @@ def bg_index_worker(file_path, strategy, uploaded_name, session_paths):
             pass
     except Exception as e:
         PROGRESS_STATE["error_msg"] = f"Error indexing '{uploaded_name}': {e}"
+    finally:
         PROGRESS_STATE["in_progress"] = False
 
 def render_sidebar():
