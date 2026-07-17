@@ -48,16 +48,18 @@ def execute_rag_pipeline(prompt, indexed_docs, use_rerank=None, chat_history=Non
     is_special_intent = False
 
     if intent == "COMPARISON" and len(targets) >= 2:
-        doc_a, doc_b = targets[0], targets[1]
         try:
             registry = get_registry()
-            doc_a_chunks = [chunk for chunk in registry if chunk["source_file"] == doc_a]
-            doc_b_chunks = [chunk for chunk in registry if chunk["source_file"] == doc_b]
-            
-            if doc_a_chunks and doc_b_chunks:
-                answer = generate_comparison(doc_a, doc_a_chunks, doc_b, doc_b_chunks)
+            docs_data = []
+            for target_doc in targets:
+                doc_chunks = [chunk for chunk in registry if chunk["source_file"] == target_doc]
+                if doc_chunks:
+                    docs_data.append({"name": target_doc, "chunks": doc_chunks})
+                    
+            if len(docs_data) >= 2:
+                answer = generate_comparison(docs_data)
             else:
-                answer = f"Error: Could not retrieve chunks for both '{doc_a}' and '{doc_b}'."
+                answer = f"Error: Could only retrieve chunks for {len(docs_data)} of the requested documents. (Need at least 2)."
         except Exception as e:
             answer = f"Error generating comparison: {e}"
         is_special_intent = True

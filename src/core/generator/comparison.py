@@ -8,69 +8,66 @@ import config
 from src.core.generator.client import generate_content_with_retry
 from src.core.generator.summarization import get_key_images_for_doc
 
-def generate_comparison(doc_a_name, doc_a_chunks, doc_b_name, doc_b_chunks):
+def generate_comparison(docs_data):
     """
-    Generates a structured side-by-side comparison of two documents.
+    Generates a structured side-by-side comparison of multiple documents (2 to 5+).
     Outputs a clean Markdown table comparing methodology, contributions, and limits.
-    Attaches key figures/tables/formulas of both documents multimodally.
+    docs_data: List of dicts, each with keys 'name' and 'chunks'.
     """
-    doc_a_text = "\n\n".join([chunk["text"] for chunk in doc_a_chunks])
-    doc_b_text = "\n\n".join([chunk["text"] for chunk in doc_b_chunks])
-    
-    # Retrieve key visual elements for both papers
-    key_images_a = get_key_images_for_doc(doc_a_name)
-    key_images_b = get_key_images_for_doc(doc_b_name)
-    
     pil_images = []
     image_info = []
     
-    for img_item in key_images_a:
-        try:
-            pil_images.append(Image.open(img_item["image_path"]))
-            image_info.append(f"- Paper A (Page {img_item['page']}): {img_item.get('category', 'Visual')} - Caption: {img_item.get('caption', '')[:100]}...")
-        except: pass
-        
-    for img_item in key_images_b:
-        try:
-            pil_images.append(Image.open(img_item["image_path"]))
-            image_info.append(f"- Paper B (Page {img_item['page']}): {img_item.get('category', 'Visual')} - Caption: {img_item.get('caption', '')[:100]}...")
-        except: pass
-        
+    # Process key images for each document
+    for doc_idx, doc in enumerate(docs_data):
+        doc_name = doc["name"]
+        key_images = get_key_images_for_doc(doc_name)
+        for img_item in key_images:
+            try:
+                # Limit total attached images to prevent prompt cluttering (e.g. max 15)
+                if len(pil_images) < 15:
+                    pil_images.append(Image.open(img_item["image_path"]))
+                    image_info.append(f"- Paper {chr(65 + doc_idx)} ({doc_name}, Page {img_item['page']}): {img_item.get('category', 'Visual')} - Caption: {img_item.get('caption', '')[:100]}...")
+            except: pass
+            
     image_info_str = "\n".join(image_info) if image_info else "No diagrams or tables attached."
+    
+    # Build prompt instructions dynamically
+    paper_list_str = "\n".join([f"{idx+1}. Paper {chr(65 + idx)}: {doc['name']}" for idx, doc in enumerate(docs_data)])
+    
+    header_cols = ["Dimension"] + [doc["name"] for doc in docs_data]
+    header_row = "| " + " | ".join(header_cols) + " |"
+    separator_row = "| " + " | ".join(["---"] * len(header_cols)) + " |"
+    
+    example_cols = ["..."] * len(docs_data)
+    example_row = "| Core Architecture (refer to diagrams) | " + " | ".join(example_cols) + " |"
     
     prompt = f"""
 You are an expert scientific analyst.
-Compare and contrast the following two research papers/documents:
-1. Paper A: {doc_a_name}
-2. Paper B: {doc_b_name}
+Compare and contrast the following research papers/documents side-by-side:
+{paper_list_str}
 
-Analyze the methodology, main achievements, performance, limitations, core architecture, and formulas of both papers, utilizing the attached diagrams/tables.
+Analyze the methodology, main achievements, performance, limitations, core architecture, and formulas of all papers, utilizing the attached diagrams/tables.
 
-Format your answer as a structured Markdown table comparing key dimensions:
-| Dimension | {doc_a_name} | {doc_b_name} |
-| --- | --- | --- |
-| Core Architecture (refer to diagrams) | ... | ... |
-| Key Formulas & Mathematical approach | ... | ... |
-| Main Contributions | ... | ... |
-| Key Performance / Results (refer to tables) | ... | ... |
-| Limitations | ... | ... |
+Format your answer as a structured Markdown table comparing key dimensions. You must have one column per paper:
+{header_row}
+{separator_row}
+{example_row}
+| Key Formulas & Mathematical approach | {" | ".join(example_cols)} |
+| Main Contributions | {" | ".join(example_cols)} |
+| Key Performance / Results (refer to tables) | {" | ".join(example_cols)} |
+| Limitations | {" | ".join(example_cols)} |
 
-Provide a brief 3-sentence summary of differences at the end.
+Provide a brief paragraph summarizing the key differences, relationships, and trade-offs among all compared papers at the end.
 
 Attached Figures/Tables details:
 {image_info_str}
-
-=============================
-  CONTEXT FOR {doc_a_name}
-=============================
-{doc_a_text}
-
-=============================
-  CONTEXT FOR {doc_b_name}
-=============================
-{doc_b_text}
 """
 
-    print(f"Generating multimodal comparison matrix between {doc_a_name} and {doc_b_name} with Gemini...")
+    # Append the context of each paper dynamically
+    for idx, doc in enumerate(docs_data):
+        doc_text = "\n\n".join([chunk["text"] for chunk in doc["chunks"]])
+        prompt += f"\n\n=============================\n  CONTEXT FOR {doc['name']} (Paper {chr(65 + idx)})\n=============================\n{doc_text}\n"
+
+    print(f"Generating multimodal comparison matrix between {[d['name'] for d in docs_data]} with Gemini...")
     contents = [prompt] + pil_images
     return generate_content_with_retry(contents, temperature=0.0)
