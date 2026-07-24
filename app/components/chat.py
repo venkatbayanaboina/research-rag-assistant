@@ -39,6 +39,19 @@ def render_chat_interface(use_rerank, indexed_docs):
                         st.markdown(f"**Source {idx+1}: {src['file']} (Page {src['page']})**")
                         st.text(src["text"])
                         st.markdown("---")
+            if msg.get("images"):
+                with st.expander("View Retrieved Visual Sources"):
+                    for idx, img_data in enumerate(msg["images"]):
+                        if isinstance(img_data, dict):
+                            path = img_data["path"]
+                            caption = img_data.get("caption", "")
+                        else:
+                            path = img_data
+                            caption = ""
+                        if os.path.exists(path):
+                            st.markdown(f"**Visual Source {idx+1}:** {caption}")
+                            st.image(path)
+                            st.markdown("---")
                         
     # 2. Capture and route prompt inputs
     active_prompt = None
@@ -103,6 +116,15 @@ def render_chat_interface(use_rerank, indexed_docs):
                             st.markdown(f"**Source {idx+1}: {chunk['source_file']} (Page {chunk['page']})**")
                             st.text(chunk["text"])
                             st.markdown("---")
+                if not is_special_intent and saved_images:
+                    with st.expander("View Retrieved Visual Sources"):
+                        for idx, img_data in enumerate(saved_images):
+                            path = img_data["path"]
+                            caption = img_data["caption"]
+                            if os.path.exists(path):
+                                st.markdown(f"**Visual Source {idx+1}:** {caption}")
+                                st.image(path)
+                                st.markdown("---")
                             
             # Convert retrieved text search results into history source objects
             saved_sources = []
