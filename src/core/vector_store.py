@@ -112,6 +112,7 @@ def add_document_to_store(text_chunks, image_chunks, session_paths=None):
             from src.core.utils.profiler import log_timing
             
             start_time = time.time()
+            
             embeddings = embed_batch(texts)
             duration = time.time() - start_time
             log_timing(
@@ -236,9 +237,12 @@ def search_store(query, k=None, rerank=None):
 
 def search_image_store(query, k=None):
     """
-    Searches the Image index using CLIP text query embedding.
+    Searches the Image index using Hybrid Visual Retrieval:
+    Combines dense CLIP text-to-image similarity search with a sparse keyword matcher
+    matching figure numbers (e.g. 'Fig. 5') and tokens against the image registry captions.
     """
     import time
+    import re
     from src.core.utils.profiler import log_timing
     start_time = time.time()
     
@@ -252,33 +256,89 @@ def search_image_store(query, k=None):
         
     search_k = config.K_IMAGE_RETRIEVAL if k is None else k
     
-    # Embed text query in CLIP visual space
+    # 1. Dense Retrieval: Embed text query in CLIP visual space and search FAISS
     query_vector = embed_clip_text(query)
+    scores, indices = index.search(query_vector, k=min(search_k * 3, index.ntotal))
     
-    scores, indices = index.search(query_vector, k=min(search_k, index.ntotal))
-    
-    results = []
+    dense_results = []
     for score, idx in zip(scores[0], indices[0]):
         if idx != -1 and idx < len(registry):
             score_val = float(score)
-            # Only include visual diagrams if they meet the semantic similarity threshold (>= 0.28)
             if score_val >= 0.28:
-                results.append({
+                dense_results.append({
                     "score": score_val,
                     "chunk": registry[idx]
                 })
+                
+    # 2. Sparse Retrieval: Keyword and pattern-based caption matching
+    sparse_results = []
+    query_lower = query.lower()
+    
+    # Tokenize the query into descriptive keywords (length > 2)
+    query_tokens = [w for w in re.findall(r'[a-z0-9]+', query_lower) if len(w) > 2]
+    
+    # Capture explicit figure/table references (e.g., "fig 5", "figure 5", "table 2")
+    ref_patterns = re.findall(r'(fig(?:ure)?|table)\s*(\d+)', query_lower)
+    
+    for item in registry:
+        caption = item.get("caption", "").lower()
+        source_file = item.get("source_file", "").lower()
+        match_score = 0.0
+        
+        # Match explicit figure/table numbers (high confidence boost)
+        for ref_type, ref_num in ref_patterns:
+            if ref_type.startswith("fig"):
+                if re.search(r'fig(?:ure)?[\s\.]*' + ref_num, caption):
+                    match_score = 0.45
+            elif ref_type == "table":
+                if re.search(r'table[\s\.]*' + ref_num, caption):
+                    match_score = 0.45
+                    
+        # Falling back to basic token-matching if no pattern matches
+        if match_score == 0.0 and query_tokens:
+            matched_tokens = [t for t in query_tokens if t in caption or t in source_file]
+            if len(matched_tokens) > 0:
+                # Calculate ratio-based score starting from baseline threshold
+                match_score = 0.28 + (0.12 * (len(matched_tokens) / len(query_tokens)))
+                
+        if match_score >= 0.28:
+            sparse_results.append({
+                "score": match_score,
+                "chunk": item
+            })
             
-    # Measure visual CLIP search duration
+    # 3. Hybrid Fusion: Merge dense and sparse results, deduplicating by image path
+    merged = {}
+    for res in dense_results:
+        path = res["chunk"]["image_path"]
+        merged[path] = res
+        
+    for res in sparse_results:
+        path = res["chunk"]["image_path"]
+        if path in merged:
+            # Boost score if found in both dense and sparse paths
+            merged[path]["score"] = max(merged[path]["score"], res["score"]) + 0.05
+        else:
+            merged[path] = res
+            
+    # Sort results by descending similarity/relevance score
+    final_results = list(merged.values())
+    final_results.sort(key=lambda x: x["score"], reverse=True)
+    final_results = final_results[:search_k]
+            
+    # Measure total hybrid retrieval duration
     duration = time.time() - start_time
     log_timing(
         step_name="visual_retrieval_clip",
         duration_seconds=duration,
         metadata={
             "query": query[:100],
-            "visual_results_count": len(results)
+            "dense_results": len(dense_results),
+            "sparse_results": len(sparse_results),
+            "final_results_count": len(final_results)
         }
     )
-    return results
+    return final_results
 
 def delete_document_from_store(filename, session_paths=None):
     """
