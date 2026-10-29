@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test-and-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install CPU-only torch first (smaller wheel)
+        run: pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - name: Install cross-platform requirements
+        # requirements.lock.txt is a macOS venv freeze (local reproducibility);
+        # CI uses the cross-platform requirements.txt
+        run: pip install -r requirements.txt
+      - name: Secret scan (git history)
+        run: python scripts/secret_scan.py
+      - name: Smoke checks (no models, no API)
+        run: python -m evaluation_suite.pipelines.smoke_eval
+      - name: Unit suite
+        run: make test PYTHON=python
+      # Live evaluation stages (make eval-live) are NOT part of CI:
+      # they require API keys. The hold-out runner refuses by design on an
+      # empty eval/holdout.jsonl — verified in the unit suite via the scaffold.

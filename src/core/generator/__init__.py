@@ -1,9 +1,9 @@
-from src.core.generator.client import get_gemini_client
-from src.core.generator.answering import generate_answer
-from src.core.generator.summarization import generate_summary, generate_section_summaries
-from src.core.generator.comparison import generate_comparison
-from src.core.generator.orchestrator import execute_rag_pipeline
-from src.core.generator.router import route_user_intent
+"""Lazy re-exports: importing src.core.generator no longer pulls the entire
+generator chain (orchestrator -> vector_store -> faiss/torch) at import time.
+Smoke checks and holdout tooling import lightweight submodules (router,
+research_actions) without the heavy transitive dependencies. Callers of
+`from src.core.generator import X` still work via module __getattr__ (PEP 562).
+"""
 
 __all__ = [
     "get_gemini_client",
@@ -12,5 +12,13 @@ __all__ = [
     "generate_section_summaries",
     "generate_comparison",
     "execute_rag_pipeline",
-    "route_user_intent"
+    "route_user_intent",
+    "get_gemini_client",
 ]
+
+
+def __getattr__(name):
+    if name in __all__:
+        from src.core.generator import orchestrator
+        return getattr(orchestrator, name)
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

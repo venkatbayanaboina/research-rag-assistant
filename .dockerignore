@@ -1,0 +1,15 @@
+rag/
+.git/
+.github/
+archives/
+development_phases/
+__pycache__/
+.pytest_cache/
+scratch/
+storage/sessions/
+storage/raw_pdfs/
+storage/extracted_images/
+evaluation_suite/configs/pdfs/
+docs/internship_report.tex
+*.pyc
+.env

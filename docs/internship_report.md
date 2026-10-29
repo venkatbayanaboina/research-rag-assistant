@@ -1,3 +1,11 @@
+> **📌 Integrity note (2026-10-29, post-audit):** all judge scores in this report
+> (shown as **RETRACTED**) predate the discovery that the evaluation pipeline silently
+> replaced failed judge calls with 96–98% defaults. They are **not reproducible** and are
+> redacted per project policy — never quote them. The superseding, measured results are
+> [`docs/upgrade/evaluation_results.md`](upgrade/evaluation_results.md)
+> (faithfulness 0.9542, relevancy 0.8933, n=60, cross-validated by two model families)
+> and [`docs/upgrade/WORK_RESULTS.md`](upgrade/WORK_RESULTS.md).
+
 # 🎓 Internship Project Report: Multimodal Scientific Research RAG Assistant
 
 ---
@@ -95,13 +103,13 @@ The generated report **[`deepeval_multimodal_features_report.md`](file:///Users/
 
 | Feature / Output File | Evaluated Metric / Score | Reasoning / Judge's Critique |
 | :--- | :---: | :--- |
-| **`Summary_attention-is-all-you-need-Paper_summary.md`** | **98.50%** | Comprehensive coverage of encoder/decoder stacks, parameters, BLEU scores, and critical equations. |
-| **`Summary_1408.5882_Sentence_Classification_summary.md`** | **98.50%** | Accurately details CNN layers, static/non-static word vectors, and dropout math. |
-| **`Summary_1407.7906_Target_Propagation_summary.md`** | **98.00%** | Deeply captures credit assignment mathematical frameworks and propagation details. |
-| **`Summary_1409.3215_Sequence_to_Sequence_summary.md`** | **98.50%** | Factually reports BLEU scores (34.81) and the sentence-reversal methodology. |
-| **`Summary_Social-Engineering-Attack_summary.md`** | **98.00%** | Evaluates attack topologies and human vulnerability statistics accurately. |
-| **`Comparison_5_Papers_Comparative_Analysis_Matrix.md`** | **98.50%** | Generates a structured 6-column matrix contrasting methodologies, formulas, and limitations. |
-| **OVERALL SYSTEM FEATURE SCORE** | **98.33%** | **Highly grounded, clear, structured, and free of hallucinations.** |
+| **`Summary_attention-is-all-you-need-Paper_summary.md`** | **RETRACTED** | Comprehensive coverage of encoder/decoder stacks, parameters, BLEU scores, and critical equations. |
+| **`Summary_1408.5882_Sentence_Classification_summary.md`** | **RETRACTED** | Accurately details CNN layers, static/non-static word vectors, and dropout math. |
+| **`Summary_1407.7906_Target_Propagation_summary.md`** | **RETRACTED** | Deeply captures credit assignment mathematical frameworks and propagation details. |
+| **`Summary_1409.3215_Sequence_to_Sequence_summary.md`** | **RETRACTED** | Factually reports BLEU scores (34.81) and the sentence-reversal methodology. |
+| **`Summary_Social-Engineering-Attack_summary.md`** | **RETRACTED** | Evaluates attack topologies and human vulnerability statistics accurately. |
+| **`Comparison_5_Papers_Comparative_Analysis_Matrix.md`** | **RETRACTED** | Generates a structured 6-column matrix contrasting methodologies, formulas, and limitations. |
+| **OVERALL SYSTEM FEATURE SCORE** | **RETRACTED** | Fabricated-fallback-inflated figure (audit defect D4); superseded by measured results in docs/upgrade/evaluation_results.md §5. |
 
 ---
 
@@ -115,4 +123,4 @@ During the course of the internship, significant expertise was gained in:
 ---
 
 ## 🏁 6. Conclusion
-The internship successfully delivered a production-grade, hardware-accelerated **Multimodal RAG Assistant**. By addressing layout extraction, visual indexing, reranking, and dynamic query routing, the system provides a highly accurate interface for scientific research. With an overall feature score of **98.33%** and key macOS hardware optimizations, this project represents a significant advancement over standard text-only RAG pipelines.
+The internship successfully delivered a production-grade, hardware-accelerated **Multimodal RAG Assistant**. By addressing layout extraction, visual indexing, reranking, and dynamic query routing, the system provides a highly accurate interface for scientific research. With an overall feature score of **RETRACTED** and key macOS hardware optimizations, this project represents a significant advancement over standard text-only RAG pipelines.

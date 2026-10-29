@@ -7,3 +7,9 @@ pdf2image
 pillow
 python-dotenv
 opencv-python-headless
+pypdf
+requests
+rank_bm25
+langgraph
+deepeval
+pytest
