@@ -157,7 +157,7 @@ I would like to express my sincere gratitude to my internship mentor and supervi
 
 \newpage 
 \begin{ABSTRACT}
-Scientific literature search engines often struggle to process structured components like figures, diagrams, formulas, and tables. Standard text-only Retrieval-Augmented Generation (RAG) pipelines extract text sequentially, losing semantic associations between text, charts, and equations. This report details the implementation of a \textbf{Production-Grade Multimodal Scientific Research RAG Assistant}. The system employs layout-aware PDF parsers (YOLOX and OCR) to extract text sections, diagrams, and formulas. High-dimensional text and visual representations are generated using BGE and CLIP models, indexed in local GPU/MPS-accelerated FAISS databases, and dynamically routed by an intent classification layer to deliver standard Q&A, Map-Reduce summaries, and multi-document comparative matrices. Evaluating the system with DeepEval showcases an average feature score of 98.33\% across Faithfulness, Relevancy, and Completeness, demonstrating a significant reduction in hallucination rates compared to baseline text-only systems.
+Scientific literature search engines often struggle to process structured components like figures, diagrams, formulas, and tables. Standard text-only Retrieval-Augmented Generation (RAG) pipelines extract text sequentially, losing semantic associations between text, charts, and equations. This report details the implementation of a \textbf{Production-Grade Multimodal Scientific Research RAG Assistant}. The system employs layout-aware PDF parsers (YOLOX and OCR) to extract text sections, diagrams, and formulas. High-dimensional text and visual representations are generated using BGE and CLIP models, indexed in local GPU/MPS-accelerated FAISS databases, and dynamically routed by an intent classification layer to deliver standard Q&A, Map-Reduce summaries, and multi-document comparative matrices. Evaluating the system with DeepEval; historical judge scores have been retracted following an evaluation-integrity audit (see the project's docs/upgrade/evaluation\_results.md for the superseding, cross-validated metrics).
 \end{ABSTRACT}
 
 \tableofcontents
@@ -240,14 +240,14 @@ The system was evaluated using DeepEval against 5 target papers (including the A
 \hline
 \textbf{Feature / Document} & \textbf{Score} & \textbf{Judge Feedback} \\
 \hline
-Summary (Attention) & 98.50\% & Covers encoder/decoder, parameters, BLEU, math. \\
-Summary (CNN Sentence Class.) & 98.50\% & Details CNN, word vector variants, dropout math. \\
-Summary (Target Propagation) & 98.00\% & Details credit assignment, auto-encoder math. \\
-Summary (Sequence-to-Sequence) & 98.50\% & Captures BLEU, LSTM, source reversal details. \\
-Summary (Social Engineering) & 98.00\% & Summarizes attack topologies, user statistics. \\
-5-Paper Comparison Table & 98.50\% & Covers all papers side-by-side with equal depth. \\
+Summary (Attention) & RETRACTED & Covers encoder/decoder, parameters, BLEU, math. \\
+Summary (CNN Sentence Class.) & RETRACTED & Details CNN, word vector variants, dropout math. \\
+Summary (Target Propagation) & RETRACTED & Details credit assignment, auto-encoder math. \\
+Summary (Sequence-to-Sequence) & RETRACTED & Captures BLEU, LSTM, source reversal details. \\
+Summary (Social Engineering) & RETRACTED & Summarizes attack topologies, user statistics. \\
+5-Paper Comparison Table & RETRACTED & Covers all papers side-by-side with equal depth. \\
 \hline
-\textbf{Overall Feature Score} & \textbf{98.33\%} & **Highly grounded and structurally consistent.** \\
+\textbf{Overall Feature Score} & \textbf{RETRACTED} & Retracted (fabricated-fallback inflation); superseded by audited metrics. \\
 \hline
 \end{tabular}
 \caption{DeepEval Multimodal Features Evaluation Results}

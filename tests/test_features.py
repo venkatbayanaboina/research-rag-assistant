@@ -6,6 +6,11 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src.core.generator.summarization import generate_summary, generate_section_summaries
 from src.core.generator.comparison import generate_comparison
 
+def _prompt_text(captured_parts):
+    """Generation calls pass [prompt_str, PIL.Image, ...]; tests assert on the
+    concatenated string parts only."""
+    return "\n".join(str(p) for p in captured_parts if isinstance(p, str))
+
 def test_generate_summary_mock(monkeypatch):
     """Verifies that generate_summary builds prompts and delegates successfully."""
     mock_response = "### Core Overview\nThis is a mock summary.\n### Key Findings\n- Contribution A\n### Methodology\nMethod B\n### Conclusion\nTakeaway C"
@@ -29,12 +34,13 @@ def test_generate_summary_mock(monkeypatch):
     ]
     
     summary = generate_summary(mock_chunks)
-    
+
     # Assertions
     assert summary == mock_response
-    assert "attention-is-all-you-need-Paper.pdf" in captured_prompt
-    assert "This is page 1 content" in captured_prompt
-    assert "Transformer layers" in captured_prompt
+    prompt_text = _prompt_text(captured_prompt)
+    assert "attention-is-all-you-need-Paper.pdf" in prompt_text
+    assert "This is page 1 content" in prompt_text
+    assert "Transformer layers" in prompt_text
 
 def test_generate_section_summaries_mock(monkeypatch):
     """Verifies that generate_section_summaries groups chunks by section title and requests section-wise summaries."""
@@ -85,15 +91,18 @@ def test_generate_comparison_mock(monkeypatch):
     
     mock_chunks_a = [{"text": "Self-attention mechanism details.", "source_file": "paper_transformer.pdf"}]
     mock_chunks_b = [{"text": "Long Short-Term Memory details.", "source_file": "paper_lstm.pdf"}]
-    
-    comparison = generate_comparison(
-        "paper_transformer.pdf", mock_chunks_a,
-        "paper_lstm.pdf", mock_chunks_b
-    )
-    
+
+    docs_data = [
+        {"name": "paper_transformer.pdf", "chunks": mock_chunks_a},
+        {"name": "paper_lstm.pdf", "chunks": mock_chunks_b}
+    ]
+
+    comparison = generate_comparison(docs_data)
+
     # Assertions
     assert comparison == mock_response
-    assert "Paper A: paper_transformer.pdf" in captured_prompt
-    assert "Paper B: paper_lstm.pdf" in captured_prompt
-    assert "Self-attention mechanism" in captured_prompt
-    assert "Long Short-Term Memory" in captured_prompt
+    prompt_text = _prompt_text(captured_prompt)
+    assert "Paper A: paper_transformer.pdf" in prompt_text
+    assert "Paper B: paper_lstm.pdf" in prompt_text
+    assert "Self-attention mechanism" in prompt_text
+    assert "Long Short-Term Memory" in prompt_text

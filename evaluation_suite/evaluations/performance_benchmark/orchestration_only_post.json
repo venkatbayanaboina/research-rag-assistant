@@ -1,0 +1,10 @@
+{
+  "label": "orchestration_only_stubbed_llm",
+  "mean_seconds": 0.81,
+  "per_query": [
+    1.25,
+    0.81,
+    0.55,
+    0.62
+  ]
+}

@@ -201,7 +201,10 @@ class LLMGateJudge(DeepEvalBaseLLM):
         return self.generate_with_schema(prompt, schema)
 
     def get_model_name(self):
-        return self.model_name
+        if self.use_ollama:
+            return self.model_name
+        from src.core.generator.gates.controller import get_llm_gate
+        return "gate:" + type(get_llm_gate()).__name__
 
 def load_golden_cases():
     """Loads generated test cases from JSON, falling back to a default if not found."""

@@ -1,0 +1,409 @@
+{
+  "mode": "hybrid",
+  "k": 5,
+  "rerank": false,
+  "n_cases": 60,
+  "hit_at_1": 0.6,
+  "recall_at_3": 0.8667,
+  "recall_at_5": 0.9167,
+  "mrr": 0.7367,
+  "latency_ms_mean": 246.9,
+  "latency_ms_p50": 94.5,
+  "latency_ms_p95": 125.6,
+  "per_type": {
+    "equation": {
+      "n": 18,
+      "hit_at_1": 0.6667,
+      "recall_at_5": 0.8333,
+      "mrr": 0.7333
+    },
+    "figure": {
+      "n": 18,
+      "hit_at_1": 0.5556,
+      "recall_at_5": 0.9444,
+      "mrr": 0.7269
+    },
+    "table": {
+      "n": 6,
+      "hit_at_1": 0.5,
+      "recall_at_5": 1.0,
+      "mrr": 0.7083
+    },
+    "text": {
+      "n": 18,
+      "hit_at_1": 0.6111,
+      "recall_at_5": 0.9444,
+      "mrr": 0.7593
+    }
+  },
+  "per_query": [
+    {
+      "qid": "1407.7906_Q01",
+      "type": "text",
+      "latency_ms": 9241.5,
+      "first_relevant_rank": 2
+    },
+    {
+      "qid": "1407.7906_Q02",
+      "type": "equation",
+      "latency_ms": 104.0,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1407.7906_Q03",
+      "type": "figure",
+      "latency_ms": 101.4,
+      "first_relevant_rank": 4
+    },
+    {
+      "qid": "1407.7906_Q04",
+      "type": "text",
+      "latency_ms": 125.6,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1407.7906_Q05",
+      "type": "equation",
+      "latency_ms": 116.1,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1407.7906_Q06",
+      "type": "figure",
+      "latency_ms": 94.5,
+      "first_relevant_rank": 2
+    },
+    {
+      "qid": "1407.7906_Q07",
+      "type": "text",
+      "latency_ms": 103.3,
+      "first_relevant_rank": 3
+    },
+    {
+      "qid": "1407.7906_Q08",
+      "type": "equation",
+      "latency_ms": 104.7,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1407.7906_Q09",
+      "type": "figure",
+      "latency_ms": 104.1,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1407.7906_Q10",
+      "type": "text",
+      "latency_ms": 102.5,
+      "first_relevant_rank": 3
+    },
+    {
+      "qid": "1407.7906_Q11",
+      "type": "equation",
+      "latency_ms": 101.8,
+      "first_relevant_rank": 2
+    },
+    {
+      "qid": "1407.7906_Q12",
+      "type": "figure",
+      "latency_ms": 95.2,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1407.7906_Q13",
+      "type": "text",
+      "latency_ms": 98.0,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1407.7906_Q14",
+      "type": "equation",
+      "latency_ms": 106.8,
+      "first_relevant_rank": null
+    },
+    {
+      "qid": "1407.7906_Q15",
+      "type": "figure",
+      "latency_ms": 99.1,
+      "first_relevant_rank": null
+    },
+    {
+      "qid": "1408.5882_Q01",
+      "type": "text",
+      "latency_ms": 89.4,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1408.5882_Q02",
+      "type": "text",
+      "latency_ms": 100.0,
+      "first_relevant_rank": 2
+    },
+    {
+      "qid": "1408.5882_Q03",
+      "type": "text",
+      "latency_ms": 117.8,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1408.5882_Q04",
+      "type": "text",
+      "latency_ms": 107.9,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1408.5882_Q05",
+      "type": "figure",
+      "latency_ms": 199.6,
+      "first_relevant_rank": 2
+    },
+    {
+      "qid": "1408.5882_Q06",
+      "type": "figure",
+      "latency_ms": 102.0,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1408.5882_Q07",
+      "type": "figure",
+      "latency_ms": 73.2,
+      "first_relevant_rank": 2
+    },
+    {
+      "qid": "1408.5882_Q08",
+      "type": "figure",
+      "latency_ms": 73.1,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1408.5882_Q09",
+      "type": "table",
+      "latency_ms": 107.4,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1408.5882_Q10",
+      "type": "table",
+      "latency_ms": 81.1,
+      "first_relevant_rank": 4
+    },
+    {
+      "qid": "1408.5882_Q11",
+      "type": "table",
+      "latency_ms": 108.5,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1408.5882_Q12",
+      "type": "equation",
+      "latency_ms": 94.9,
+      "first_relevant_rank": null
+    },
+    {
+      "qid": "1408.5882_Q13",
+      "type": "equation",
+      "latency_ms": 74.9,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1408.5882_Q14",
+      "type": "equation",
+      "latency_ms": 79.2,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1408.5882_Q15",
+      "type": "equation",
+      "latency_ms": 74.8,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1409.3215_Q01",
+      "type": "text",
+      "latency_ms": 74.6,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1409.3215_Q02",
+      "type": "text",
+      "latency_ms": 74.6,
+      "first_relevant_rank": 2
+    },
+    {
+      "qid": "1409.3215_Q03",
+      "type": "text",
+      "latency_ms": 102.2,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1409.3215_Q04",
+      "type": "text",
+      "latency_ms": 75.5,
+      "first_relevant_rank": null
+    },
+    {
+      "qid": "1409.3215_Q05",
+      "type": "figure",
+      "latency_ms": 106.3,
+      "first_relevant_rank": 2
+    },
+    {
+      "qid": "1409.3215_Q06",
+      "type": "figure",
+      "latency_ms": 84.6,
+      "first_relevant_rank": 2
+    },
+    {
+      "qid": "1409.3215_Q07",
+      "type": "figure",
+      "latency_ms": 79.5,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1409.3215_Q08",
+      "type": "figure",
+      "latency_ms": 80.4,
+      "first_relevant_rank": 3
+    },
+    {
+      "qid": "1409.3215_Q09",
+      "type": "table",
+      "latency_ms": 112.2,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1409.3215_Q10",
+      "type": "table",
+      "latency_ms": 119.3,
+      "first_relevant_rank": 2
+    },
+    {
+      "qid": "1409.3215_Q11",
+      "type": "table",
+      "latency_ms": 89.1,
+      "first_relevant_rank": 2
+    },
+    {
+      "qid": "1409.3215_Q12",
+      "type": "equation",
+      "latency_ms": 73.2,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1409.3215_Q13",
+      "type": "equation",
+      "latency_ms": 79.5,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1409.3215_Q14",
+      "type": "equation",
+      "latency_ms": 79.3,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1409.3215_Q15",
+      "type": "equation",
+      "latency_ms": 77.2,
+      "first_relevant_rank": null
+    },
+    {
+      "qid": "1409.7770_Q01",
+      "type": "text",
+      "latency_ms": 163.3,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1409.7770_Q02",
+      "type": "text",
+      "latency_ms": 78.4,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1409.7770_Q03",
+      "type": "text",
+      "latency_ms": 70.8,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1409.7770_Q04",
+      "type": "text",
+      "latency_ms": 79.4,
+      "first_relevant_rank": 2
+    },
+    {
+      "qid": "1409.7770_Q05",
+      "type": "text",
+      "latency_ms": 79.2,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1409.7770_Q06",
+      "type": "figure",
+      "latency_ms": 79.2,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1409.7770_Q07",
+      "type": "figure",
+      "latency_ms": 108.2,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1409.7770_Q08",
+      "type": "figure",
+      "latency_ms": 80.3,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1409.7770_Q09",
+      "type": "figure",
+      "latency_ms": 86.0,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1409.7770_Q10",
+      "type": "figure",
+      "latency_ms": 78.6,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1409.7770_Q11",
+      "type": "equation",
+      "latency_ms": 80.3,
+      "first_relevant_rank": 5
+    },
+    {
+      "qid": "1409.7770_Q12",
+      "type": "equation",
+      "latency_ms": 74.0,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1409.7770_Q13",
+      "type": "equation",
+      "latency_ms": 80.8,
+      "first_relevant_rank": 2
+    },
+    {
+      "qid": "1409.7770_Q14",
+      "type": "equation",
+      "latency_ms": 77.2,
+      "first_relevant_rank": 1
+    },
+    {
+      "qid": "1409.7770_Q15",
+      "type": "equation",
+      "latency_ms": 109.3,
+      "first_relevant_rank": 1
+    }
+  ],
+  "missed_qids": [
+    "1407.7906_Q14",
+    "1407.7906_Q15",
+    "1408.5882_Q12",
+    "1409.3215_Q04",
+    "1409.3215_Q15"
+  ],
+  "timestamp": "2026-10-28T17:11:39Z"
+}

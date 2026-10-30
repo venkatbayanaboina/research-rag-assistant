@@ -1,4 +1,7 @@
 import os
+# Disable tokenizers parallelism to prevent deadlocks and segfaults on macOS
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
 import sys
 from sentence_transformers import CrossEncoder
 
@@ -7,6 +10,9 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(
 import config
 
 import torch
+# Restrict PyTorch CPU threading to prevent OpenMP/loky resource leaks and crashes on macOS
+if torch.get_num_threads() > 1:
+    torch.set_num_threads(1)
 
 _reranker = None
 
@@ -14,7 +20,8 @@ def get_reranker():
     """Lazy-loads and caches the CrossEncoder model."""
     global _reranker
     if _reranker is None:
-        device = "cuda" if torch.cuda.is_available() else "cpu"
+        from src.core.embedder import get_device
+        device = get_device()
         print(f"Loading reranker model: {config.RERANKER_MODEL_NAME} on device: {device}...")
         _reranker = CrossEncoder(config.RERANKER_MODEL_NAME, device=device)
     return _reranker

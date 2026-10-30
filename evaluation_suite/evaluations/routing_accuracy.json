@@ -1,0 +1,370 @@
+{
+  "summary": {
+    "n_queries": 21,
+    "intent_accuracy": 1.0,
+    "target_accuracy": 1.0,
+    "per_intent": {
+      "COMPARISON": {
+        "n": 2,
+        "intent_accuracy": 1.0,
+        "target_accuracy": 1.0
+      },
+      "CONTRADICTION": {
+        "n": 3,
+        "intent_accuracy": 1.0,
+        "target_accuracy": 1.0
+      },
+      "EVIDENCE_TABLE": {
+        "n": 3,
+        "intent_accuracy": 1.0,
+        "target_accuracy": 1.0
+      },
+      "GAP_EXPLORATION": {
+        "n": 3,
+        "intent_accuracy": 1.0,
+        "target_accuracy": 1.0
+      },
+      "SECTION_SUMMARY": {
+        "n": 2,
+        "intent_accuracy": 1.0,
+        "target_accuracy": 1.0
+      },
+      "STANDARD_CHAT": {
+        "n": 5,
+        "intent_accuracy": 1.0,
+        "target_accuracy": 1.0
+      },
+      "SUMMARY": {
+        "n": 3,
+        "intent_accuracy": 1.0,
+        "target_accuracy": 1.0
+      }
+    },
+    "timestamp": "2026-10-28T19:24:28Z"
+  },
+  "results": [
+    {
+      "query": "what is self attention?",
+      "expected_intent": "STANDARD_CHAT",
+      "expected_targets": [],
+      "got_intent": "STANDARD_CHAT",
+      "got_targets": [],
+      "focus": "",
+      "intent_ok": true,
+      "target_ok": true,
+      "wall_seconds": 25.05
+    },
+    {
+      "query": "show me table 3",
+      "expected_intent": "STANDARD_CHAT",
+      "expected_targets": [],
+      "got_intent": "STANDARD_CHAT",
+      "got_targets": [],
+      "focus": "",
+      "intent_ok": true,
+      "target_ok": true,
+      "wall_seconds": 2.19
+    },
+    {
+      "query": "what is figure 2 about in the attention paper?",
+      "expected_intent": "STANDARD_CHAT",
+      "expected_targets": [
+        "attention-is-all-you-need-Paper.pdf"
+      ],
+      "got_intent": "STANDARD_CHAT",
+      "got_targets": [
+        "attention-is-all-you-need-Paper.pdf"
+      ],
+      "focus": "",
+      "intent_ok": true,
+      "target_ok": true,
+      "wall_seconds": 6.42
+    },
+    {
+      "query": "explain the CMRR formula",
+      "expected_intent": "STANDARD_CHAT",
+      "expected_targets": [],
+      "got_intent": "STANDARD_CHAT",
+      "got_targets": [],
+      "focus": "",
+      "intent_ok": true,
+      "target_ok": true,
+      "wall_seconds": 1.56
+    },
+    {
+      "query": "hello there!",
+      "expected_intent": "STANDARD_CHAT",
+      "expected_targets": [],
+      "got_intent": "STANDARD_CHAT",
+      "got_targets": [],
+      "focus": "",
+      "intent_ok": true,
+      "target_ok": true,
+      "wall_seconds": 0.83
+    },
+    {
+      "query": "summarize attention-is-all-you-need-Paper.pdf",
+      "expected_intent": "SUMMARY",
+      "expected_targets": [
+        "attention-is-all-you-need-Paper.pdf"
+      ],
+      "got_intent": "SUMMARY",
+      "got_targets": [
+        "attention-is-all-you-need-Paper.pdf"
+      ],
+      "focus": "",
+      "intent_ok": true,
+      "target_ok": true,
+      "wall_seconds": 1.72
+    },
+    {
+      "query": "give me a summary of the last paper",
+      "expected_intent": "SUMMARY",
+      "expected_targets": [
+        "attention-is-all-you-need-Paper.pdf"
+      ],
+      "got_intent": "SUMMARY",
+      "got_targets": [
+        "attention-is-all-you-need-Paper.pdf"
+      ],
+      "focus": "",
+      "intent_ok": true,
+      "target_ok": true,
+      "wall_seconds": 1.98
+    },
+    {
+      "query": "summarize the CNN paper",
+      "expected_intent": "SUMMARY",
+      "expected_targets": [
+        "1408.5882_Convolutional_Neural_Networks_for_Sentence_Classification.pdf"
+      ],
+      "got_intent": "SUMMARY",
+      "got_targets": [
+        "1408.5882_Convolutional_Neural_Networks_for_Sentence_Classification.pdf"
+      ],
+      "focus": "",
+      "intent_ok": true,
+      "target_ok": true,
+      "wall_seconds": 3.37
+    },
+    {
+      "query": "give me a section-wise breakdown of the attention paper",
+      "expected_intent": "SECTION_SUMMARY",
+      "expected_targets": [
+        "attention-is-all-you-need-Paper.pdf"
+      ],
+      "got_intent": "SECTION_SUMMARY",
+      "got_targets": [
+        "attention-is-all-you-need-Paper.pdf"
+      ],
+      "focus": "",
+      "intent_ok": true,
+      "target_ok": true,
+      "wall_seconds": 5.52
+    },
+    {
+      "query": "detailed section summary of Social-Engineering-Attack.pdf",
+      "expected_intent": "SECTION_SUMMARY",
+      "expected_targets": [
+        "Social-Engineering-Attack.pdf"
+      ],
+      "got_intent": "SECTION_SUMMARY",
+      "got_targets": [
+        "Social-Engineering-Attack.pdf"
+      ],
+      "focus": "",
+      "intent_ok": true,
+      "target_ok": true,
+      "wall_seconds": 1.13
+    },
+    {
+      "query": "compare the attention paper and the social engineering attack paper",
+      "expected_intent": "COMPARISON",
+      "expected_targets": [
+        "attention-is-all-you-need-Paper.pdf",
+        "Social-Engineering-Attack.pdf"
+      ],
+      "got_intent": "COMPARISON",
+      "got_targets": [
+        "Social-Engineering-Attack.pdf",
+        "attention-is-all-you-need-Paper.pdf"
+      ],
+      "focus": "",
+      "intent_ok": true,
+      "target_ok": true,
+      "wall_seconds": 2.18
+    },
+    {
+      "query": "how does the transformer differ from the seq2seq paper?",
+      "expected_intent": "COMPARISON",
+      "expected_targets": [
+        "attention-is-all-you-need-Paper.pdf",
+        "1409.3215_Sequence_to_Sequence_Learning_with_Neural_Networks.pdf"
+      ],
+      "got_intent": "COMPARISON",
+      "got_targets": [
+        "1409.3215_Sequence_to_Sequence_Learning_with_Neural_Networks.pdf",
+        "attention-is-all-you-need-Paper.pdf"
+      ],
+      "focus": "how the Transformer differs from the seq2seq approach",
+      "intent_ok": true,
+      "target_ok": true,
+      "wall_seconds": 6.32
+    },
+    {
+      "query": "build an evidence table of method, dataset and results for the attention and CNN papers",
+      "expected_intent": "EVIDENCE_TABLE",
+      "expected_targets": [
+        "attention-is-all-you-need-Paper.pdf",
+        "1408.5882_Convolutional_Neural_Networks_for_Sentence_Classification.pdf"
+      ],
+      "got_intent": "EVIDENCE_TABLE",
+      "got_targets": [
+        "1408.5882_Convolutional_Neural_Networks_for_Sentence_Classification.pdf",
+        "attention-is-all-you-need-Paper.pdf"
+      ],
+      "focus": "method, dataset and results",
+      "intent_ok": true,
+      "target_ok": true,
+      "wall_seconds": 1.37
+    },
+    {
+      "query": "create an evidence table comparing the seq2seq and autoencoder papers",
+      "expected_intent": "EVIDENCE_TABLE",
+      "expected_targets": [
+        "1409.3215_Sequence_to_Sequence_Learning_with_Neural_Networks.pdf",
+        "1407.7906_How_Auto-Encoders_Could_Provide_Credit_Assignment_in_Deep_Networks_via_Target_Propagation.pdf"
+      ],
+      "got_intent": "EVIDENCE_TABLE",
+      "got_targets": [
+        "1407.7906_How_Auto-Encoders_Could_Provide_Credit_Assignment_in_Deep_Networks_via_Target_Propagation.pdf",
+        "1409.3215_Sequence_to_Sequence_Learning_with_Neural_Networks.pdf"
+      ],
+      "focus": "",
+      "intent_ok": true,
+      "target_ok": true,
+      "wall_seconds": 7.73
+    },
+    {
+      "query": "what method, dataset and results do the emotions and spoofing papers report?",
+      "expected_intent": "EVIDENCE_TABLE",
+      "expected_targets": [
+        "Theories-Methods-and-Current-Research-on-Emotions.pdf",
+        "Spoofing_attack_using_bus-off_attacks_against_a_specific_ECU_of_the_CAN_bus.pdf"
+      ],
+      "got_intent": "EVIDENCE_TABLE",
+      "got_targets": [
+        "Spoofing_attack_using_bus-off_attacks_against_a_specific_ECU_of_the_CAN_bus.pdf",
+        "Theories-Methods-and-Current-Research-on-Emotions.pdf"
+      ],
+      "focus": "method, dataset and results",
+      "intent_ok": true,
+      "target_ok": true,
+      "wall_seconds": 3.99
+    },
+    {
+      "query": "do the attention and CNN papers contradict each other on accuracy?",
+      "expected_intent": "CONTRADICTION",
+      "expected_targets": [
+        "attention-is-all-you-need-Paper.pdf",
+        "1408.5882_Convolutional_Neural_Networks_for_Sentence_Classification.pdf"
+      ],
+      "got_intent": "CONTRADICTION",
+      "got_targets": [
+        "1408.5882_Convolutional_Neural_Networks_for_Sentence_Classification.pdf",
+        "attention-is-all-you-need-Paper.pdf"
+      ],
+      "focus": "accuracy",
+      "intent_ok": true,
+      "target_ok": true,
+      "wall_seconds": 3.02
+    },
+    {
+      "query": "are there contradictions between the computer networks, social engineering and spoofing papers about security?",
+      "expected_intent": "CONTRADICTION",
+      "expected_targets": [
+        "Computer-Networks-Deep-Dive (1).pdf",
+        "Social-Engineering-Attack.pdf",
+        "Spoofing_attack_using_bus-off_attacks_against_a_specific_ECU_of_the_CAN_bus.pdf"
+      ],
+      "got_intent": "CONTRADICTION",
+      "got_targets": [
+        "Computer-Networks-Deep-Dive (1).pdf",
+        "Social-Engineering-Attack.pdf",
+        "Spoofing_attack_using_bus-off_attacks_against_a_specific_ECU_of_the_CAN_bus.pdf"
+      ],
+      "focus": "security",
+      "intent_ok": true,
+      "target_ok": true,
+      "wall_seconds": 3.71
+    },
+    {
+      "query": "does the seq2seq paper conflict with the autoencoder paper on training methods?",
+      "expected_intent": "CONTRADICTION",
+      "expected_targets": [
+        "1409.3215_Sequence_to_Sequence_Learning_with_Neural_Networks.pdf",
+        "1407.7906_How_Auto-Encoders_Could_Provide_Credit_Assignment_in_Deep_Networks_via_Target_Propagation.pdf"
+      ],
+      "got_intent": "CONTRADICTION",
+      "got_targets": [
+        "1407.7906_How_Auto-Encoders_Could_Provide_Credit_Assignment_in_Deep_Networks_via_Target_Propagation.pdf",
+        "1409.3215_Sequence_to_Sequence_Learning_with_Neural_Networks.pdf"
+      ],
+      "focus": "training methods",
+      "intent_ok": true,
+      "target_ok": true,
+      "wall_seconds": 1.53
+    },
+    {
+      "query": "what research gaps exist in the attention and emotions papers?",
+      "expected_intent": "GAP_EXPLORATION",
+      "expected_targets": [
+        "attention-is-all-you-need-Paper.pdf",
+        "Theories-Methods-and-Current-Research-on-Emotions.pdf"
+      ],
+      "got_intent": "GAP_EXPLORATION",
+      "got_targets": [
+        "Theories-Methods-and-Current-Research-on-Emotions.pdf",
+        "attention-is-all-you-need-Paper.pdf"
+      ],
+      "focus": "research gaps",
+      "intent_ok": true,
+      "target_ok": true,
+      "wall_seconds": 1.21
+    },
+    {
+      "query": "explore open problems in the social engineering and spoofing papers",
+      "expected_intent": "GAP_EXPLORATION",
+      "expected_targets": [
+        "Social-Engineering-Attack.pdf",
+        "Spoofing_attack_using_bus-off_attacks_against_a_specific_ECU_of_the_CAN_bus.pdf"
+      ],
+      "got_intent": "GAP_EXPLORATION",
+      "got_targets": [
+        "Social-Engineering-Attack.pdf",
+        "Spoofing_attack_using_bus-off_attacks_against_a_specific_ECU_of_the_CAN_bus.pdf"
+      ],
+      "focus": "open problems and underexplored areas",
+      "intent_ok": true,
+      "target_ok": true,
+      "wall_seconds": 1.45
+    },
+    {
+      "query": "what has not been studied in the CNN and seq2seq papers?",
+      "expected_intent": "GAP_EXPLORATION",
+      "expected_targets": [
+        "1408.5882_Convolutional_Neural_Networks_for_Sentence_Classification.pdf",
+        "1409.3215_Sequence_to_Sequence_Learning_with_Neural_Networks.pdf"
+      ],
+      "got_intent": "GAP_EXPLORATION",
+      "got_targets": [
+        "1408.5882_Convolutional_Neural_Networks_for_Sentence_Classification.pdf",
+        "1409.3215_Sequence_to_Sequence_Learning_with_Neural_Networks.pdf"
+      ],
+      "focus": "what has not been studied",
+      "intent_ok": true,
+      "target_ok": true,
+      "wall_seconds": 2.8
+    }
+  ]
+}

@@ -1,6 +1,51 @@
 import os
 os.environ["TRANSFORMERS_NO_ADVISORY_WARNINGS"] = "1"
 
+import sys
+
+_ROOT = os.path.dirname(os.path.abspath(__file__))
+
+
+def ensure_runtime():
+    """Re-exec this CLI through the bundled virtualenv when the current
+    interpreter cannot import the project's core dependencies (e.g. bare
+    `python3 main.py ui` on a machine whose system Python has no packages).
+    Runs once per process; the guard env var prevents re-exec loops."""
+    if os.environ.get("RAG_CLI_REEXEC") == "1" or not sys.argv[1:]:
+        return
+    try:
+        import faiss  # noqa: F401
+        import streamlit  # noqa: F401
+        return
+    except ImportError:
+        pass
+
+    import subprocess
+    candidates = [
+        os.path.join(_ROOT, "rag", "bin", "python3"),
+        os.path.join(_ROOT, ".venv", "bin", "python"),
+        os.path.join(_ROOT, "venv", "bin", "python"),
+    ]
+    for candidate in candidates:
+        if not (os.path.isfile(candidate) and os.access(candidate, os.X_OK)):
+            continue
+        probe = subprocess.run(
+            [candidate, "-c", "import faiss, streamlit"],
+            capture_output=True,
+        )
+        if probe.returncode == 0:
+            print(f"ℹ️  System Python lacks project dependencies — relaunching via {candidate} ...")
+            env = dict(os.environ, RAG_CLI_REEXEC="1")
+            os.execve(candidate, [candidate, os.path.abspath(__file__)] + sys.argv[1:], env)
+
+    print("❌ Project dependencies are not importable and no virtualenv was found.")
+    print("   Install them into the bundled venv, then retry:")
+    print("     rag/bin/python3 -m pip install -r requirements.txt")
+    sys.exit(1)
+
+
+ensure_runtime()
+
 import argparse
 import subprocess
 
@@ -81,7 +126,10 @@ def run_compare(doc_a_name, doc_b_name):
             print(f"Error: No chunks found for document '{doc_b_name}'. Please ensure it is indexed.")
             return
             
-        comparison = generate_comparison(doc_a_name, doc_a_chunks, doc_b_name, doc_b_chunks)
+        comparison = generate_comparison([
+            {"name": doc_a_base, "chunks": doc_a_chunks},
+            {"name": doc_b_base, "chunks": doc_b_chunks}
+        ])
         print(f"\n=== COMPARISON: {doc_a_name} VS {doc_b_name} ===")
         print(comparison)
         print("==============================================\n")

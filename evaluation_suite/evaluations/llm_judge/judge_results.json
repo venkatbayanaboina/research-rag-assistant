@@ -1,0 +1,542 @@
+{
+  "1407.7906_Q01": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is fully faithful to the retrieval context, with no contradictions or unsupported claims detected. Great job providing an accurate and well-grounded response!",
+      "relevancy": "The answer directly and completely explains the primary purpose of target propagation (reconstruction-based credit assignment in deep networks) and thoroughly details its relationship to back-propagation, including equivalence in the infinitesimal limit and generalization beyond it."
+    }
+  },
+  "1407.7906_Q02": {
+    "type": "equation",
+    "faithfulness": 0.0,
+    "relevancy": 0.8,
+    "reasons": {
+      "faithfulness": "The score is 0.00 because the actual output contains multiple contradictions with the retrieval context, as indicated by the list of contradictions provided. Despite the specific details being marked as 'None', the presence of nine contradictions suggests significant misalignment between the actual output and the retrieval context, resulting in a faithfulness score of 0.00.",
+      "relevancy": "The answer correctly describes the top-down directed chain structure of the joint distribution, but it does not explicitly state Equation (1)'s factorized form p(h)p(x|h) or the product of conditionals, making it slightly incomplete."
+    }
+  },
+  "1407.7906_Q03": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is fully faithful to the retrieval context, with no contradictions detected. Great job\u2014the output aligns perfectly with the information presented!",
+      "relevancy": "The answer directly and completely lists the three main actors (the top-level prior P(h), the decoder P(x|h), and the encoder Q(h|x)) as requested."
+    }
+  },
+  "1407.7906_Q04": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 0.4,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because there are no contradictions\u2014the actual output is fully faithful to the retrieval context, with every claim aligned to the provided information.",
+      "relevancy": "The answer explicitly names only one of the three approaches (greedy layer-wise pre-training) and only speculates about back-propagation as another, honestly admitting that the complete enumeration of all three approaches is missing, so it only partially answers the question."
+    }
+  },
+  "1407.7906_Q05": {
+    "type": "equation",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is fully faithful to the retrieval context, with no contradictions detected. Every claim in the actual output aligns perfectly with the information presented in the retrieval context\u2014great job achieving complete factual consistency!",
+      "relevancy": "The answer directly provides the mathematical decomposition of the KL-divergence and clearly explains the objective of each resulting term (reconstruction and prior matching), fully addressing the question."
+    }
+  },
+  "1407.7906_Q06": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 0.9,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is fully faithful to the retrieval context \u2014 no contradictions were found. Every claim in the output is supported by the retrieved information. Great job!",
+      "relevancy": "The answer directly identifies Figure 2 as depicting a back-propagation-free implementation of the training procedure via a recirculation algorithm variant, and provides relevant supporting context, losing only a fraction of credit because the figure's visual content itself is unavailable for verification."
+    }
+  },
+  "1407.7906_Q07": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because there are no contradictions \u2014 the actual output is fully faithful to the retrieval context, with every claim aligning with the provided information. Great job on producing a perfectly faithful response!",
+      "relevancy": "The answer directly identifies the main conjecture\u2014that the proposed scheme is less prone to training difficulties and more robust\u2014and explains the mechanism (local training targets versus a single back-propagated gradient)."
+    }
+  },
+  "1407.7906_Q08": {
+    "type": "equation",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is fully faithful to the retrieval context, with no contradictions detected. Every claim in the output aligns with the information presented in the retrieval context \u2014 a perfect result!",
+      "relevancy": "The answer directly and completely states the condition\u2014that the encoder and decoder form a perfect auto-encoder with exact reconstruction x = g\u0303_l(f\u0303_l(x)) for all data points\u2014matching the paper's Equation (9) context."
+    }
+  },
+  "1407.7906_Q09": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because there are no contradictions\u2014the actual output is fully consistent with the information presented in the retrieval context. Great job producing a completely faithful response!",
+      "relevancy": "The answer directly and completely explains that propagation occurs because the decoder $g_l$ approximately inverts the encoder $f_l$, provided that the upper-level target is an improvement and the encoder-decoder pair is locally consistent."
+    }
+  },
+  "1407.7906_Q10": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is fully faithful to the retrieval context, with no contradictions detected. Great job \u2014 every claim aligns perfectly with the source information!",
+      "relevancy": "The answer directly and completely identifies the key insight\u2014that the reconstruction of a denoising auto-encoder with small noise estimates the score (gradient of log-density), which provides the direction needed to compute the target \u0125l in target propagation."
+    }
+  },
+  "1407.7906_Q11": {
+    "type": "equation",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is fully faithful to the retrieval context, with no contradictions detected. Great job\u2014every claim in the actual output is well-supported by the provided information!",
+      "relevancy": "The answer directly provides Equation (18) and gives a complete explanation of the formula, its terms, and its purpose in the supervised learning context."
+    }
+  },
+  "1407.7906_Q12": {
+    "type": "figure",
+    "faithfulness": 0.9231,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 0.92 because the actual output is largely faithful to the retrieval context, but it contains one notable error in the formula for the hybrid target. The output writes the hybrid target as \u03b1\u00b7\u03c4'h_{L-1} + (1-\u03b1)\u00b7(h_{L-1} - \u03c4'h_{L-1}), incorrectly placing the weight \u03b1 on the reconstruction term, whereas the context defines it as \u03c4'h_{L-1} + (1-\u03b1)(h_{L-1} - \u03c4'h_{L-1}), which expands to \u03b1\u00b7(r",
+      "relevancy": "The answer provides a detailed, multi-part explanation of the architectural modifications, such as injecting the label y as an input and splitting the top-level decoder, which directly addresses the question."
+    }
+  },
+  "1407.7906_Q13": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is fully faithful to the retrieval context, with no contradictions detected. Great job \u2014 every claim in the output is perfectly aligned with the provided information!",
+      "relevancy": "The answer directly and completely addresses the specific issues at both extremes of corruption level (slow mixing and non-unimodal distribution)."
+    }
+  },
+  "1407.7906_Q14": {
+    "type": "equation",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is fully consistent with the information in the retrieval context \u2014 no contradictions were found. The output faithfully reflects all the retrieved facts, which is exactly what we hope to see. Great job!",
+      "relevancy": "The answer directly provides the mathematical form of the function ($\text{reconstruction}(h_{L-1}) - h_{L-1} \rightleftharpoons \nabla \text{log-likelihood}$) and identifies its similarity to the gradient of the log-likelihood of a multivariate Gaussian prior."
+    }
+  },
+  "1407.7906_Q15": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because there are no contradictions \u2014 the actual output aligns perfectly with the retrieval context. Great job producing a fully faithful response!",
+      "relevancy": "The answer directly and comprehensively explains what Figure 5 illustrates, covering the per-modality stacks, top-level joint auto-encoder, sampling/prediction, depth rationale, and generalization to N modalities."
+    }
+  },
+  "1408.5882_Q01": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is fully faithful to the retrieval context \u2014 there are no contradictions at all. Every claim made in the output is directly supported by the retrieved information, demonstrating a perfect alignment. Great job achieving complete faithfulness!",
+      "relevancy": "The answer directly and completely identifies the primary purpose of CNN usage in the paper as performing sentence-level classification tasks and provides supporting details."
+    }
+  },
+  "1408.5882_Q02": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness.",
+      "relevancy": "The answer directly and completely addresses both parts of the question by explaining the vectors' role as universal feature extractors and specifying the source as word2vec trained on 100 billion Google News words."
+    }
+  },
+  "1408.5882_Q03": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is fully faithful to the retrieval context, with no contradictions identified. Every claim in the output is supported by the provided information\u2014great job!",
+      "relevancy": "The answer directly lists all the fixed hyperparameters and confirms the conditions (fixed across datasets, determined by SST-2 grid search)."
+    }
+  },
+  "1408.5882_Q04": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because there are no contradictions \u2014 the actual output is fully supported by and aligns with the information presented in the retrieval context. Great job producing a completely faithful response!",
+      "relevancy": "The answer directly addresses the effectiveness by stating that dropout was 'exceptionally effective' and provides quantitative results (2%\u20134% relative improvement)."
+    }
+  },
+  "1408.5882_Q05": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because there are no contradictions, meaning the actual output is perfectly aligned and fully faithful to the retrieval context!",
+      "relevancy": "The answer directly and completely identifies the convolutional layer and max-over-time pooling as the sequential layers following the sentence representation, based on the provided context."
+    }
+  },
+  "1408.5882_Q06": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because there are no contradictions, meaning the actual output is perfectly faithful to the retrieval context!",
+      "relevancy": "The answer provides a detailed, technical explanation of the static and non-static channels, explaining exactly how the figure depicts the duplication and joint processing of the input data."
+    }
+  },
+  "1408.5882_Q07": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 0.5,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is fully faithful to the retrieval context, with no contradictions or unsupported claims detected. Every statement in the output aligns perfectly with the information presented in the retrieval context \u2014 excellent work!",
+      "relevancy": "The answer correctly identifies that the specific example sentence for Figure 1 is missing from the provided context, meaning it cannot answer the question directly."
+    }
+  },
+  "1408.5882_Q08": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is fully faithful to the retrieval context, with no contradictions detected. Great job keeping the output aligned with the provided information!",
+      "relevancy": "The answer clearly identifies the dropout location (the penultimate layer) and provides detailed mathematical and contextual evidence supporting this placement within the model architecture."
+    }
+  },
+  "1408.5882_Q09": {
+    "type": "table",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is fully faithful to the retrieval context, with no contradictions detected. All information presented in the actual output aligns perfectly with the information in the retrieval context. Great job maintaining complete factual consistency!",
+      "relevancy": "The answer directly and correctly states that Table 1 reports N = 11,855 for SST-1, and supports it with the full row of table statistics plus relevant context and a caveat."
+    }
+  },
+  "1408.5882_Q10": {
+    "type": "table",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is fully faithful to the retrieval context, with no contradictions detected. Every claim in the output aligns perfectly with the information provided \u2014 great job!",
+      "relevancy": "The answer directly identifies the CNN-multichannel variant and provides its specific accuracy (88.1) on the SST-2 dataset, fully satisfying the question."
+    }
+  },
+  "1408.5882_Q11": {
+    "type": "table",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output contains no contradictions with the retrieval context. Every claim in the output is fully supported by the retrieved information, demonstrating perfect faithfulness. Great job!",
+      "relevancy": "The answer directly and completely addresses the question by providing the exact top 4 neighboring words for 'good' in both the static and non-static channels from Table 3, and explains how the cosine similarity structure changes after training on SST-2."
+    }
+  },
+  "1408.5882_Q12": {
+    "type": "equation",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly faithful to the retrieval context, showing no contradictions.",
+      "relevancy": "The answer directly and completely explains that Equation (1) represents the concatenation of word vectors to form the sentence representation, including its role in subsequent convolution operations and the multichannel variant."
+    }
+  },
+  "1408.5882_Q13": {
+    "type": "equation",
+    "faithfulness": 0.8333,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 0.83 because the actual output is largely faithful to the retrieval context, but it contains one contradiction: it incorrectly claims the convolution filter is $w \\notin \\text{R}^{hk}$ (i.e., outside the space of real matrices), whereas the retrieval context states the filter is $w \\in \\mathbb{R}^{h \\times k}$, meaning it belongs to the space of real matrices of size $h \\times k$. Thi",
+      "relevancy": "The answer directly and completely explains that h is the window size (filter height) of the convolution, including how x_{i:i+h-1} denotes h consecutive words and how the filter slides across the sentence."
+    }
+  },
+  "1408.5882_Q14": {
+    "type": "equation",
+    "faithfulness": 1.0,
+    "relevancy": 0.1,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because there are no contradictions, indicating the actual output is perfectly faithful to the retrieval context.",
+      "relevancy": "The answer correctly identifies that the required equations (4 and 5) are not present in the provided context, making it impossible to fulfill the request."
+    }
+  },
+  "1408.5882_Q15": {
+    "type": "equation",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is fully faithful to the retrieval context, with no contradictions detected. Great job \u2014 the output aligns perfectly with the provided information!",
+      "relevancy": "The answer directly and completely explains that the operation constructs a feature map by stacking the responses of a convolutional filter across all sliding windows, detailing its role in the subsequent max-over-time pooling step."
+    }
+  },
+  "1409.3215_Q01": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 0.8,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because there are no contradictions present. The actual output is fully faithful to the information in the retrieval context, with every claim made being directly supported. Excellent work!",
+      "relevancy": "The answer directly identifies the credit assignment problem and lack of global coordination from greedy layer-wise pre-training as the limitation, but hedges with caveats about incomplete retrieved context and infers the proposed method from the title rather than confirmed content."
+    }
+  },
+  "1409.3215_Q02": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is fully faithful to the information presented in the retrieval context, with no contradictions detected. Great job \u2014 every claim in the output aligns perfectly with the retrieved information!",
+      "relevancy": "The answer directly and completely identifies and explains the three key differences requested: the use of two separate LSTMs, the use of deep (four-layer) LSTMs, and the reversal of the input word order."
+    }
+  },
+  "1409.3215_Q03": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is fully faithful to the information presented in the retrieval context, with no contradictions detected. Every claim in the output aligns perfectly with the retrieved information \u2014 great job achieving complete faithfulness!",
+      "relevancy": "The answer directly identifies the dataset as the standard WMT 2014 English-French dataset and provides its size (36 million sentence pairs)."
+    }
+  },
+  "1409.3215_Q04": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 0.1,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly faithful to the retrieval context \u2014 every claim made in the output is fully supported by the retrieved information, with no contradictions detected. Great job achieving complete alignment!",
+      "relevancy": "The answer is an honest abstention that does not answer the question, offering only tangential context (max-over-time pooling) unrelated to the specific issue of wasted computation in minibatches."
+    }
+  },
+  "1409.3215_Q05": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because there are no contradictions, meaning the actual output is perfectly faithful to the retrieval context!",
+      "relevancy": "The answer directly identifies the token's role as a stopping signal and provides a detailed statistical explanation of how it enables variable-length sequence modeling, all while referencing Figure 1."
+    }
+  },
+  "1409.3215_Q06": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 0.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, showing excellent faithfulness!",
+      "relevancy": "The answer states it cannot find the answer, which is not an answer to the question."
+    }
+  },
+  "1409.3215_Q07": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because there are no contradictions, meaning the actual output is perfectly faithful to the retrieval context.",
+      "relevancy": "The answer accurately identifies the two properties (word order sensitivity and voice invariance) and provides a detailed explanation of the visualization method (2D PCA projection and clustering)."
+    }
+  },
+  "1409.3215_Q08": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because there are no contradictions, indicating the actual output is perfectly faithful to the retrieval context.",
+      "relevancy": "The answer directly compares the BLEU scores of the LSTM and baseline system for the specified sentence length and provides specific quantitative data."
+    }
+  },
+  "1409.3215_Q09": {
+    "type": "table",
+    "faithfulness": 0.8889,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 0.89 because the output incorrectly claimed it could not find the answer, despite the retrieval context containing specific factual information, including BLEU scores (28.4 and 41.0), training details (3.5 days on 8 P100 GPUs), and inference settings.",
+      "relevancy": "The answer correctly identifies that the specific data requested (baseline SMT score from Table 1) is absent from the provided context."
+    }
+  },
+  "1409.3215_Q10": {
+    "type": "table",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, showing excellent faithfulness.",
+      "relevancy": "The answer directly provides both required BLEU scores (34.81 and 30.59) and explicitly calculates the difference, fully addressing both parts of the question."
+    }
+  },
+  "1409.3215_Q11": {
+    "type": "table",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, showing excellent faithfulness!",
+      "relevancy": "The answer directly and completely identifies the highest BLEU score (36.5) and the specific method (Rescoring with an ensemble of 5 reversed LSTMs) that achieved it, adhering to the constraints of using neural networks with an SMT system."
+    }
+  },
+  "1409.3215_Q12": {
+    "type": "equation",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because there are no contradictions, meaning the actual output is perfectly faithful to the retrieval context!",
+      "relevancy": "The answer directly identifies the equation as the conditional probability of the output sequence and provides a detailed breakdown of its components and function within the LSTM architecture."
+    }
+  },
+  "1409.3215_Q13": {
+    "type": "equation",
+    "faithfulness": 0.1667,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 0.17 because the contradiction list contains no specific issues (all entries are None), which suggests that the low score is not justified by the provided contradictions.",
+      "relevancy": "The answer directly and completely states that each conditional distribution is represented with a softmax over all words in the vocabulary, matching the question exactly."
+    }
+  },
+  "1409.3215_Q14": {
+    "type": "equation",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because there are no contradictions, meaning the actual output is perfectly faithful to the retrieval context.",
+      "relevancy": "The answer directly identifies the training objective as maximizing the log probability of the correct translation and provides the formal mathematical expression."
+    }
+  },
+  "1409.3215_Q15": {
+    "type": "equation",
+    "faithfulness": 1.0,
+    "relevancy": 0.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because there are no contradictions, meaning the actual output is perfectly faithful to the retrieval context.",
+      "relevancy": "The answer fails to address the question because it states that the information is unavailable, providing no information whatsoever."
+    }
+  },
+  "1409.7770_Q01": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because there are no contradictions, meaning the actual output is perfectly faithful to the retrieval context!",
+      "relevancy": "The answer directly and completely identifies the main achievement (the first experimental demonstration of machine learning on a photonic quantum computer) and provides detailed context and significance."
+    }
+  },
+  "1409.7770_Q02": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because there are no contradictions, indicating the actual output is perfectly aligned with the retrieval context.",
+      "relevancy": "The answer directly identifies the two main types of machine learning tasks (supervised and unsupervised) and fully explains each with examples as discussed in the paper."
+    }
+  },
+  "1409.7770_Q03": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because there are no contradictions, indicating that the actual output is perfectly faithful to the retrieval context.",
+      "relevancy": "The answer provides a comprehensive and detailed explanation of the encoding mechanisms, covering single-qubit polarization, spatial modes, and multi-qubit/entangled states."
+    }
+  },
+  "1409.7770_Q04": {
+    "type": "text",
+    "faithfulness": 0.9231,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 0.92 because the actual output claims that the fidelity of multi-photon states is approximately 75%, but the retrieval context shows that while the four-photon entangled state fidelity was 0.75, the two-photon state fidelity was 0.94. Since the two-photon state is also a multi-photon state, the blanket claim that all multi-photon states have approximately 75% fidelity is inaccurate, t",
+      "relevancy": "The answer directly and completely provides the specific fidelities for all three states (0.94, 0.73, and 0.75 for two-, three-, and four-photon states respectively), with additional relevant context that does not obscure the direct response."
+    }
+  },
+  "1409.7770_Q05": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because there are no contradictions, meaning the actual output is perfectly faithful to the retrieval context.",
+      "relevancy": "The answer directly identifies the limitation (speedup only with respect to N, not M) and explains the planned future solution (using M+1 level qudits)."
+    }
+  },
+  "1409.7770_Q06": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because there are no contradictions, meaning the actual output is perfectly faithful to the retrieval context!",
+      "relevancy": "The answer directly and completely identifies the crystals as two 2 mm type-II \u03b2-barium borate (BBO) crystals, fully addressing the question."
+    }
+  },
+  "1409.7770_Q07": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because there are no contradictions, indicating the actual output is perfectly faithful to the retrieval context.",
+      "relevancy": "The answer directly and completely states that the compensators compensate the walk-off between horizontal and vertical polarization of the photons, which is the purpose asked in the question."
+    }
+  },
+  "1409.7770_Q08": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 0.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, showing excellent faithfulness.",
+      "relevancy": "The answer does not address the question at all, only stating that the information could not be found."
+    }
+  },
+  "1409.7770_Q09": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because there are no contradictions, indicating the actual output is perfectly faithful to the retrieval context.",
+      "relevancy": "The answer directly identifies vectors C and D and provides the specific distance metrics confirming they were closer to the red group, thus meeting all criteria."
+    }
+  },
+  "1409.7770_Q10": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because there are no contradictions, meaning the actual output is perfectly aligned with the retrieval context.",
+      "relevancy": "The answer directly and completely identifies testing vector A as the one whose label changed, with supporting distance values and explanation."
+    }
+  },
+  "1409.7770_Q11": {
+    "type": "equation",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness.",
+      "relevancy": "The answer directly provides the mathematical form of the entangled state as defined by Equation (1)."
+    }
+  },
+  "1409.7770_Q12": {
+    "type": "equation",
+    "faithfulness": 0.9333,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 0.93 because the actual output incorrectly stated the distance formula as D = \u221a2p(|u|\u00b2 + |v|\u00b2), which contradicts the retrieval context's explicit formula D = (|u|\u00b2 + |v|\u00b2)p.",
+      "relevancy": "The answer directly provides the explicit algebraic formula for calculating the inner product $\\langle u|v\\rangle$ from the success probability $p$ as derived from Equation (3)."
+    }
+  },
+  "1409.7770_Q13": {
+    "type": "equation",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because there are no contradictions, meaning the actual output is perfectly faithful to the retrieval context.",
+      "relevancy": "The answer directly provides Equation (4) and explains the mathematical relationship between the distance D and the success probability p."
+    }
+  },
+  "1409.7770_Q14": {
+    "type": "equation",
+    "faithfulness": 0.5833,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 0.58 because there are no contradictions listed, indicating that the actual output is highly faithful to the retrieval context.",
+      "relevancy": "The answer directly states the two-photon entangled state of Equation (5) with its exact mathematical form, explains the polarization encoding, and provides supporting context about how it is derived from higher-photon resource states."
+    }
+  },
+  "1409.7770_Q15": {
+    "type": "equation",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because there are no contradictions, meaning the actual output is perfectly faithful to the retrieval context.",
+      "relevancy": "The answer directly provides the mathematical general forms of the requested entangled states for 2-, 4-, and 8-dimensional vectors."
+    }
+  }
+}

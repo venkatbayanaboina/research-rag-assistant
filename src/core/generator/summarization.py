@@ -13,16 +13,10 @@ def get_key_images_for_doc(doc_name):
     - 1 Key Architecture Diagram / Figure
     - 1 Key Performance Table
     - 1 Key Formula / Equation
+    Uses session-aware paths so Streamlit users see their own visual store.
     """
-    registry_path = config.IMAGES_REGISTRY_PATH
-    if not os.path.exists(registry_path):
-        return []
-        
-    try:
-        with open(registry_path) as f:
-            registry = json.load(f)
-    except:
-        return []
+    from src.core.vector_store import get_image_registry
+    registry = get_image_registry()
         
     doc_base = os.path.basename(doc_name)
     doc_images = [img for img in registry if os.path.basename(img.get("source_file", "")) == doc_base]

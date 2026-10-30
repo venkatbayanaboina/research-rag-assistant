@@ -47,13 +47,26 @@ def embed_text(text, is_query=False):
     """
     model = get_model()
     input_text = f"{config.BGE_QUERY_PREFIX}{text}" if is_query else text
-    
+
     embedding = model.encode(
         input_text,
         convert_to_numpy=True,
         normalize_embeddings=True
     )
     return embedding.reshape(1, -1)
+
+def embed_queries(texts):
+    """
+    Batch-encodes query texts with the BGE instruction prefix applied to each.
+    One forward pass for N queries instead of N sequential encode calls.
+    """
+    model = get_model()
+    inputs = [f"{config.BGE_QUERY_PREFIX}{t}" for t in texts]
+    return model.encode(
+        inputs,
+        convert_to_numpy=True,
+        normalize_embeddings=True
+    )
 
 def embed_batch(texts):
     """

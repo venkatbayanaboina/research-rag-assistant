@@ -1,0 +1,22 @@
+{
+  "model": "google/gemini-2.5-flash (independent judge, separate family from generator)",
+  "n_graded": 60,
+  "faithfulness_excluded": [
+    "1409.7770_Q15 (judge returned invalid JSON twice; GLM judged it F=1.0)"
+  ],
+  "mean_faithfulness": 0.9803,
+  "n_faithfulness": 50,
+  "mean_relevancy": 0.885,
+  "n_relevancy": 60,
+  "faithfulness_vs_glm": {
+    "n_pairs": 50,
+    "mean_abs_diff": 0.0698,
+    "pass_fail_agreement": "47/50"
+  },
+  "relevancy_vs_glm": {
+    "n_pairs": 60,
+    "mean_abs_diff": 0.0883,
+    "pass_fail_agreement": "53/60"
+  },
+  "timestamp": "2026-10-29"
+}

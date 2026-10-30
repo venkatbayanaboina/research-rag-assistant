@@ -1,3 +1,7 @@
+> ℹ️ **Current evaluation entry points** (post-upgrade): `Makefile` (`make test`, `make eval`,
+> `make eval-live`), [`docs/upgrade/evaluation_results.md`](../upgrade/evaluation_results.md),
+> and [`docs/upgrade/WORK_RESULTS.md`](../upgrade/WORK_RESULTS.md). The phase flow below is the
+> historical dataset-generation procedure.
 # 📚 RAG Pipeline Evaluation Framework
 
 This directory contains the scripts, schemas, and benchmark datasets used to generate QA evaluation pairs and test the accuracy of the Retrieval-Augmented Generation (RAG) assistant.

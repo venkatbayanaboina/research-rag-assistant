@@ -1,0 +1,33 @@
+{
+  "n_answers": 60,
+  "n_judged": 60,
+  "mean_faithfulness": 0.9542,
+  "mean_relevancy": 0.8933,
+  "pass_rate_0.6": {
+    "faithfulness": 0.95,
+    "relevancy": 0.8833
+  },
+  "mean_citation_coverage": 0.751,
+  "per_type": {
+    "equation": {
+      "faithfulness": 0.862,
+      "relevancy": 0.8833
+    },
+    "figure": {
+      "faithfulness": 0.9957,
+      "relevancy": 0.8556
+    },
+    "table": {
+      "faithfulness": 0.9815,
+      "relevancy": 1.0
+    },
+    "text": {
+      "faithfulness": 0.9957,
+      "relevancy": 0.9056
+    }
+  },
+  "estimated_cost_usd_generation": 0.03,
+  "judge_model": "gate rotation head (z-ai/glm-5.3-flash)",
+  "caveat": "generator and judge are the same model family; Gemini cross-check pending",
+  "timestamp": "2026-10-28T23:02:58Z"
+}

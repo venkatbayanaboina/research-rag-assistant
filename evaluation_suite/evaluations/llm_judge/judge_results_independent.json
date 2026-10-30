@@ -1,0 +1,542 @@
+{
+  "1407.7906_Q01": {
+    "type": "text",
+    "faithfulness": null,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "ERROR: Evaluation LLM outputted an invalid JSON. Please use a better evaluation model.",
+      "relevancy": "The answer directly and completely addresses both parts of the question, explaining the primary purpose of target propagation and its relationship to back-propagation with multiple points of comparison."
+    }
+  },
+  "1407.7906_Q02": {
+    "type": "equation",
+    "faithfulness": 1.0,
+    "relevancy": 0.5,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer describes the structure of the joint distribution as a directed graphical model with a top-down chain, but it does not explicitly state how Equation (1) represents this structure or provide the factorization from Equation (1)."
+    }
+  },
+  "1407.7906_Q03": {
+    "type": "figure",
+    "faithfulness": 0.75,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 0.75 because the actual output incorrectly states that Figure 1 illustrates three main actors for an intermediate layer h: the top-level prior P(h), the decoder P(x|h), and the encoder Q(h|x), when the retrieval context indicates it illustrates P(h) and Q(h h) along with associated layers in a deep generative decoder and a deep approximate inference encoder.",
+      "relevancy": "The answer directly and completely identifies the three main actors as requested by the question and provides additional context from the source."
+    }
+  },
+  "1407.7906_Q04": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 0.5,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer explicitly identifies one of the three approaches and infers a second, but states that the third could not be found, thus only partially addressing the question."
+    }
+  },
+  "1407.7906_Q05": {
+    "type": "equation",
+    "faithfulness": 1.0,
+    "relevancy": 0.9,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer provides a detailed explanation of the KL-divergence decomposition, including the equation and the interpretation of its two components, directly addressing how it helps understand the objective."
+    }
+  },
+  "1407.7906_Q06": {
+    "type": "figure",
+    "faithfulness": null,
+    "relevancy": 0.8,
+    "reasons": {
+      "faithfulness": "ERROR: Evaluation LLM outputted an invalid JSON. Please use a better evaluation model.",
+      "relevancy": "The answer describes what Figure 2 illustrates regarding the training procedure, specifically a back-propagation-free implementation and its relation to the overall training scheme, but it cannot detail the visual content due to its absence."
+    }
+  },
+  "1407.7906_Q07": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely addresses the question by stating the main conjecture and elaborating on why it is believed to be true, including the specific difficulties back-propagation faces."
+    }
+  },
+  "1407.7906_Q08": {
+    "type": "equation",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely states the condition for total minimization of the reconstruction log-likelihood, which is that the encoder and decoder form a 'perfect auto-encoder' resulting in exact reconstruction, and provides the mathematical representation of this condition."
+    }
+  },
+  "1407.7906_Q09": {
+    "type": "figure",
+    "faithfulness": null,
+    "relevancy": 0.0,
+    "reasons": {
+      "faithfulness": "ERROR: Evaluation LLM outputted an invalid JSON. Please use a better evaluation model.",
+      "relevancy": "The answer does not refer to Figure 3 at all, which is explicitly requested by the question."
+    }
+  },
+  "1407.7906_Q10": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely addresses the question by explaining the key insight from Alain and Bengio (2013) regarding the use of denoising auto-encoder reconstruction error to estimate the score function, which in turn allows for estimating the target \\(\\hat{h}_l\\)."
+    }
+  },
+  "1407.7906_Q11": {
+    "type": "equation",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely addresses the question by providing the discriminant target formula, explaining each term, and detailing the rationale behind its form in the context of supervised learning."
+    }
+  },
+  "1407.7906_Q12": {
+    "type": "figure",
+    "faithfulness": null,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "ERROR: Evaluation LLM outputted an invalid JSON. Please use a better evaluation model.",
+      "relevancy": "The answer directly and comprehensively explains how Figure 4 generalizes the architecture for supervised training by detailing the label injection, handling of observed/missing labels, decoder split, output loss, and inference/training procedures, all while referencing the core idea of the label as an extra input."
+    }
+  },
+  "1407.7906_Q13": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely addresses the question by explaining the issues with both too small and too large corruption levels in denoising auto-encoders."
+    }
+  },
+  "1407.7906_Q14": {
+    "type": "equation",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely addresses both parts of the question by providing the form of the function and explaining what it behaves similarly to, along with additional relevant context."
+    }
+  },
+  "1407.7906_Q15": {
+    "type": "figure",
+    "faithfulness": 0.9167,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 0.92 because the actual output incorrectly states that a deep top-level auto-encoder is not necessary when y is an explicit one-hot, whereas the context only states that combining information from both x and y does not seem necessary in that scenario.",
+      "relevancy": "The answer directly and comprehensively describes what Figure 5 illustrates regarding the architecture for structured output or multi-modal cases, detailing its key components, design points, and generalizations."
+    }
+  },
+  "1408.5882_Q01": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely addresses the question by stating the primary purpose of CNNs in the paper is sentence-level classification and elaborating on how they achieve this."
+    }
+  },
+  "1408.5882_Q02": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely addresses both parts of the question, detailing the role of pre-trained word vectors and their specific source as described in the paper."
+    }
+  },
+  "1408.5882_Q03": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely lists all the fixed hyperparameters for the CNN model as determined by the grid search on the SST-2 dev set, as requested by the question."
+    }
+  },
+  "1408.5882_Q04": {
+    "type": "text",
+    "faithfulness": null,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "ERROR: Evaluation LLM outputted an invalid JSON. Please use a better evaluation model.",
+      "relevancy": "The answer directly and completely addresses the question by stating that dropout was found to be an exceptionally effective regularizer, providing a quantitative improvement, and then detailing the specific dropout scheme used to achieve these results."
+    }
+  },
+  "1408.5882_Q05": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely identifies the main sequential layers after sentence representation as convolutional layer and max-over-time pooling, as depicted in Figure 1 and described in the provided text."
+    }
+  },
+  "1408.5882_Q06": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely explains how Figure 1 illustrates the 'two channels' concept by detailing the static and non-static channels, their processing, and their purpose, referencing specific elements of the figure and the underlying architecture."
+    }
+  },
+  "1408.5882_Q07": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely addresses the question by stating that the specific example sentence is not provided in the retrieved text, and then offers a helpful distinction for a different Figure 1."
+    }
+  },
+  "1408.5882_Q08": {
+    "type": "figure",
+    "faithfulness": null,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "ERROR: Evaluation LLM outputted an invalid JSON. Please use a better evaluation model.",
+      "relevancy": "The answer directly and completely identifies where dropout is applied in the model architecture based on Figure 1 and supporting textual evidence, explaining its placement and function."
+    }
+  },
+  "1408.5882_Q09": {
+    "type": "table",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely provides the requested dataset size for SST-1 from Table 1, along with additional context and caveats."
+    }
+  },
+  "1408.5882_Q10": {
+    "type": "table",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely identifies the CNN model variant with the highest accuracy on SST-2 and states that accuracy, as requested by the question."
+    }
+  },
+  "1408.5882_Q11": {
+    "type": "table",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely addresses the question by providing the specific top 4 neighboring words for 'good' in both static and non-static channels and explaining how the cosine similarity changes based on the provided table and context."
+    }
+  },
+  "1408.5882_Q12": {
+    "type": "equation",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely explains what Equation (1) represents, providing the equation itself, defining its components, and explaining its role in the model's context."
+    }
+  },
+  "1408.5882_Q13": {
+    "type": "equation",
+    "faithfulness": null,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "ERROR: Evaluation LLM outputted an invalid JSON. Please use a better evaluation model.",
+      "relevancy": "The answer directly and completely explains what 'h' represents in the given equation, providing a clear definition and additional context from the sources."
+    }
+  },
+  "1408.5882_Q14": {
+    "type": "equation",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely addresses the question by stating that the requested equations are not present in the provided documents and explaining why it cannot answer the question."
+    }
+  },
+  "1408.5882_Q15": {
+    "type": "equation",
+    "faithfulness": null,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "ERROR: Evaluation LLM outputted an invalid JSON. Please use a better evaluation model.",
+      "relevancy": "The answer directly and completely explains the purpose of the operation, detailing how it's built and why it matters in the model, which fully addresses the question."
+    }
+  },
+  "1409.3215_Q01": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 0.9,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly identifies the credit assignment problem as the main limitation and elaborates on its manifestation in greedy layer-wise pre-training, providing a strong explanation, though it notes that a full characterization is limited by the provided context."
+    }
+  },
+  "1409.3215_Q02": {
+    "type": "text",
+    "faithfulness": null,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "ERROR: Evaluation LLM outputted an invalid JSON. Please use a better evaluation model.",
+      "relevancy": "The answer directly and completely addresses the question by identifying and explaining the three key differences between the actual LSTM models and the basic sequence-to-sequence description, as requested."
+    }
+  },
+  "1409.3215_Q03": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely identifies the training dataset as the standard WMT 2014 English-French dataset, specifying its size and providing additional relevant details about its preparation and use."
+    }
+  },
+  "1409.3215_Q04": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 0.9,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly states it could not find the specific information requested and then explains what related information was found, demonstrating a thorough search and understanding of the question."
+    }
+  },
+  "1409.3215_Q05": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 0.5,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer provides a detailed explanation of the end-of-sentence token's purpose, but it relies heavily on external sources (Source 1 and Source 2) and general knowledge about sequence models, rather than exclusively on Figure 1 as requested by the question."
+    }
+  },
+  "1409.3215_Q06": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 0.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer states it could not find the information, which means it does not address the question at all."
+    }
+  },
+  "1409.3215_Q07": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 0.8,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer correctly identifies the two properties and explains how they are visualized, but it includes some extraneous information not directly related to the visualization of those specific properties."
+    }
+  },
+  "1409.3215_Q08": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 0.8,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer correctly states that the LSTM outperforms the baseline and provides the overall BLEU scores, but it doesn't explicitly state the BLEU scores for sentences *less than 35 words* for both systems, instead inferring the LSTM's performance remains stable."
+    }
+  },
+  "1409.3215_Q09": {
+    "type": "table",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer correctly states that the information is not available in the provided document and explains why, directly addressing the question's premise."
+    }
+  },
+  "1409.3215_Q10": {
+    "type": "table",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely addresses both parts of the question by providing the BLEU score for the ensemble and the single LSTM, and then explicitly comparing them."
+    }
+  },
+  "1409.3215_Q11": {
+    "type": "table",
+    "faithfulness": 0.8462,
+    "relevancy": 0.5,
+    "reasons": {
+      "faithfulness": "The score is 0.85 because the actual output contradicts the context by implying that 'Best WMT'14 result [9]' is not a neural-network-based method, whereas the context lists it alongside neural network methods. Additionally, the actual output suggests 'Oracle Rescoring' was a theoretical score, while the context implies it was a realized method with a BLEU score of approximately 45.",
+      "relevancy": "The answer correctly identifies the highest BLEU score and the method, but it fails to address the crucial condition of using neural networks *together with an SMT system* in its primary finding, only clarifying this in subsequent points."
+    }
+  },
+  "1409.3215_Q12": {
+    "type": "equation",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely explains what Equation (1) represents in the context of the LSTM model, breaking down its components and providing concrete examples."
+    }
+  },
+  "1409.3215_Q13": {
+    "type": "equation",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely explains that each distribution is represented by a softmax over all words in the vocabulary, providing context and additional relevant details."
+    }
+  },
+  "1409.3215_Q14": {
+    "type": "equation",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely describes the training objective for the LSTM model as maximizing the log probability of a correct translation given the source sentence, including the formal equation and an explanation of its implications."
+    }
+  },
+  "1409.3215_Q15": {
+    "type": "equation",
+    "faithfulness": 1.0,
+    "relevancy": 0.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer states it could not find the information, which does not address what Equation (2) aims to find or the meaning of \u02c6T."
+    }
+  },
+  "1409.7770_Q01": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely addresses the question by stating the main achievement and then elaborating on its significance and specific details."
+    }
+  },
+  "1409.7770_Q02": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely identifies and describes the two main types of machine learning tasks discussed in the paper: supervised and unsupervised machine learning."
+    }
+  },
+  "1409.7770_Q03": {
+    "type": "text",
+    "faithfulness": 0.8333,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 0.83 because the actual output incorrectly states the prepared state of polarization-entangled photon pairs as (|0(cid:105)anc |0(cid:105)vec + |1(cid:105)anc |1(cid:105)vec)/\u221a2, whereas the context specifies it as (|0(cid:105)anc |000(cid:105)vec + |1(cid:105)anc |111(cid:105)vec)/\u221a2.",
+      "relevancy": "The answer directly and completely addresses how qubits are encoded, detailing single-qubit encoding and then expanding on how vectors are encoded using multiple qubits and their properties."
+    }
+  },
+  "1409.7770_Q04": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely provides the fidelities for the two-, three-, and four-photon entangled states as requested by the question, along with relevant context."
+    }
+  },
+  "1409.7770_Q05": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely addresses both parts of the question by identifying the primary limitation regarding speedup and outlining the planned future studies to address it."
+    }
+  },
+  "1409.7770_Q06": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely identifies the type of crystals used to produce entangled photon pairs, as requested by the question."
+    }
+  },
+  "1409.7770_Q07": {
+    "type": "figure",
+    "faithfulness": 0.6667,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 0.67 because the actual output mentions birefringent compensators and their use in compensating walk-off, which is not supported by Figure 1 in the retrieval context, as Figure 1 illustrates all-optically tunable Raman single photons, energy level diagrams, Raman photon spectra, and decay time constants.",
+      "relevancy": "The answer directly and completely addresses the question by stating the purpose of the birefringent compensators as compensating walk-off between horizontal and vertical polarization of photons, and provides additional context from the figure."
+    }
+  },
+  "1409.7770_Q08": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 0.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer states it could not find the information, which is not a direct answer to the question asking for specific values."
+    }
+  },
+  "1409.7770_Q09": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely identifies the two vectors and provides supporting evidence from the figure regarding their distances to the red and blue groups, explaining why their labels were changed."
+    }
+  },
+  "1409.7770_Q10": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely identifies the specific testing vector whose classification label changed and provides a clear explanation for why it changed, referencing the figure and underlying principles."
+    }
+  },
+  "1409.7770_Q11": {
+    "type": "equation",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly provides the requested equation for the entangled state and explains its components, fully addressing the question."
+    }
+  },
+  "1409.7770_Q12": {
+    "type": "equation",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely addresses how the inner product is calculated from the success probability p, explicitly providing the formula from Equation (3) and explaining the two-step process."
+    }
+  },
+  "1409.7770_Q13": {
+    "type": "equation",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely addresses the question by providing Equation (4) and explaining how D is obtained from p, along with context and examples."
+    }
+  },
+  "1409.7770_Q14": {
+    "type": "equation",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!",
+      "relevancy": "The answer directly and completely provides the requested equation for the initial polarization-entangled state and explains its components and origin."
+    }
+  },
+  "1409.7770_Q15": {
+    "type": "equation",
+    "faithfulness": null,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "ERROR: Evaluation LLM outputted an invalid JSON. Please use a better evaluation model.",
+      "relevancy": "The answer directly provides the general forms of the entangled states |\u03d52\u27e9, |\u03d54\u27e9, and |\u03d58\u27e9 as requested by the question, along with a clear explanation of their structure and how they relate to the vector dimensions."
+    }
+  }
+}

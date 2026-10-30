@@ -5,7 +5,9 @@ import faiss
 import numpy as np
 import threading
 
-db_lock = threading.Lock()
+# Reentrant so compound write paths (e.g. add_document_to_store purging the
+# same document before appending) can nest acquisitions on one thread.
+db_lock = threading.RLock()
 
 # Include root directory for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
@@ -85,16 +87,25 @@ def load_image_db(session_paths=None):
 def add_document_to_store(text_chunks, image_chunks, session_paths=None):
     """
     Appends text chunks to the BGE text index and visual images to the CLIP index.
+
+    The whole read-embed-write sequence runs under db_lock: FAISS row order must
+    stay aligned with the registry append order, so concurrent writers (or a
+    concurrent delete-rebuild) interleaving with these steps would corrupt IDs.
     """
     filename = None
     if text_chunks:
         filename = text_chunks[0]["source_file"]
     elif image_chunks:
         filename = image_chunks[0]["source_file"]
-        
+
     if not filename:
         return
-        
+
+    with db_lock:
+        _add_document_to_store_locked(text_chunks, image_chunks, filename, session_paths)
+
+
+def _add_document_to_store_locked(text_chunks, image_chunks, filename, session_paths):
     # Auto-delete existing records of the same document to support clean re-indexing/overwriting
     delete_document_from_store(filename, session_paths=session_paths)
     
@@ -180,28 +191,40 @@ def add_document_to_store(text_chunks, image_chunks, session_paths=None):
         else:
             print(f"Visual chunks for '{filename}' already indexed.")
 
-def search_store(query, k=None, rerank=None):
+def search_store(query, k=None, rerank=None, mode=None, query_vector=None):
     """
     Searches the Text index and applies Cross-Encoder reranking.
+
+    mode="dense"  — legacy dense-only BGE/FAISS retrieval (unchanged behavior).
+    mode="hybrid" — BM25 sparse ranking fused with the dense ranking via RRF
+                    before reranking. Defaults to config.HYBRID_RETRIEVAL_ENABLED.
+    query_vector  — optional pre-computed BGE query embedding (from
+                    embedder.embed_queries) to skip per-query encoding in
+                    multi-query paths.
     """
     import time
     from src.core.utils.profiler import log_timing
     start_time = time.time()
-    
+
     with db_lock:
         index = load_text_db()
         registry = get_registry()
-        
+
         if index.ntotal == 0 or not registry:
             print("Text database is empty.")
             return []
-        
+
+    if mode is None:
+        mode = "hybrid" if config.HYBRID_RETRIEVAL_ENABLED else "dense"
+
     is_rerank = config.RERANK_ENABLED if rerank is None else rerank
     initial_k = config.K_INITIAL_RETRIEVAL if is_rerank else (config.K_FINAL_CONTEXT if k is None else k)
-    
-    query_vector = embed_text(query, is_query=True)
-    scores, indices = index.search(query_vector, k=min(initial_k, index.ntotal))
-    
+
+    if query_vector is None:
+        query_vector = embed_text(query, is_query=True)
+    scores, indices = index.search(np.atleast_2d(np.asarray(query_vector, dtype="float32")),
+                                   k=min(initial_k, index.ntotal))
+
     results = []
     seen_texts = set()
     for score, idx in zip(scores[0], indices[0]):
@@ -215,7 +238,17 @@ def search_store(query, k=None, rerank=None):
                     "score": float(score),
                     "chunk": chunk
                 })
-            
+
+    dense_results = results
+
+    if mode == "hybrid":
+        from src.core.sparse_retrieval import search_store_sparse
+        from src.core.fusion import rrf_fuse
+        sparse_results = search_store_sparse(query, k=config.BM25_CANDIDATES)
+        results = rrf_fuse([dense_results, sparse_results], top_k=initial_k)
+    else:
+        sparse_results = []
+
     # Measure initial FAISS text search duration
     duration = time.time() - start_time
     log_timing(
@@ -223,122 +256,86 @@ def search_store(query, k=None, rerank=None):
         duration_seconds=duration,
         metadata={
             "query": query[:100],
-            "initial_candidates": len(results)
+            "initial_candidates": len(results),
+            "mode": mode,
+            "sparse_candidates": len(sparse_results)
         }
     )
-    
+
     if is_rerank:
         from src.core.reranker import rerank_chunks
         results = rerank_chunks(query, results, enabled=True)
     else:
         results = results[:k if k is not None else config.K_FINAL_CONTEXT]
-        
+
     return results
 
-def search_image_store(query, k=None):
+def search_image_store(query, k=None, session_paths=None):
     """
-    Searches the Image index using Hybrid Visual Retrieval:
-    Combines dense CLIP text-to-image similarity search with a sparse keyword matcher
-    matching figure numbers (e.g. 'Fig. 5') and tokens against the image registry captions.
+    Searches the Image index using Hybrid Visual Retrieval with calibrated
+    qualification:
+
+      1. Dense ranking: CLIP text-to-image similarity, adaptively filtered
+         (relative margin from the best hit + absolute noise floor).
+      2. Sparse ranking: IDF-weighted caption matching; explicit
+         "figure/table N" references always qualify.
+      3. Fusion + evidence rules (src/core/visual_ranking.py): an image is
+         returned only on explicit reference, dense∩sparse agreement, or
+         strong caption evidence. Returns [] when nothing genuinely matches —
+         k is a cap, never a quota.
     """
     import time
-    import re
     from src.core.utils.profiler import log_timing
     start_time = time.time()
-    
+
     with db_lock:
-        index = load_image_db()
-        registry = get_image_registry()
-        
+        index = load_image_db(session_paths)
+        registry = get_image_registry(session_paths)
+
         if index.ntotal == 0 or not registry:
             print("Image database is empty.")
             return []
-        
-    search_k = config.K_IMAGE_RETRIEVAL if k is None else k
-    
-    # 1. Dense Retrieval: Embed text query in CLIP visual space and search FAISS
+
+    max_images = config.K_IMAGE_RETRIEVAL if k is None else k
+
+    # 1. Dense ranking with per-query adaptive filtering
     query_vector = embed_clip_text(query)
-    scores, indices = index.search(query_vector, k=min(search_k * 3, index.ntotal))
-    
-    dense_results = []
+    scores, indices = index.search(query_vector, k=min(max_images * 5, index.ntotal))
+
+    dense_ranked = []
+    top_dense = None
     for score, idx in zip(scores[0], indices[0]):
-        if idx != -1 and idx < len(registry):
-            score_val = float(score)
-            if score_val >= 0.28:
-                dense_results.append({
-                    "score": score_val,
-                    "chunk": registry[idx]
-                })
-                
-    # 2. Sparse Retrieval: Keyword and pattern-based caption matching
-    sparse_results = []
-    query_lower = query.lower()
-    
-    # Tokenize the query into descriptive keywords (length > 2)
-    query_tokens = [w for w in re.findall(r'[a-z0-9]+', query_lower) if len(w) > 2]
-    
-    # Capture explicit figure/table references (e.g., "fig 5", "figure 5", "table 2")
-    ref_patterns = re.findall(r'(fig(?:ure)?|table)\s*(\d+)', query_lower)
-    
-    for item in registry:
-        caption = item.get("caption", "").lower()
-        source_file = item.get("source_file", "").lower()
-        match_score = 0.0
-        
-        # Match explicit figure/table numbers (high confidence boost)
-        for ref_type, ref_num in ref_patterns:
-            if ref_type.startswith("fig"):
-                if re.search(r'fig(?:ure)?[\s\.]*' + ref_num, caption):
-                    match_score = 0.45
-            elif ref_type == "table":
-                if re.search(r'table[\s\.]*' + ref_num, caption):
-                    match_score = 0.45
-                    
-        # Falling back to basic token-matching if no pattern matches
-        if match_score == 0.0 and query_tokens:
-            matched_tokens = [t for t in query_tokens if t in caption or t in source_file]
-            if len(matched_tokens) > 0:
-                # Calculate ratio-based score starting from baseline threshold
-                match_score = 0.28 + (0.12 * (len(matched_tokens) / len(query_tokens)))
-                
-        if match_score >= 0.28:
-            sparse_results.append({
-                "score": match_score,
-                "chunk": item
-            })
-            
-    # 3. Hybrid Fusion: Merge dense and sparse results, deduplicating by image path
-    merged = {}
-    for res in dense_results:
-        path = res["chunk"]["image_path"]
-        merged[path] = res
-        
-    for res in sparse_results:
-        path = res["chunk"]["image_path"]
-        if path in merged:
-            # Boost score if found in both dense and sparse paths
-            merged[path]["score"] = max(merged[path]["score"], res["score"]) + 0.05
-        else:
-            merged[path] = res
-            
-    # Sort results by descending similarity/relevance score
-    final_results = list(merged.values())
-    final_results.sort(key=lambda x: x["score"], reverse=True)
-    final_results = final_results[:search_k]
-            
-    # Measure total hybrid retrieval duration
+        if idx == -1 or idx >= len(registry):
+            continue
+        s = float(score)
+        if top_dense is None:
+            top_dense = s
+        if s < config.IMAGE_DENSE_ABS_FLOOR:
+            break  # results arrive in descending order
+        if s < top_dense - config.IMAGE_DENSE_RELATIVE_MARGIN:
+            break
+        dense_ranked.append({"score": s, "chunk": registry[idx]})
+
+    # 2. Sparse ranking (IDF-weighted captions + explicit references)
+    from src.core.visual_ranking import build_caption_stats, sparse_visual_matches, qualify_visual
+    caption_df = build_caption_stats(registry)
+    sparse_ranked = sparse_visual_matches(query, registry, caption_df)
+
+    # 3. Fusion + evidence-based qualification
+    qualified = qualify_visual(dense_ranked, sparse_ranked, max_images)
+
     duration = time.time() - start_time
     log_timing(
         step_name="visual_retrieval_clip",
         duration_seconds=duration,
         metadata={
             "query": query[:100],
-            "dense_results": len(dense_results),
-            "sparse_results": len(sparse_results),
-            "final_results_count": len(final_results)
+            "dense_candidates": len(dense_ranked),
+            "sparse_candidates": len(sparse_ranked),
+            "final_results_count": len(qualified)
         }
     )
-    return final_results
+    return qualified
 
 def delete_document_from_store(filename, session_paths=None):
     """

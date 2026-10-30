@@ -1,3 +1,5 @@
+> ℹ️ **Historical guide** (browser-automation/Colab era). Current entry points: `Makefile`
+> and [`docs/upgrade/evaluation_results.md`](../upgrade/evaluation_results.md).
 # 📚 Research RAG Assistant: Complete Evaluation Guide
 
 This guide details the methodology, metrics, and procedures used to test and evaluate the Research RAG Assistant across various architectures and models.

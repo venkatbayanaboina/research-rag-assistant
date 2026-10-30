@@ -1,0 +1,92 @@
+{
+  "1407.7906_Q01": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is fully faithful to the retrieval context, with no contradictions detected. Great job\u2014every claim aligns perfectly with the retrieved information!",
+      "relevancy": "The answer directly and completely addresses both parts of the question, clearly stating target propagation's primary purpose (layer-local credit assignment via auto-encoder reconstructions serving as targets) and thoroughly explaining its relationship to back-propagation (a learned generalization that coincides with it in the infinitesimal limit), with well-supported citations."
+    }
+  },
+  "1407.7906_Q02": {
+    "type": "equation",
+    "faithfulness": 0.9,
+    "relevancy": 0.6,
+    "reasons": {
+      "faithfulness": "The score is 0.90 because the actual output is largely faithful to the retrieval context, with only a minor mischaracterization: it describes Q as an encoder Q(h|x) that performs approximate inference in a bottom-up direction, whereas the context defines the main actors as P(h) and Q(h|hL) \u2014 with Q conditioned on hL rather than x \u2014 and provides only a top-down generative chain hL \u21d2 ... \u21d2 h2 \u21d2 h1 \u21d2",
+      "relevancy": "The answer correctly describes the top-down directed chain structure of the generative model but never explicitly states or reproduces Equation (1)'s factorized form of the joint distribution p(x, h) = p(h_L)\u220fp(h_{l-1}|h_l)p(x|h_1), so it only partially addresses the specific equation-based question."
+    }
+  },
+  "1407.7906_Q03": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is fully faithful to the retrieval context, with no contradictions detected. Every claim in the output aligns perfectly with the information presented in the context\u2014excellent work!",
+      "relevancy": "The answer directly and completely identifies the three main actors ($P(h)$, $P(x|h)$, and $Q(h|x)$) and provides detailed explanations of their roles."
+    }
+  },
+  "1407.7906_Q04": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 0.3,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output contains no contradictions with the retrieval context. Every claim made in the output is fully supported by the retrieved information, demonstrating perfect faithfulness. Great job aligning the output with the context!",
+      "relevancy": "The answer correctly identifies that three approaches exist and fully describes only the first (greedy layer-wise pre-training), explicitly stating it cannot enumerate the second and third, so it addresses only about a third of the question despite its honesty about the retrieval gap."
+    }
+  },
+  "1407.7906_Q05": {
+    "type": "equation",
+    "faithfulness": 0.9412,
+    "relevancy": 0.9,
+    "reasons": {
+      "faithfulness": "The score is 0.94 because the actual output is largely faithful to the retrieval context, with only one contradiction: it attributes the advantage of avoiding intractabilities to matching the joint distributions P(X,H) and Q(X,H) 'rather than only matching the marginals', whereas the context states it is matching the marginal distributions P(X) and Q(X) that avoids these intractabilities.",
+      "relevancy": "The answer correctly presents the KL(Q||P) decomposition into reconstruction, prior-matching, and entropy terms with the layer-wise extension, though the exact algebraic form of the entropy terms is slightly simplified."
+    }
+  },
+  "1407.7906_Q06": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 0.85,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is fully faithful to the retrieval context, with no contradictions or unsupported claims detected. Every statement in the output aligns perfectly with the information in the retrieval context\u2014excellent work!",
+      "relevancy": "The answer directly identifies Figure 2 as illustrating a back-propagation-free training implementation via the recirculation algorithm for the deep generative auto-encoder, with supporting framework details, though it concedes the actual visual contents are not described in the retrieved text, making it somewhat incomplete."
+    }
+  },
+  "1407.7906_Q07": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is fully faithful to the retrieval context \u2014 there are no contradictions present, meaning every claim in the output aligns perfectly with the information provided. Excellent work!",
+      "relevancy": "The answer directly and completely states the main conjecture\u2014that providing layer-local training signals via target propagation makes very deep non-linear networks less prone to training difficulties than back-propagated gradients\u2014and supports it with motivation, caveats, and implications."
+    }
+  },
+  "1407.7906_Q08": {
+    "type": "equation",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is fully faithful to the information presented in the retrieval context, with no contradictions detected. Great job maintaining complete alignment between the output and the retrieved information!",
+      "relevancy": "The answer directly and completely states the condition (perfect reconstruction, i.e., the decoder exactly inverts the encoder for all x drawn from Q(X), forming a perfect auto-encoder) that minimizes the reconstruction log-likelihood in the deterministic-encoder setting, matching the paper's Equations (8) and (9)."
+    }
+  },
+  "1407.7906_Q09": {
+    "type": "figure",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because there are no contradictions \u2014 the actual output is fully faithful to the information presented in the retrieval context. Great job!",
+      "relevancy": "The answer directly and completely explains the Figure 3 mechanism: because the decoder g_l approximately inverts the encoder f_l, a target that lowers cost at level l can be mapped down to a lower-level target that also lowers cost at level l-1."
+    }
+  },
+  "1407.7906_Q10": {
+    "type": "text",
+    "faithfulness": 1.0,
+    "relevancy": 1.0,
+    "reasons": {
+      "faithfulness": "The score is 1.00 because the actual output is fully faithful to the retrieval context \u2014 no contradictions were found, meaning every claim in the actual output is supported by the information in the retrieval context.",
+      "relevancy": "The answer directly and accurately identifies the key insight\u2014that with small injected noise and squared-error training, the reconstruction difference estimates the score function, enabling the denoising auto-encoder's reconstruction to serve as the target estimate for a layer\u2014and connects it explicitly to computing \u02c6hl."
+    }
+  }
+}

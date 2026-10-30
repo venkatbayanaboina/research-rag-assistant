@@ -1,0 +1,79 @@
+{
+  "label": "20261028_glm",
+  "prompt_chars": 123,
+  "results": [
+    {
+      "model": "z-ai/glm-5.3-flash",
+      "calls": [
+        {
+          "ok": true,
+          "seconds": 1.25,
+          "chars": 190,
+          "preview": "Self-attention is a mechanism in which each token in a sequence computes weighte"
+        },
+        {
+          "ok": true,
+          "seconds": 1.18,
+          "chars": 190,
+          "preview": "Self-attention is a mechanism in which each token in a sequence computes weighte"
+        }
+      ]
+    },
+    {
+      "model": "nvidia/nemotron-3.5-lightning:free",
+      "calls": [
+        {
+          "ok": true,
+          "seconds": 3.91,
+          "chars": 238,
+          "preview": "Self-attention is a mechanism that allows each token in a sequence to dynamicall"
+        },
+        {
+          "ok": true,
+          "seconds": 4.61,
+          "chars": 216,
+          "preview": "Self-attention is a mechanism that lets each position in a sequence dynamically "
+        }
+      ]
+    },
+    {
+      "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "calls": [
+        {
+          "ok": true,
+          "seconds": 8.95,
+          "chars": 164,
+          "preview": "Self-attention is a mechanism that lets each token in a sequence compute a weigh"
+        }
+      ]
+    },
+    {
+      "model": "google/gemma-4-31b-it:free",
+      "calls": [
+        {
+          "ok": false,
+          "seconds": 0.5,
+          "error": "HTTP 429: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"google/gemma-4-31b-it:free is temporarily rate-limited upstream."
+        }
+      ]
+    }
+  ],
+  "ranking_fastest_first": [
+    {
+      "model": "z-ai/glm-5.3-flash",
+      "best_seconds": 1.18,
+      "calls": 2
+    },
+    {
+      "model": "nvidia/nemotron-3.5-lightning:free",
+      "best_seconds": 3.91,
+      "calls": 2
+    },
+    {
+      "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "best_seconds": 8.95,
+      "calls": 1
+    }
+  ],
+  "timestamp": "2026-10-28T18:31:14Z"
+}

@@ -1,0 +1,108 @@
+{
+  "1407.7906_Q01": {
+    "gemini_faithfulness": null,
+    "error": "Evaluation LLM outputted an invalid JSON. Please use a better evaluation model."
+  },
+  "1407.7906_Q04": {
+    "gemini_faithfulness": 1.0,
+    "glm_faithfulness": 1.0,
+    "reason": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!"
+  },
+  "1407.7906_Q07": {
+    "gemini_faithfulness": 1.0,
+    "glm_faithfulness": 1.0,
+    "reason": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!"
+  },
+  "1407.7906_Q10": {
+    "gemini_faithfulness": 1.0,
+    "glm_faithfulness": 1.0,
+    "reason": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!"
+  },
+  "1407.7906_Q13": {
+    "gemini_faithfulness": 1.0,
+    "glm_faithfulness": 1.0,
+    "reason": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!"
+  },
+  "1408.5882_Q01": {
+    "gemini_faithfulness": 1.0,
+    "glm_faithfulness": 1.0,
+    "reason": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!"
+  },
+  "1408.5882_Q04": {
+    "gemini_faithfulness": null,
+    "error": "Evaluation LLM outputted an invalid JSON. Please use a better evaluation model."
+  },
+  "1408.5882_Q07": {
+    "gemini_faithfulness": 1.0,
+    "glm_faithfulness": 1.0,
+    "reason": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!"
+  },
+  "1408.5882_Q10": {
+    "gemini_faithfulness": 1.0,
+    "glm_faithfulness": 1.0,
+    "reason": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!"
+  },
+  "1408.5882_Q13": {
+    "gemini_faithfulness": null,
+    "error": "Evaluation LLM outputted an invalid JSON. Please use a better evaluation model."
+  },
+  "1409.3215_Q01": {
+    "gemini_faithfulness": 0.9231,
+    "glm_faithfulness": 1.0,
+    "reason": "The score is 0.92 because the actual output states 'a small number of approaches', which contradicts the retrieval context's specific mention of 'three approaches'."
+  },
+  "1409.3215_Q04": {
+    "gemini_faithfulness": 1.0,
+    "glm_faithfulness": 1.0,
+    "reason": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!"
+  },
+  "1409.3215_Q07": {
+    "gemini_faithfulness": 1.0,
+    "glm_faithfulness": 1.0,
+    "reason": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!"
+  },
+  "1409.3215_Q10": {
+    "gemini_faithfulness": 1.0,
+    "glm_faithfulness": 1.0,
+    "reason": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!"
+  },
+  "1409.3215_Q13": {
+    "gemini_faithfulness": 1.0,
+    "glm_faithfulness": 0.1667,
+    "reason": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!"
+  },
+  "1409.7770_Q01": {
+    "gemini_faithfulness": 1.0,
+    "glm_faithfulness": 1.0,
+    "reason": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!"
+  },
+  "1409.7770_Q04": {
+    "gemini_faithfulness": 1.0,
+    "glm_faithfulness": 0.9231,
+    "reason": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!"
+  },
+  "1409.7770_Q07": {
+    "gemini_faithfulness": 0.6667,
+    "glm_faithfulness": 1.0,
+    "reason": "The score is 0.67 because the actual output incorrectly states that Figure 1 illustrates the experimental setup for birefringent compensators, whereas the retrieval context indicates Figure 1 illustrates all-optically tunable Raman single photons, energy level diagrams, Raman photon spectra, and dec"
+  },
+  "1409.7770_Q10": {
+    "gemini_faithfulness": 1.0,
+    "glm_faithfulness": 1.0,
+    "reason": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!"
+  },
+  "1409.7770_Q13": {
+    "gemini_faithfulness": 1.0,
+    "glm_faithfulness": 1.0,
+    "reason": "The score is 1.00 because the actual output is perfectly aligned with the retrieval context, demonstrating excellent faithfulness!"
+  },
+  "_summary": {
+    "model": "google/gemini-2.5-flash",
+    "n_pairs": 17,
+    "mean_gemini_faithfulness": 0.9759,
+    "mean_glm_faithfulness": 0.9465,
+    "mean_abs_difference": 0.0777,
+    "pass_fail_agreement_at_0.6": "16/17",
+    "timestamp": "2026-10-28T23:08:05Z"
+  }
+}

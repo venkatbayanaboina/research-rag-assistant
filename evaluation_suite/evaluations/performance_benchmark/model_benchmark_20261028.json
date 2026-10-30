@@ -1,0 +1,93 @@
+{
+  "label": "20261028",
+  "prompt_chars": 123,
+  "results": [
+    {
+      "model": "google/gemma-4-31b-it:free",
+      "calls": [
+        {
+          "ok": false,
+          "seconds": 0.93,
+          "error": "HTTP 429: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"google/gemma-4-31b-it:free is temporarily rate-limited upstream."
+        }
+      ]
+    },
+    {
+      "model": "google/gemma-4-26b-a4b-it:free",
+      "calls": [
+        {
+          "ok": false,
+          "seconds": 0.71,
+          "error": "HTTP 429: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"google/gemma-4-26b-a4b-it:free is temporarily rate-limited upstr"
+        }
+      ]
+    },
+    {
+      "model": "nvidia/nemotron-3.5-lightning:free",
+      "calls": [
+        {
+          "ok": true,
+          "seconds": 4.28,
+          "chars": 193,
+          "preview": "Self-attention is a mechanism that allows each element in a sequence to dynamica"
+        },
+        {
+          "ok": true,
+          "seconds": 18.91,
+          "chars": 243,
+          "preview": "Self-attention is a mechanism that lets each token in a sequence dynamically wei"
+        }
+      ]
+    },
+    {
+      "model": "thinkingmachines/inkling-small:free",
+      "calls": [
+        {
+          "ok": false,
+          "seconds": 0.43,
+          "error": "HTTP 403: {\"error\":{\"message\":\"thinkingmachines/inkling-small:free is only available on agentic harnesses. Try plugging it into a coding agent or prod"
+        }
+      ]
+    },
+    {
+      "model": "liquid/lfm-2.5-2.6b:free",
+      "calls": [
+        {
+          "ok": false,
+          "seconds": 0.73,
+          "error": "HTTP 429: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"liquid/lfm-2.5-2.6b:free is temporarily rate-limited upstream. P"
+        }
+      ]
+    },
+    {
+      "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "calls": [
+        {
+          "ok": true,
+          "seconds": 14.33,
+          "chars": 164,
+          "preview": "Self-attention lets each token in a sequence compute a weighted sum of all token"
+        },
+        {
+          "ok": true,
+          "seconds": 8.56,
+          "chars": 193,
+          "preview": "Self-attention lets each token in a sequence compute a weighted sum of all token"
+        }
+      ]
+    }
+  ],
+  "ranking_fastest_first": [
+    {
+      "model": "nvidia/nemotron-3.5-lightning:free",
+      "best_seconds": 4.28,
+      "calls": 2
+    },
+    {
+      "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "best_seconds": 8.56,
+      "calls": 2
+    }
+  ],
+  "timestamp": "2026-10-28T17:30:38Z"
+}

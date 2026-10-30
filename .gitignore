@@ -15,3 +15,9 @@ archives/
 # Ignore Python virtual environment
 rag/
 
+
+# Runtime/cache directories (hardening sweep)
+.deepeval/
+scratch/
+storage/sessions/
+.pytest_cache/

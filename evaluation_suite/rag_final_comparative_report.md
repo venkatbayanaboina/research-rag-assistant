@@ -1,3 +1,6 @@
+> ℹ️ **Pre-upgrade historical report** (local Qwen/Llama judges, before the hybrid
+> retrieval, agentic actions, and integrity fixes documented in
+> [`docs/upgrade/`](../upgrade/)). Figures below are historical.
 # 📊 Production RAG Evaluation: Final Comparative Report
 
 This report summarizes the experimental findings from evaluating different Retrieval-Augmented Generation (RAG) system configurations on the **Gold QA Benchmark Dataset** (comprising complex deep learning academic papers). 

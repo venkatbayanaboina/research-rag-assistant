@@ -1,3 +1,5 @@
+> ℹ️ **Historical procedure** (browser-automation era). Current entry points: `Makefile`
+> and [`docs/upgrade/evaluation_results.md`](../upgrade/evaluation_results.md).
 # 📚 Multimodal QA Evaluation Dataset Generation Procedure
 
 This document outlines the procedure for generating 15 structured QA pairs per paper to evaluate the Retrieval-Augmented Generation (RAG) assistant.

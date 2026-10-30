@@ -1,0 +1,97 @@
+{
+  "B": 10000,
+  "seed": 20260101,
+  "n_cases": 60,
+  "retrieval": {
+    "hit@1": {
+      "dense": {
+        "value": 0.5333,
+        "ci95": [
+          0.4,
+          0.65
+        ]
+      },
+      "hybrid": {
+        "value": 0.6,
+        "ci95": [
+          0.4667,
+          0.7167
+        ]
+      },
+      "delta_hybrid_minus_dense": {
+        "mean": 0.0667,
+        "ci95": [
+          0.0,
+          0.15
+        ],
+        "verdict": "WITHIN NOISE"
+      }
+    },
+    "recall@5": {
+      "dense": {
+        "value": 0.8,
+        "ci95": [
+          0.7,
+          0.9
+        ]
+      },
+      "hybrid": {
+        "value": 0.9167,
+        "ci95": [
+          0.8333,
+          0.9833
+        ]
+      },
+      "delta_hybrid_minus_dense": {
+        "mean": 0.1167,
+        "ci95": [
+          0.05,
+          0.2
+        ],
+        "verdict": "SIGNIFICANT"
+      }
+    },
+    "mrr": {
+      "dense": {
+        "value": 0.6356,
+        "ci95": [
+          0.5283,
+          0.7383
+        ]
+      },
+      "hybrid": {
+        "value": 0.7367,
+        "ci95": [
+          0.6467,
+          0.8236
+        ]
+      },
+      "delta_hybrid_minus_dense": {
+        "mean": 0.1011,
+        "ci95": [
+          0.0358,
+          0.1736
+        ],
+        "verdict": "SIGNIFICANT"
+      }
+    }
+  },
+  "judge": {
+    "faithfulness": {
+      "value": 0.9542,
+      "ci95": [
+        0.9055,
+        0.9908
+      ],
+      "n": 60
+    },
+    "relevancy": {
+      "value": 0.8933,
+      "ci95": [
+        0.8167,
+        0.955
+      ],
+      "n": 60
+    }
+  }
+}

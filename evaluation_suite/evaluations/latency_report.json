@@ -1,0 +1,57 @@
+{
+  "hardware": {
+    "cpu": "Apple M2",
+    "ram_gb": 9,
+    "arch": "arm64",
+    "accelerator": "MPS (Metal)"
+  },
+  "provider": "OpenRouter -> z-ai/glm-5.3-flash (generator; primary judge same rotation head)",
+  "e2e_generation_seconds": {
+    "n": 60,
+    "median": 14.24,
+    "p95": 57.92,
+    "max": 626.81,
+    "min": 4.14,
+    "outliers": [
+      {
+        "qid": "1409.3215_Q09",
+        "value": 82.93
+      },
+      {
+        "qid": "1407.7906_Q11",
+        "value": 94.28
+      },
+      {
+        "qid": "1409.3215_Q15",
+        "value": 626.81
+      }
+    ]
+  },
+  "retrieval_only_ms_rerank_off": {
+    "n": 60,
+    "median": 94.5,
+    "p95": 125.6,
+    "max": 9241.5,
+    "min": 70.8,
+    "outliers": [
+      {
+        "qid": "1409.7770_Q01",
+        "value": 163.3
+      },
+      {
+        "qid": "1408.5882_Q05",
+        "value": 199.6
+      },
+      {
+        "qid": "1407.7906_Q01",
+        "value": 9241.5
+      }
+    ]
+  },
+  "notes": [
+    "E2E wall = full agentic pipeline per gold question (router, hybrid retrieval, rerank, generation).",
+    "Outliers are named and kept: the max is a provider-side stall, not dropped data.",
+    "First retrieval query includes BM25 build + model load (cold start); median is the warm-path number."
+  ],
+  "timestamp": "2026-10-29T15:50:37Z"
+}

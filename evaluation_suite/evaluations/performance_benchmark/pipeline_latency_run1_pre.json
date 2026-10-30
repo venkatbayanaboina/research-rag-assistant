@@ -1,0 +1,48 @@
+{
+  "label": "run1_pre",
+  "provider": "openrouter (forced, free models)",
+  "n_queries": 4,
+  "wall_seconds_mean": 104.28,
+  "wall_seconds_min": 75.58,
+  "wall_seconds_max": 120.71,
+  "model_calls_total": 8,
+  "runs": [
+    {
+      "query": "What is the primary purpose of convolutional neural networks in the sentence classification paper?",
+      "wall_seconds": 75.58,
+      "model_call_count": 2,
+      "refinement_iterations": 0,
+      "evidence_status": "sufficient",
+      "verification_status": "verified",
+      "answer_chars": 698
+    },
+    {
+      "query": "How does target propagation provide credit assignment in deep networks?",
+      "wall_seconds": 120.71,
+      "model_call_count": 2,
+      "refinement_iterations": 0,
+      "evidence_status": "sufficient",
+      "verification_status": "verified",
+      "answer_chars": 1886
+    },
+    {
+      "query": "What is multi-head attention in the transformer architecture?",
+      "wall_seconds": 109.01,
+      "model_call_count": 2,
+      "refinement_iterations": 0,
+      "evidence_status": "sufficient",
+      "verification_status": "verified",
+      "answer_chars": 2061
+    },
+    {
+      "query": "What evaluation metrics are reported in the sequence to sequence learning paper?",
+      "wall_seconds": 111.83,
+      "model_call_count": 2,
+      "refinement_iterations": 0,
+      "evidence_status": "sufficient",
+      "verification_status": "qualified",
+      "answer_chars": 1980
+    }
+  ],
+  "timestamp": "2026-10-28T17:06:52Z"
+}

@@ -19,8 +19,9 @@ class OpenRouterGate(BaseModelGate):
 
     def generate(self, prompt, system_instruction=None, response_mime_type=None, temperature=0.0):
         import time
-        print("Pausing 4.5 seconds to respect OpenRouter rate limits...")
-        time.sleep(4.5)
+        # No unconditional pre-call sleep: free models were paying 4.5 s on every
+        # request even when not rate-limited. Back off only on 429s.
+        print("Sending request to OpenRouter...")
         
         # Dynamic reload of .env
         from dotenv import load_dotenv
@@ -94,11 +95,20 @@ class OpenRouterGate(BaseModelGate):
         if response_mime_type == "application/json":
             payload["response_format"] = {"type": "json_object"}
             
-        # Rotate through highly capable, permanently free models on OpenRouter
-        models = [
-            "meta-llama/llama-3.2-3b-instruct:free",
-            "openrouter/free"
+        # Rotation ordered by live latency benchmark (2026-10-28, ADR-007 + addendum,
+        # docs/upgrade/performance_results.md §4): z-ai/glm-5.3-flash measured 1.2s/call
+        # (multimodal, JSON mode, ~$0.001/call) vs 3.9s+ for the free models; the gemma
+        # tier saturates with 429s under load. Free slugs rotate often — override
+        # without code changes via OPENROUTER_MODELS="a,b,c".
+        default_models = [
+            "z-ai/glm-5.3-flash",
+            "nvidia/nemotron-3.5-lightning:free",
+            "nvidia/nemotron-3-ultra-550b-a55b:free",
+            "google/gemma-4-31b-it:free",
         ]
+        env_models = os.getenv("OPENROUTER_MODELS", "")
+        models = ([m.strip() for m in env_models.split(",") if m.strip()]
+                  if env_models.strip() else default_models)
         
         last_error = None
         for model in models:
@@ -107,6 +117,12 @@ class OpenRouterGate(BaseModelGate):
             
             try:
                 response = requests.post(url, headers=headers, json=payload)
+                if response.status_code == 429:
+                    wait = 5
+                    print(f"⚠️ OpenRouter Model {model} rate-limited (429). Backing off {wait}s...")
+                    time.sleep(wait)
+                    last_error = "API Status 429: rate limited"
+                    continue
                 if response.status_code == 200:
                     res_data = response.json()
                     content = res_data["choices"][0]["message"]["content"].strip()
