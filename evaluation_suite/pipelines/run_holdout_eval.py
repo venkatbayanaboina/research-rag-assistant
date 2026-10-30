@@ -71,8 +71,15 @@ def main():
     indexed = get_indexed_documents()
     results = []
     for r in records:
-        result = execute_rag_pipeline(r["question"], indexed)
-        got_pages = {c["page"] for c in (result.get("search_results") or [])}
+        try:
+            result = execute_rag_pipeline(r["question"], indexed)
+        except Exception as e:
+            results.append({"qid": r["qid"], "error": str(e)[:200],
+                            "retrieval_hit": None, "abstained": None,
+                            "behavior_ok": None})
+            continue
+        got_pages = {(c.get("chunk") or c).get("page")
+                     for c in (result.get("search_results") or [])}
         retrieval_hit = bool(set(r["gold_pages"]) & got_pages) if r["gold_pages"] else None
         abstained = "could not find" in (result.get("answer", "") or "").lower()
         behavior_ok = (not r["answerable"]) or (not abstained)
