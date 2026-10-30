@@ -14,8 +14,10 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
-      - name: Install CPU-only torch first (smaller wheel)
-        run: pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - name: Install CPU torch + torchvision as a matched pair
+        # Installing torchvision from the SAME index prevents the
+        # "operator torchvision::nms does not exist" ABI mismatch.
+        run: pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
       - name: Install cross-platform requirements
         # requirements.lock.txt is a macOS venv freeze (local reproducibility);
         # CI uses the cross-platform requirements.txt
